@@ -359,20 +359,47 @@ window.addStudentFirebase = async ()=>{
   let u=document.getElementById('newUser').value.trim().toLowerCase();
   let p=document.getElementById('newPass').value.trim();
   let g=document.getElementById('newGrade').value;
-  if(!name||!u||!p) return alert('املأ كل البيانات');
-  if(!firebaseReady) return alert('لسه محطتش الكونفيج');
+  if(!name||!u||!p) return alert('من فضلك اكمل اسم الطالب واسم المستخدم وكلمة المرور');
+  if(!firebaseReady) return alert('تأكد من الاتصال');
   let email = u + '@sciencelab.app';
-  // حفظ الأدمن الحالي عشان منخرجش منه
   try{
-    // انشاء الحساب - Firebase هيعمل sign-in تلقائي بالحساب الجديد، فهنرجع نسجل دخول الأدمن تاني بعدها
-    // حل أبسط: بنستخدم secondary auth لو متاح، هنا بنعمل create وبعدين نرجع
-    // عشان كده هنطلب من الأدمن يدخل باسورده تاني بعد الإضافة
-    await createUserWithEmailAndPassword(auth, email, p);
-    // احفظ بيانات الطالب في Firestore
+    // ✅ الحل: نستخدم تطبيق Firebase ثانوي لإنشاء حساب الطالب، فحساب الأدمن الرئيسي لا يتغير أبدا
+    let secondaryApp;
+    try{ secondaryApp = initializeApp(firebaseConfig, 'secondary'); }catch(e){ secondaryApp = initializeApp(firebaseConfig, 'secondary-'+Date.now()); }
+    let secondaryAuth = getAuth(secondaryApp);
+    await createUserWithEmailAndPassword(secondaryAuth, email, p);
+    await signOut(secondaryAuth);
+    // احفظ بيانات الطالب في Firestore - من حساب الأدمن نفسه
     await setDoc(doc(db, "students", u), {username:u, name:name, grade:g, role:"student", createdAt: new Date().toISOString()});
-    alert('✅ تم إضافة '+name+'\nUsername: '+u+'\nPassword: '+p+'\n\nملحوظة: انت دلوقتي دخلت بحساب الطالب، اعمل خروج وادخل بحساب الأدمن تاني');
+    // ✅ ابعت للشيت بالأسماء اللي Apps Script مستنيها بالظبط
+    let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+    try{
+      await fetch(sheetUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})});
+    }catch(e){ console.log('sheet sync failed', e); }
+    // نظف الحقول وحدث القائمة من غير ما تطلع من الأدمن
+    document.getElementById('newName').value=''; document.getElementById('newUser').value=''; document.getElementById('newPass').value='';
     renderStudents();
-  }catch(e){ alert('خطأ: '+e.message); }
+    // رسالة نجاح من غير ما تقولك هتخرج من الأدمن - لأنك هتفضل أدمن
+    let msgEl = document.getElementById('saveMsg'); if(msgEl){ msgEl.style.display='block'; msgEl.textContent='تمت إضافة '+name+' بنجاح - وسيظهر في Google Sheet خلال ثوان.'; }
+    alert('تمت إضافة '+name+' بنجاح
+Username: '+u+'
+Password: '+p+'
+
+ستظل مسجل دخول كأدمن، وتم إرسال الطالب إلى Google Sheet.');
+  }catch(e){
+    // لو الطالب موجود قبل كده، حدث بياناته بدل ما نعمل حساب جديد
+    if(e.code==='auth/email-already-in-use'){
+      try{
+        await setDoc(doc(db, "students", u), {username:u, name:name, grade:g, role:"student", createdAt: new Date().toISOString()}, {merge:true});
+        let sheetUrl2 = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+        try{ await fetch(sheetUrl2, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})}); }catch(_){}
+        renderStudents();
+        alert('الطالب موجود بالفعل - تم تحديث بياناته وإرساله إلى الشيت.');
+      }catch(e2){ alert('خطأ: '+e2.message); }
+    } else {
+      alert('خطأ: '+e.message);
+    }
+  }
 };
 
 window.deleteStudentFirebase = async (u)=>{
@@ -434,7 +461,7 @@ if(firebaseReady){
 // ===== Google Sheets Sync - دكتور ندى =====
 const SHEET_ID = "1r8OQ78Xs2DKSw07a8g_fDNH2vu2dGD9ZkBa4haf9B-U";
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/edit";
-let APPS_SCRIPT_URL = localStorage.getItem('sheets_apps_script_url') || "https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec";
+let APPS_SCRIPT_URL = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec' || "https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec";
 if(!localStorage.getItem('sheets_apps_script_url')) localStorage.setItem('sheets_apps_script_url', "https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec");
 function setAppsScriptUrl(){ let u = prompt("حط لينك Apps Script Web App هنا:", APPS_SCRIPT_URL); if(u){ APPS_SCRIPT_URL=u; localStorage.setItem('sheets_apps_script_url', u); alert('✅ اتحفظ لينك الشيت'); } }
 function openSheet(){ window.open(SHEET_URL, '_blank'); }
