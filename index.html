@@ -236,79 +236,51 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <input id="inpPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:13px;border:1px solid #e2e8f0;border-radius:12px">
     <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
     <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
-    <p style="font-size:12px;color:#64748b;margin-top:10px">أول مرة؟ اعمل حساب الأدمن: Username = <b>admin</b> من لوحة الأدمن أو من Firebase Console</p>
+    <p style="font-size:12px;color:#64748b;margin-top:10px"></p>
     <button onclick="hideLogin()" style="background:none;border:none;color:#64748b;cursor:pointer;margin-top:10px">تصفح كزائر 👀</button>
   </div>
 </div>
-<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:101;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
-  <div style="background:#fff;width:100%;max-width:600px;border-radius:24px;padding:24px;margin:auto">
-    <div style="display:flex;justify-content:space-between">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
-      <button onclick="openSheet()" style="flex:1;background:#0f9d58;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">
-<div id="contentEditor" style="background:#fff;border:2px solid #ffd6e7;border-radius:20px;padding:16px;margin:16px 0">
-  <h3 style="margin:0 0 8px">✏️ تعديل محتوى الموقع من هنا - من غير كود</h3>
-  <p style="font-size:12px;color:#64748b">عدلي العنوان الرئيسي، والحصص، والإحصائيات، ودوسي حفظ - هتتغير على طول لكل الطلاب</p>
-  <label style="font-size:12px;font-weight:800">العنوان الرئيسي</label>
-  <input id="editHeroTitle" value="الساينس بقى أسهل وأمتع من أي وقت!" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">
-  <label style="font-size:12px;font-weight:800">نبذة عن الدكتورة</label>
-  <textarea id="editAbout" rows="2" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</textarea>
-  <label style="font-size:12px;font-weight:800">حصص الأسبوع (اكتبي كل حصة في سطر: الاسم | المرحلة | اليوم)</label>
-  <textarea id="editLessons" rows="3" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">Grade 6 - Digestive System | Grade 6 | السبت - 5 مساءً - أونلاين على زووم
+<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:101;overflow:auto;padding:20px">
+  <div style="background:#fff;max-width:680px;margin:24px auto;border-radius:20px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #f1f5f9;padding-bottom:14px">
+      <h2 style="margin:0;font-size:20px">لوحة التحكم</h2>
+      <button onclick="hideAdmin()" style="border:1px solid #e2e8f0;background:#fff;padding:6px 14px;border-radius:999px;cursor:pointer">إغلاق</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0">
+      <button onclick="openSheet()" style="background:#0f9d58;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">فتح Google Sheet</button>
+      <button onclick="exportStudentsToExcel()" style="background:#217346;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">تصدير Excel</button>
+    </div>
+    <h3 style="margin:18px 0 8px;font-size:16px">إدارة المحتوى</h3>
+    <label style="font-size:13px;font-weight:600">العنوان الرئيسي</label>
+    <input id="editHeroTitle" value="الساينس بقى أسهل وأمتع من أي وقت!" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">
+    <label style="font-size:13px;font-weight:600">نبذة عن الدكتورة</label>
+    <textarea id="editAbout" rows="2" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</textarea>
+    <label style="font-size:13px;font-weight:600">حصص الأسبوع</label>
+    <textarea id="editLessons" rows="3" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">Grade 6 - Digestive System | Grade 6 | السبت - 5 مساءً - أونلاين على زووم
 Prep 2 - Electric Circuits | Prep 2 | الأحد - 6 مساءً - سنتر
 Grade 5 - Water Cycle | Grade 5 | الاثنين - 4 مساءً - فيديو مسجل</textarea>
-  <button onclick="saveSiteContent()" style="background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:12px 20px;border-radius:999px;font-weight:900;cursor:pointer">💾 حفظ التعديلات</button>
-  <button onclick="openSheet()" style="background:#0f9d58;color:#fff;border:none;padding:12px 20px;border-radius:999px;font-weight:900;cursor:pointer;margin-right:8px">🧪 جرب الربط (Test) <button onclick="testSheetsConnection()" style="background:#f59e0b;color:#fff;border:none;padding:8px 14px;border-radius:999px;font-weight:900;cursor:pointer;margin:0 4px">🧪 جرب الربط</button> 📊 افتح Google Sheet</button>
-  <p id="saveMsg" style="font-size:12px;color:#16a34a;display:none">✅ اتحفظت! حدثي الصفحة هتلاقي التعديل ظهر</p>
-</div>
-<script>
-function saveSiteContent(){
-  let data = { hero: document.getElementById('editHeroTitle').value, about: document.getElementById('editAbout').value, lessons: document.getElementById('editLessons').value, savedAt: new Date().toISOString() };
-  localStorage.setItem('siteContent_nada', JSON.stringify(data));
-  // ابعت نسخة للشيت كمان لو Apps Script مربوط
-  try{ if(localStorage.getItem('sheets_apps_script_url')) fetch(localStorage.getItem('sheets_apps_script_url'),{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'content', ...data})}); }catch(e){}
-  document.getElementById('saveMsg').style.display='block';
-  setTimeout(()=>location.reload(), 800);
-}
-// لو فيه تعديل محفوظ، اعرضه
-try{
-  let saved = JSON.parse(localStorage.getItem('siteContent_nada')||'null');
-  if(saved){
-    setTimeout(()=>{
-      let h1 = document.querySelector('h1'); if(h1 && saved.hero) h1.textContent = saved.hero;
-      // عن الدكتورة
-      let aboutEls = Array.from(document.querySelectorAll('p')).filter(p=>p.textContent.includes('دكتور ندى الجارحي'));
-      if(aboutEls[0] && saved.about) aboutEls[0].textContent = saved.about;
-      let ea = document.getElementById('editAbout'); if(ea) ea.value = saved.about;
-      let eh = document.getElementById('editHeroTitle'); if(eh) eh.value = saved.hero;
-      let el = document.getElementById('editLessons'); if(el) el.value = saved.lessons;
-    }, 300);
-  }
-}catch(e){}
-</script>
-🧪 جرب الربط (Test) <button onclick="testSheetsConnection()" style="background:#f59e0b;color:#fff;border:none;padding:8px 14px;border-radius:999px;font-weight:900;cursor:pointer;margin:0 4px">🧪 جرب الربط</button> 📊 افتح Google Sheet</button>
-      <button onclick="exportStudentsToExcel()" style="flex:1;background:#217346;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">⬇️ تحميل Excel</button>
-      <button onclick="setAppsScriptUrl()" style="flex:1;background:#7c3aed;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">🔗 ربط الشيت</button>
-    </div>
-<h2>⚙️ لوحة الأدمن - Firebase</h2><button onclick="hideAdmin()" style="border:none;background:#fee2e2;padding:6px 12px;border-radius:999px;cursor:pointer">X</button></div>
-    <p style="color:#64748b;font-size:13px;margin:8px 0">كل طالب هيتعمل بحساب حقيقي في Firebase - متشفر ومحفوظ</p>
-    <input id="newName" placeholder="اسم الطالب" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <input id="newUser" placeholder="اسم المستخدم (من غير مسافات)" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <input id="newPass" placeholder="Password - 6 حروف على الأقل" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <select id="newGrade" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option><option></option></select>
-    <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">+ إضافة الطالب في Firebase</button>
-    <h3 style="margin:16px 0 8px">كل الطلاب:</h3><div id="studentsList"></div>
+    <button onclick="saveSiteContent()" style="background:#a855f7;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:700;cursor:pointer">حفظ التعديلات</button>
+    <p id="saveMsg" style="font-size:13px;color:#16a34a;display:none;margin-top:8px">تم الحفظ بنجاح.</p>
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    <h3 style="margin:0 0 10px;font-size:16px">إضافة طالب</h3>
+    <input id="newName" placeholder="اسم الطالب" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <input id="newUser" placeholder="اسم المستخدم" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <input id="newPass" placeholder="كلمة المرور" type="password" autocomplete="new-password" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <select id="newGrade" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option></select>
+    <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px">إضافة الطالب</button>
+    <h3 style="margin:20px 0 8px;font-size:16px">الطلاب</h3>
+    <div id="studentsList"></div>
   </div>
 </div>
-
 <!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// ============ 🔴 الخطوة الأخيرة: حط الكونفيج بتاعك هنا ============
-// هتجيبه من Firebase Console > Project Settings > Your apps > Web app
-// انسخ اللي بين القوسين وحطه مكان اللي تحت
+// ============ إعدادات Firebase ============
+// 
+// 
 const firebaseConfig = {
   apiKey: "AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg",
   authDomain: "tech-lab-186a0.firebaseapp.com",
@@ -471,5 +443,5 @@ async function testSheetsConnection(){
   }catch(e){ alert('حصل مشكلة: '+e); }
 }
 </script>
-<script>window.addEventListener("load",()=>{let m=document.getElementById("loginModal"); if(m) m.style.display="none";});</script><script>const _oldLogout=window.logoutFirebase; window.logoutFirebase=async function(){ try{sessionStorage.removeItem("sciencelab_session")}catch(e){} let a=document.getElementById("strictPass"); if(a) a.value=""; let b=document.getElementById("loginPass"); if(b) b.value=""; let c=document.getElementById("strictUser"); if(c) c.value=""; let ov=document.getElementById("loginOverlay"); if(ov){ov.style.display="flex"; ov.style.background="linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1)";} document.body.style.overflow="hidden"; if(_oldLogout && _oldLogout!==window.logoutFirebase){ try{await _oldLogout()}catch(e){} } };</script></body>
+<script>window.addEventListener("load",()=>{let m=document.getElementById("loginModal"); if(m) m.style.display="none";});</script><script>const _oldLogout=window.logoutFirebase; window.logoutFirebase=async function(){ try{sessionStorage.removeItem("sciencelab_session")}catch(e){} let a=document.getElementById("strictPass"); if(a) a.value=""; let b=document.getElementById("loginPass"); if(b) b.value=""; let c=document.getElementById("strictUser"); if(c) c.value=""; let ov=document.getElementById("loginOverlay"); if(ov){ov.style.display="flex"; ov.style.background="linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1)";} document.body.style.overflow="hidden"; if(_oldLogout && _oldLogout!==window.logoutFirebase){ try{await _oldLogout()}catch(e){} } };</script><script>function saveSiteContent(){let d={hero:document.getElementById('editHeroTitle').value,about:document.getElementById('editAbout').value,lessons:document.getElementById('editLessons').value};localStorage.setItem('siteContent_nada',JSON.stringify(d));try{let u=localStorage.getItem('sheets_apps_script_url'); if(u) fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'content',...d})});}catch(e){} document.getElementById('saveMsg').style.display='block'; setTimeout(()=>location.reload(),800);}</script></body>
 </html>
