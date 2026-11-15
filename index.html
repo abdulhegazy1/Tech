@@ -97,6 +97,7 @@ h1,h2,h3{ color:#4a1d3a; }
     <input id="strictUser" autocomplete="off" placeholder="اسم المستخدم" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:12px;outline:none">
     <input id="strictPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:10px;outline:none">
     <button onclick="strictLogin()" style="width:100%;background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:13px;border-radius:14px;font-weight:900;margin-top:14px;cursor:pointer">دخول 🚀</button>
+    <a href="https://wa.me/201065871712?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%AD%D8%AC%D8%B2%20%D9%85%D8%B9%20%D8%A7%D9%84%D8%AF%D9%83%D8%AA%D9%88%D8%B1" target="_blank" style="display:block;text-align:center;background:#25D366;color:#fff;padding:13px;border-radius:14px;font-weight:900;text-decoration:none;margin-top:10px">احجز مع الدكتور 📲 - واتساب 01065871712</a>
     <p style="font-size:12px;color:#94a3b8;margin-top:10px"><br>الطالب: اليوزر اللي الدكتورة عملته ليه</p>
     <p id="strictErr" style="color:#ef4444;font-size:13px;display:none">اليوزر أو الباسورد غلط</p>
   </div>
@@ -141,7 +142,8 @@ h1,h2,h3{ color:#4a1d3a; }
 })();
 </script>
 
-<header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201065871712">احجز مع الدكتور 📲</a></div></header><div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;justify-content:center">
+<header><div class="nav"><button onclick="goHome()" title="الرجوع للرئيسية" style="background:none;border:2px solid #0ea5e9;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:900;font-size:22px;color:#0f172a">Science<span style="color:#0ea5e9">Lab</span> 🧪 <span style="font-size:12px;color:#64748b;font-weight:700">الرئيسية</span></button><div id="userBar" style="display:flex;gap:8px;align-items:center"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav></div></header>
+<div id="whoAmIBar" style="max-width:1200px;margin:10px auto 0;padding:0 20px;display:none"><div style="background:#0f172a;color:#fff;border-radius:14px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span id="whoAmILabel" style="font-weight:800">مسجل دخول كـ: -</span><span style="display:flex;gap:8px"><button onclick="goHome()" style="background:#fff;color:#0f172a;border:none;padding:8px 14px;border-radius:999px;font-weight:800;cursor:pointer">🏠 الرئيسية</button><button onclick="doLogout()" style="background:#ef4444;color:#fff;border:none;padding:8px 16px;border-radius:999px;font-weight:800;cursor:pointer">تسجيل الخروج</button></span></div></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;justify-content:center">
   <button onclick="askQuestion()" style="background:#0ea5e9;color:#fff;border:none;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer">اسأل سؤال في المحاضرة</button>
   <button onclick="openPrivateChat()" style="background:#a855f7;color:#fff;border:none;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer">محادثة خاصة مع الدكتورة</button>
   <a href="https://wa.me/201065871712" target="_blank" style="background:#25D366;color:#fff;padding:11px 18px;border-radius:999px;font-weight:700;text-decoration:none">واتساب: 01065871712</a>
@@ -571,6 +573,40 @@ window.openPrivateChat = function(){
   let chats=getArr('chats_nada'); chats.push({from:user, text:msg, date:new Date().toLocaleString('ar-EG')}); setArr('chats_nada', chats);
   alert('تم إرسال رسالتك الخاصة - سترد عليك الدكتورة.');
 };
+</script>
+
+<script>
+function goHome(){ window.location.hash=''; window.scrollTo({top:0, behavior:'smooth'}); let m=document.getElementById('adminPanel'); if(m) m.style.display='none'; }
+function doLogout(){
+  try{ if(window.auth) { import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js').then(()=>{}).catch(()=>{}); } }catch(e){}
+  try{ localStorage.removeItem('sciencelab_session'); sessionStorage.removeItem('sciencelab_session'); sessionStorage.removeItem('sciencelab_user'); }catch(e){}
+  // Firebase signOut if available via global
+  try{ if(window._firebaseSignOut) window._firebaseSignOut(); }catch(e){}
+  try{ if(window.signOut && window.auth) window.signOut(window.auth); }catch(e){}
+  location.reload();
+}
+function updateWhoAmI(){
+  let bar=document.getElementById('whoAmIBar'); let label=document.getElementById('whoAmILabel'); if(!bar||!label) return;
+  let user = sessionStorage.getItem('sciencelab_session') || sessionStorage.getItem('sciencelab_user') || localStorage.getItem('sciencelab_session') || '';
+  // Try to get from Firebase current user via global
+  try{ let fu = window._currentUserName || ''; if(fu) user = fu; }catch(e){}
+  if(!user || user==='null'){ bar.style.display='none'; return; }
+  let isAdmin = (user==='admin' || user.toLowerCase().includes('admin') || user.includes('sciencelab'));
+  label.textContent = isAdmin ? 'مسجل دخول كـ: الأدمن (دكتور ندى الجارحي) - Username: admin' : 'مسجل دخول كـ: طالب - Username: ' + user;
+  bar.style.display='block';
+  // Also update userBar in header
+  let ub=document.getElementById('userBar'); if(ub){ ub.innerHTML='<span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800">'+(isAdmin?'👩‍🏫 الأدمن':'👤 '+user)+'</span>'; }
+}
+document.addEventListener('DOMContentLoaded', updateWhoAmI);
+setTimeout(updateWhoAmI, 500); setTimeout(updateWhoAmI, 1500); setTimeout(updateWhoAmI, 3000);
+// Hook: after strictLogin succeeds, update label - wrap original if exists
+setTimeout(()=>{
+  let orig = window.strictLogin;
+  if(orig && !window._strictLoginWrapped){
+    window._strictLoginWrapped=true;
+    window.strictLogin = async function(){ let r = await orig.apply(this, arguments); setTimeout(updateWhoAmI, 600); return r; };
+  }
+}, 800);
 </script>
 </body>
 </html>
