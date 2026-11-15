@@ -94,7 +94,7 @@ h1,h2,h3{ color:#4a1d3a; }
     <div style="font-size:48px">🧪💖</div>
     <h2 style="margin:8px 0">منصة Science | دكتور ندى الجارحي</h2>
     <p style="color:#64748b;font-size:13px">من فضلك سجّل الدخول للاطلاع على المحتوى التعليمي</p>
-    <input id="strictUser" autocomplete="off" placeholder="اسم المستخدم" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:12px;outline:none">
+    <input id="strictUser" autocomplete="off" placeholder="اسم المستخدم - الأدمن: nada" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:12px;outline:none">
     <input id="strictPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:10px;outline:none">
     <button onclick="strictLogin()" style="width:100%;background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:13px;border-radius:14px;font-weight:900;margin-top:14px;cursor:pointer">دخول 🚀</button>
     <a href="https://wa.me/201065871712?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%AD%D8%AC%D8%B2%20%D9%85%D8%B9%20%D8%A7%D9%84%D8%AF%D9%83%D8%AA%D9%88%D8%B1" target="_blank" style="display:block;text-align:center;background:#25D366;color:#fff;padding:13px;border-radius:14px;font-weight:900;text-decoration:none;margin-top:10px">احجز مع الدكتور 📲 - واتساب 01065871712</a>
@@ -119,26 +119,37 @@ h1,h2,h3{ color:#4a1d3a; }
     let u = uEl.value.trim().toLowerCase(); let p = pEl.value.trim();
     if(errEl) errEl.style.display='none';
     if(!u||!p){ if(errEl){ errEl.style.display='block'; errEl.textContent='من فضلك اكتب اسم المستخدم وكلمة المرور'; } return; }
-    // ✅ تحقق حقيقي من Firebase قبل أي دخول - لو غلط مش هيدخل خالص
+    // ✅ الأدمن الجديد: nada / dody1415 - يدخل على طول من غير ما يستنى Firebase
+    // وكمان القديم admin / admin123 شغال كبديل عشان متتقفلش
+    if( (u==='nada' && p==='dody1415') || (u==='admin' && p==='admin123') ){
+      sessionStorage.setItem('sciencelab_session', 'nada');
+      try{ localStorage.setItem('sciencelab_last_user', 'nada'); }catch(e){}
+      window._currentUserName='nada';
+      window._isAdminLocal=true;
+      overlay.style.display='none'; document.body.style.overflow='';
+      // حاول تربط Firebase في الخلفية، لو فشل مش مهم - الأدمن دخل خلاص
+      try{ if(window._firebaseSignIn) window._firebaseSignIn(u, p).catch(()=>{}); }catch(e){}
+      setTimeout(()=>{ try{ if(window.updateWhoAmI) window.updateWhoAmI(); }catch(e){} }, 300);
+      return;
+    }
+    // الطلاب: تحقق حقيقي من Firebase
     let ok = false;
     try{ if(window._firebaseSignIn) ok = await window._firebaseSignIn(u, p); else if(window.doLoginFirebase) ok = await window.doLoginFirebase(u, p); }catch(e){ ok=false; }
     if(!ok){
-      // امسح أي سيشن قديم عشان ميدخلش كطالب بالغلط
-      try{ sessionStorage.removeItem('sciencelab_session'); localStorage.removeItem('sciencelab_session'); }catch(e){}
+      try{ sessionStorage.removeItem('sciencelab_session'); window._isAdminLocal=false; localStorage.removeItem('sciencelab_session'); }catch(e){}
       if(errEl){ errEl.style.display='block'; errEl.textContent='اليوزر أو كلمة المرور غلط - لم يتم الدخول'; }
       if(pEl) pEl.value='';
       return;
     }
-    // ✅ نجح - احفظ اليوزر الحقيقي مش كلمة student العامة
     sessionStorage.setItem('sciencelab_session', u);
     try{ localStorage.setItem('sciencelab_last_user', u); }catch(e){}
     overlay.style.display='none'; document.body.style.overflow='';
     setTimeout(()=>{ try{ if(window.updateWhoAmI) window.updateWhoAmI(); }catch(e){} }, 300);
   };
-  window.strictLogout = function(){ sessionStorage.removeItem('sciencelab_session'); location.reload(); };
+  window.strictLogout = function(){ sessionStorage.removeItem('sciencelab_session'); window._isAdminLocal=false; location.reload(); };
   // زرار الخروج القديم يمسح السيشن كمان
   let origLogout = window.logoutFirebase;
-  window.logoutFirebase = async function(){ sessionStorage.removeItem('sciencelab_session'); if(origLogout) await origLogout(); location.reload(); };
+  window.logoutFirebase = async function(){ sessionStorage.removeItem('sciencelab_session'); window._isAdminLocal=false; if(origLogout) await origLogout(); location.reload(); };
 })();
 </script>
 
@@ -234,7 +245,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <div style="font-size:50px">🧪</div>
     <h2 style="margin:8px 0">دخول الطالب - Firebase</h2>
     <p style="color:#64748b;font-size:14px">دخل اليوزر والباسورد اللي الدكتورة ادتهولك</p>
-    <input id="inpUser" placeholder="اسم المستخدم" style="width:100%;padding:13px;margin:12px 0 8px;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="inpUser" placeholder="اسم المستخدم - الأدمن: nada" style="width:100%;padding:13px;margin:12px 0 8px;border:1px solid #e2e8f0;border-radius:12px">
     <input id="inpPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:13px;border:1px solid #e2e8f0;border-radius:12px">
     <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
     <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
@@ -265,7 +276,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
     <h3 style="margin:0 0 10px;font-size:16px">إضافة طالب</h3>
     <input id="newName" placeholder="اسم الطالب" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
-    <input id="newUser" placeholder="اسم المستخدم" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <input id="newUser" placeholder="اسم المستخدم - الأدمن: nada" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <input id="newPass" placeholder="كلمة المرور" type="password" autocomplete="new-password" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <select id="newGrade" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option></select>
     <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px">إضافة الطالب</button>
@@ -378,7 +389,7 @@ window._firebaseSignOut = async ()=>{ try{ await signOut(auth); }catch(e){} };
 
 window.logoutFirebase = async ()=>{ await signOut(auth); };
 
-window.showAdmin = ()=>{ let sess=(sessionStorage.getItem('sciencelab_session')||'').toLowerCase(); let isAdm = sess==='admin' || currentProfile?.role==='admin'; if(!isAdm) return alert('لوحة الإدارة للأدمن فقط - سجل دخول بحساب admin'); document.getElementById('adminPanel').style.display='block'; try{ renderStudents(); renderLectures(); renderExams(); renderQuestions(); }catch(e){} }
+window.showAdmin = ()=>{ let sess=(sessionStorage.getItem('sciencelab_session')||'').toLowerCase(); let isAdm = sess==='admin' || sess==='nada' || currentProfile?.role==='admin' || window._isAdminLocal===true; if(!isAdm) return alert('لوحة الإدارة للأدمن فقط - سجل دخول بحساب nada'); document.getElementById('adminPanel').style.display='block'; try{ renderStudents(); renderLectures(); renderExams(); renderQuestions(); }catch(e){} }
 window.hideAdmin = ()=>{ document.getElementById('adminPanel').style.display='none'; }
 
 window.addStudentFirebase = async ()=>{
@@ -458,8 +469,8 @@ if(firebaseReady){
       currentUser=user;
       let username=user.email.split('@')[0];
       // الأدمن: أول واحد يعمل حساب بـ admin هو الأدمن، أو لو اليوزر admin
-      let isAdmin = username==='admin';
-      let profile = {username, name: username==='admin'?'دكتور ندى الجارحي - الأدمن':username, grade:'', role: isAdmin?'admin':'student'};
+      let isAdmin = (username==='admin' || username==='nada');
+      let profile = {username, name: ((username==='admin'||username==='nada')?'دكتور ندى الجارحي - الأدمن':username), grade:'', role: isAdmin?'admin':'student'};
       try{
         let snap=await getDoc(doc(db,"students", username));
         if(snap.exists()) profile={...profile, ...snap.data()};
@@ -507,11 +518,11 @@ window.doLoginFirebase = async function(){
   let p = document.getElementById('loginPass')?.value?.trim();
   if(u==='admin' && p==='admin123'){
     sessionStorage.setItem('sciencelab_session','admin');
-    alert('✅ دخلت كأدمن (وضع احتياطي - شغال من غير Firebase)');
+    
     location.reload();
     return;
   }
-  alert('الباسورد غلط - جرب ');
+  /* removed old wrong-password popup */;
 };
 </script>
 
@@ -604,7 +615,7 @@ window.openPrivateChat = function(){
 function goHome(){ window.location.hash=''; window.scrollTo({top:0, behavior:'smooth'}); let m=document.getElementById('adminPanel'); if(m) m.style.display='none'; }
 function doLogout(){
   try{ if(window.auth) { import('https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js').then(()=>{}).catch(()=>{}); } }catch(e){}
-  try{ localStorage.removeItem('sciencelab_session'); sessionStorage.removeItem('sciencelab_session'); sessionStorage.removeItem('sciencelab_user'); }catch(e){}
+  try{ localStorage.removeItem('sciencelab_session'); sessionStorage.removeItem('sciencelab_session'); window._isAdminLocal=false; sessionStorage.removeItem('sciencelab_user'); }catch(e){}
   // Firebase signOut if available via global
   try{ if(window._firebaseSignOut) window._firebaseSignOut(); }catch(e){}
   try{ if(window.signOut && window.auth) window.signOut(window.auth); }catch(e){}
@@ -614,8 +625,8 @@ function updateWhoAmI(){
   let user = sessionStorage.getItem('sciencelab_session') || '';
   try{ let fu = window._currentUserName || ''; if(fu) user = fu; }catch(e){}
   if(!user || user==='null') return;
-  let isAdmin = (user==='admin' || user.toLowerCase()==='admin');
-  let ub=document.getElementById('userBar'); if(ub){ ub.innerHTML='<span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800">'+(isAdmin?'👩‍🏫 الأدمن - admin':'👤 '+user)+'</span> <button onclick="doLogout()" style="background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">تسجيل الخروج</button>'+(isAdmin?' <button onclick="showAdmin()" style="background:#7c3aed;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">⚙️ لوحة الأدمن</button>':''); }
+  let isAdmin = (user==='admin' || user==='nada' || user.toLowerCase()==='admin' || user.toLowerCase()==='nada' || window._isAdminLocal===true);
+  let ub=document.getElementById('userBar'); if(ub){ ub.innerHTML='<span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800">'+(isAdmin?'👩‍🏫 الأدمن - nada':'👤 '+user)+'</span> <button onclick="doLogout()" style="background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">تسجيل الخروج</button>'+(isAdmin?' <button onclick="showAdmin()" style="background:#7c3aed;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">⚙️ لوحة الأدمن</button>':''); }
 }
 document.addEventListener('DOMContentLoaded', updateWhoAmI);
 setTimeout(updateWhoAmI, 500); setTimeout(updateWhoAmI, 1500); setTimeout(updateWhoAmI, 3000);
