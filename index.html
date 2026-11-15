@@ -157,26 +157,26 @@ h1,h2,h3{ color:#4a1d3a; }
 
 
 <section class="hero">
-<div class="hero-card"><span class="float-emoji">🧪</span><span class="float-emoji">🔬</span><span class="float-emoji">🧬</span><span class="float-emoji"></span><span class="float-emoji">⚗️</span>
-<span class="badge">🔥 الترم الأول - 2026 / 2027</span>
-<h1 id="heroTitle" data-hero-title>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
-<p>شرح بالعربي والإنجليزي، تجارب حقيقية، فيديوهات، ملخصات PDF، واختبارات بعد كل درس. من Grade 4 لحد Prep 3 و Prep 1,2,3</p>
-<div class="hero-btns"><a class="white-btn" href="#lessons">ابدأ التعلم مجاناً 🚀</a><a class="outline-btn" href="#quiz">جرب كويز سريع</a></div>
-
+<div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;flex:1">
+<h3 style="text-align:center;margin:0 0 10px">🎬 فيديو تعليمي - المادة العلمية</h3>
+<video controls playsinline style="width:100%;border-radius:16px;aspect-ratio:16/9;object-fit:cover;background:#000" poster="https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1200"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video>
+<p style="text-align:center;color:#64748b;font-size:13px;margin:8px 0 0">🧪 تجربة علمية حقيقية في المختبر - ازاي بنعمل التجربة خطوة بخطوة، وايه اللي بيحصل جوه الأنبوبة</p>
 </div>
 <div class="side-card">
-<h3>📅 حصص الأسبوع ده</h3>
-<div class="live"><span>🧬</span><div><b>Grade 6 - Digestive System</b><br><small>السبت - 5 مساءً - أونلاين على زووم</small></div><span class="badge">LIVE</span></div>
-<div class="live"><span>⚡</span><div><b>Prep 2 - Electric Circuits</b><br><small>الأحد - 6 مساءً - سنتر + أونلاين</small></div></div>
-<div class="live"><span>🌍</span><div><b>Grade 5 - Water Cycle</b><br><small>الاثنين - 4 مساءً - فيديو مسجل</small></div></div>
+<h3>✅ مهام الأسبوع ده</h3>
+<div id="weeklyTasksList">
+<div class="live"><span>📝</span><div><b>حل واجب Digestive System</b><br><small>Grade 6 - تسليم السبت</small></div></div>
+<div class="live"><span>🧪</span><div><b>شاهد فيديو Electric Circuits</b><br><small>Prep 2 - قبل حصة الأحد</small></div></div>
+<div class="live"><span>📚</span><div><b>راجع ملخص Water Cycle</b><br><small>Grade 5 - قبل حصة الاثنين</small></div></div>
+</div>
+<p style="font-size:12px;color:#94a3b8;margin-top:8px">الدكتورة بتعدل المهام من لوحة الأدمن &gt; إعدادات الصفحة &gt; مهام الأسبوع</p>
 <h3 style="margin-top:16px">👩‍🏫 عن الدكتورة</h3>
-<p style="color:#475569;line-height:1.7;font-size:14px">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</p>
+<p id="aboutDoctorText" style="color:#475569;line-height:1.7;font-size:14px">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</p>
 </div>
 </section>
 
 <section class="section" id="lessons">
-<h2>📚 الدروس - اختار مرحلتك</h2>
-<p class="sub">كل درس فيه فيديو + ملخص PDF + أسئلة + واجب</p>
+<!-- heading removed per request -->
 <div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade9',this)"></button></div>
 <div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على firebaseConfig وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
 <div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة في المختبر بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
@@ -327,6 +327,10 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <textarea id="editLessons" rows="4" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0;box-sizing:border-box">السبت - 5 مساء - Grade 6 - Digestive System
 الاحد - 6 مساء - Prep 2 - Electric Circuits
 الاثنين - 4 مساء - Grade 5 - Water Cycle</textarea>
+    <label style="font-size:13px;font-weight:600">✅ مهام الأسبوع ده (كل مهمة في سطر)</label>
+    <textarea id="editWeeklyTasks" rows="4" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0;box-sizing:border-box">📝 حل واجب Digestive System | Grade 6 - تسليم السبت
+🧪 شاهد فيديو Electric Circuits | Prep 2 - قبل حصة الأحد
+📚 راجع ملخص Water Cycle | Grade 5 - قبل حصة الاثنين</textarea>
     <button onclick="saveSettingsTab()" style="background:#a855f7;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:700;cursor:pointer">حفظ إعدادات الصفحة</button>
     <p id="settingsSaveMsg" style="font-size:13px;color:#16a34a;display:none;margin-top:8px">تم حفظ إعدادات الصفحة.</p>
     </div>
@@ -626,7 +630,7 @@ function updateWhoAmI(){
   try{ let fu = window._currentUserName || ''; if(fu) user = fu; }catch(e){}
   if(!user || user==='null') return;
   let isAdmin = (user==='admin' || user==='nada' || user.toLowerCase()==='admin' || user.toLowerCase()==='nada' || window._isAdminLocal===true);
-  let ub=document.getElementById('userBar'); if(ub){ ub.innerHTML='<span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800">'+(isAdmin?'👩‍🏫 الأدمن - nada':'👤 '+user)+'</span> <button onclick="doLogout()" style="background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">تسجيل الخروج</button>'+(isAdmin?' <button onclick="showAdmin()" style="background:#7c3aed;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">⚙️ لوحة الأدمن</button>':''); }
+  let ub=document.getElementById('userBar'); if(ub){ ub.innerHTML='<span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800">'+(isAdmin?'👩‍🏫 دكتور ندى الجارحي':'👤 '+(sessionStorage.getItem('sciencelab_name')||user))+'</span> <button onclick="doLogout()" style="background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">تسجيل الخروج</button>'+(isAdmin?' <button onclick="showAdmin()" style="background:#7c3aed;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">⚙️ لوحة الأدمن</button>':''); }
 }
 document.addEventListener('DOMContentLoaded', updateWhoAmI);
 setTimeout(updateWhoAmI, 500); setTimeout(updateWhoAmI, 1500); setTimeout(updateWhoAmI, 3000);
@@ -771,7 +775,7 @@ setTimeout(()=>{
       // لو مش في المحلي، جرب Firebase الأصلي
       let r = await origStrict.apply(this, arguments);
       // لو Firebase نجح ودخل، احفظ درجته لو موجودة في المحلي عشان الفلترة
-      try{ let f2=getLocalStudents().find(s=>s.username===u); if(f2) sessionStorage.setItem('sciencelab_grade', f2.grade); }catch(e){}
+      try{ let f2=getLocalStudents().find(s=>s.username===u); if(f2){ sessionStorage.setItem('sciencelab_grade', f2.grade); sessionStorage.setItem('sciencelab_name', f2.name); } }catch(e){}
       setTimeout(()=>{ try{ applyGradeFilter(); }catch(e){} }, 500);
       return r;
     };
@@ -816,6 +820,84 @@ window.applyGradeFilter = function(){
 };
 document.addEventListener('DOMContentLoaded', ()=>{ setTimeout(applyGradeFilter, 800); });
 setTimeout(()=>{ try{ applyGradeFilter(); }catch(e){} }, 1200);
+</script>
+
+<script>
+// ===== مهام الأسبوع - حفظ وعرض من إعدادات الأدمن =====
+function renderWeeklyTasksFromText(text){
+  let list=document.getElementById('weeklyTasksList'); if(!list) return;
+  let lines=(text||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  if(!lines.length) return;
+  list.innerHTML = lines.map(line=>{
+    let parts=line.split('|'); let title=(parts[0]||line).trim(); let sub=(parts[1]||'').trim();
+    return '<div class="live"><span>✅</span><div><b>'+title+'</b><br><small>'+sub+'</small></div></div>';
+  }).join('');
+}
+let _origSaveSettings = window.saveSettingsTab;
+window.saveSettingsTab = function(){
+  try{ if(_origSaveSettings) _origSaveSettings(); }catch(e){}
+  try{
+    let t=document.getElementById('editWeeklyTasks')?.value||'';
+    if(t){ localStorage.setItem('weeklyTasks_nada', t); renderWeeklyTasksFromText(t); }
+    let m=document.getElementById('settingsSaveMsg'); if(m) m.style.display='block';
+  }catch(e){}
+};
+document.addEventListener('DOMContentLoaded', ()=>{
+  try{ let t=localStorage.getItem('weeklyTasks_nada'); if(t){ let ta=document.getElementById('editWeeklyTasks'); if(ta) ta.value=t; renderWeeklyTasksFromText(t); } }catch(e){}
+});
+setTimeout(()=>{ try{ let t=localStorage.getItem('weeklyTasks_nada'); if(t) renderWeeklyTasksFromText(t); }catch(e){} }, 800);
+
+// ===== Fix Sheets + Firebase - إرسال حقيقي مش وهمي، مع رسالة الخطأ الحقيقية =====
+window.addStudentFirebase = async function(){
+  let nameEl=document.getElementById('newName'); let uEl=document.getElementById('newUser'); let pEl=document.getElementById('newPass'); let gEl=document.getElementById('newGrade');
+  let name=nameEl?.value.trim()||''; let u=(uEl?.value.trim()||'').toLowerCase(); let p=pEl?.value.trim()||''; let g=gEl?.value||'Grade 4';
+  if(!name||!u||!p){ alert('Please enter student name, Username and Password'); return; }
+  // 1) حفظ محلي فورا
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('students_nada')||'[]'); }catch(e){}
+  let idx=arr.findIndex(s=>s.username===u);
+  if(idx>=0) arr[idx]={username:u, name:name, grade:g, pass:p}; else arr.push({username:u, name:name, grade:g, pass:p});
+  try{ localStorage.setItem('students_nada', JSON.stringify(arr)); }catch(e){}
+  // 2) Google Sheet - إرسال حقيقي بـ text/plain عشان ميتعملش preflight، ونقرأ الرد الحقيقي
+  let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+  let sheetStatus='';
+  try{
+    let res = await fetch(sheetUrl, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})});
+    let txtRes = await res.text();
+    if(res.ok) sheetStatus='Sheet: تم ✅ - الرد: '+txtRes.slice(0,80);
+    else sheetStatus='Sheet: فشل - HTTP '+res.status+' - '+txtRes.slice(0,120);
+  }catch(e){ sheetStatus='Sheet: فشل الاتصال - '+e.message+' | تأكدي إن Apps Script معمول Deploy > Anyone'; }
+  // 3) Firebase Auth + Firestore - إنشاء حقيقي بـ REST API (من غير ما يحتاج الأدمن يكون داخل Firebase)
+  let fbStatus='';
+  let API_KEY='AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg';
+  let PROJECT='tech-lab-186a0';
+  try{
+    let signRes = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+API_KEY, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:u+'@sciencelab.app', password:p, returnSecureToken:true})});
+    let signData = await signRes.json();
+    if(!signRes.ok){
+      if(signData.error && signData.error.message==='EMAIL_EXISTS'){
+        fbStatus='Firebase Auth: الطالب موجود قبل كده - هنحدث بياناته في Firestore';
+        // سجل دخول عشان ناخد توكن ونحدث Firestore
+        let inRes = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+API_KEY, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:u+'@sciencelab.app', password:p, returnSecureToken:true})});
+        let inData = await inRes.json();
+        if(inData.idToken){ signData=inData; } else { throw new Error('دخول الطالب القديم فشل: '+(inData.error?.message||'')); }
+      } else { throw new Error(signData.error?.message||'SignUp failed'); }
+    }
+    let token=signData.idToken;
+    // Firestore REST - إنشاء / تحديث مستند الطالب
+    let fsUrl='https://firestore.googleapis.com/v1/projects/'+PROJECT+'/databases/(default)/documents/students/'+u+'?updateMask.fieldPaths=username&updateMask.fieldPaths=name&updateMask.fieldPaths=grade&updateMask.fieldPaths=role';
+    let fsRes = await fetch(fsUrl, {method:'PATCH', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({fields:{username:{stringValue:u}, name:{stringValue:name}, grade:{stringValue:g}, role:{stringValue:'student'}})});
+    let fsText = await fsRes.text();
+    if(fsRes.ok) fbStatus='Firebase: تم ✅ Auth + Firestore';
+    else fbStatus='Firebase Auth تم، لكن Firestore فشل: '+fsText.slice(0,150)+' | افتحي Firestore > Rules وخليها allow read, write: if true مؤقتا';
+  }catch(e){ fbStatus='Firebase: فشل - '+e.message; }
+  // 4) نظف واعرض النتيجة الحقيقية
+  if(nameEl) nameEl.value=''; if(uEl) uEl.value=''; if(pEl) pEl.value='';
+  try{ if(window.renderLocalStudents) window.renderLocalStudents(); }catch(e){}
+  try{ let l=document.getElementById('studentsList'); if(l && !l.innerHTML.includes(u)){ let arr2=JSON.parse(localStorage.getItem('students_nada')||'[]'); l.innerHTML=arr2.map(s=>'<div style="display:flex;justify-content:space-between;background:#f8fafc;padding:10px;border-radius:12px;margin-bottom:6px"><span><b>'+s.username+'</b> - '+s.name+' - '+s.grade+'</span><span style="font-size:12px;color:#16a34a">✅ محفوظ</span></div>').join(''); } }catch(e){}
+  let statusEl=document.getElementById('addStudentStatus'); if(!statusEl){ statusEl=document.createElement('p'); statusEl.id='addStudentStatus'; statusEl.style.cssText='font-size:13px;color:#16a34a;margin-top:8px;white-space:pre-wrap'; let btn=document.querySelector('button[onclick*="addStudentFirebase"]'); if(btn) btn.after(statusEl); }
+  if(statusEl) statusEl.textContent='✅ تم حفظ الطالب '+name+' ('+u+' - '+g+')\n'+sheetStatus+'\n'+fbStatus;
+  alert('نتيجة إضافة الطالب '+name+' ('+u+'):\n\n'+sheetStatus+'\n\n'+fbStatus);
+};
 </script>
 </body>
 </html>
