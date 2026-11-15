@@ -63,12 +63,88 @@ footer{background:#0f172a;color:#fff;margin-top:30px;padding:30px 20px;text-alig
 footer a{color:#38bdf8;text-decoration:none;font-weight:800}
 @media(max-width:900px){.hero{grid-template-columns:1fr}.grid,.price-grid,.two{grid-template-columns:1fr}.hero-card h1{font-size:32px}}
 </style>
+
+<style>
+/* ===== THEME بناتي - دكتور ندى 💖 ===== */
+:root{ --pink:#ff6eb4; --pink2:#ff9ecb; --purple:#a855f7; --purple2:#d8b4fe; --cream:#fff5f8; --mint:#b5ead7; }
+body{ background: linear-gradient(180deg,#fff5f8 0%, #fdf2f8 40%, #f5f3ff 100%) !important; font-family:'Segoe UI',system-ui; }
+header{ background: rgba(255,255,255,.9) !important; backdrop-filter: blur(12px); border-bottom: 2px solid #ffd6e7 !important; }
+.logo{ color:#ec4899 !important; }
+.logo span{ color:#a855f7 !important; }
+.btn, button{ border-radius: 999px !important; }
+.hero-card, .card{ border: 2px solid #ffd6e7 !important; box-shadow: 0 10px 30px rgba(255,110,180,.15) !important; }
+.hero-card{ background: linear-gradient(135deg,#ff6eb4 0%, #a855f7 60%, #6366f1 100%) !important; overflow:hidden; position:relative; }
+/* Floating science emojis animation */
+.float-emoji{ position:absolute; font-size:32px; opacity:.85; animation: floaty 4s ease-in-out infinite; pointer-events:none; }
+@keyframes floaty{ 0%,100%{ transform: translateY(0) rotate(-5deg);} 50%{ transform: translateY(-18px) rotate(5deg);} }
+.float-emoji:nth-child(1){ top:12%; left:8%; animation-delay:0s; }
+.float-emoji:nth-child(2){ top:65%; left:12%; animation-delay:.7s; font-size:28px; }
+.float-emoji:nth-child(3){ top:20%; right:10%; animation-delay:1.1s; font-size:36px; }
+.float-emoji:nth-child(4){ top:70%; right:14%; animation-delay:1.5s; }
+.float-emoji:nth-child(5){ top:45%; left:45%; animation-delay:.3s; font-size:24px; }
+.badge{ background:#ffe4ef !important; color:#db2777 !important; border:1px solid #ffc7dd !important; }
+h1,h2,h3{ color:#4a1d3a; }
+#loginOverlay{ position:fixed; inset:0; z-index:9999; background: linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1); display:flex; align-items:center; justify-content:center; padding:16px; }
+#loginOverlay .login-box{ background:#fff; border-radius:28px; padding:28px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.25); text-align:center; }
+</style>
 </head>
 <body>
+<div id="loginOverlay" style="display:none">
+  <div class="login-box">
+    <div style="font-size:48px">🧪💖</div>
+    <h2 style="margin:8px 0">منصة Science | دكتور ندى الجارحي</h2>
+    <p style="color:#64748b;font-size:13px">لازم تسجل دخول عشان تشوف المحتوى - مفيش دخول من غير باسورد</p>
+    <input id="strictUser" placeholder="Username - مثال: admin" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:12px;outline:none">
+    <input id="strictPass" type="password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:10px;outline:none">
+    <button onclick="strictLogin()" style="width:100%;background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:13px;border-radius:14px;font-weight:900;margin-top:14px;cursor:pointer">دخول 🚀</button>
+    <p style="font-size:12px;color:#94a3b8;margin-top:10px">للتجربة: admin / admin123<br>الطالب: اليوزر اللي الدكتورة عملته ليه</p>
+    <p id="strictErr" style="color:#ef4444;font-size:13px;display:none">اليوزر أو الباسورد غلط</p>
+  </div>
+</div>
+<script>
+// ===== Strict Login - مقفول لحد ما تدخل باسورد =====
+(function(){
+  // امسح أي دخول قديم متسجل تلقائي
+  try{ localStorage.removeItem('sciencelab_local_admin'); }catch(e){}
+  let sess = sessionStorage.getItem('sciencelab_session');
+  let overlay = document.getElementById('loginOverlay');
+  if(!sess){
+    if(overlay) overlay.style.display='flex';
+    // خبي المحتوى ورا الـ overlay - محدش يشوف حاجة من غير دخول
+    document.body.style.overflow='hidden';
+  }
+  window.strictLogin = async function(){
+    let u = document.getElementById('strictUser').value.trim();
+    let p = document.getElementById('strictPass').value.trim();
+    // الأدمن
+    if(u==='admin' && p==='admin123'){
+      sessionStorage.setItem('sciencelab_session','admin');
+      // املا حقول Firebase كمان عشان الأدمن يشتغل
+      let lu = document.getElementById('loginUser'); if(lu) lu.value='admin';
+      let lp = document.getElementById('loginPass'); if(lp) lp.value='admin123';
+      overlay.style.display='none'; document.body.style.overflow='';
+      try{ if(window.doLoginFirebase) await window.doLoginFirebase(); }catch(e){}
+      return;
+    }
+    // جرب Firebase للطلاب
+    try{
+      let lu = document.getElementById('loginUser'); if(lu) lu.value=u;
+      let lp = document.getElementById('loginPass'); if(lp) lp.value=p;
+      if(window.doLoginFirebase){ await window.doLoginFirebase(); sessionStorage.setItem('sciencelab_session','student'); overlay.style.display='none'; document.body.style.overflow=''; return; }
+    }catch(e){}
+    document.getElementById('strictErr').style.display='block';
+  };
+  window.strictLogout = function(){ sessionStorage.removeItem('sciencelab_session'); location.reload(); };
+  // زرار الخروج القديم يمسح السيشن كمان
+  let origLogout = window.logoutFirebase;
+  window.logoutFirebase = async function(){ sessionStorage.removeItem('sciencelab_session'); if(origLogout) await origLogout(); location.reload(); };
+})();
+</script>
+
 <header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع الدكتور 📲</a></div></header>
 
 <section class="hero">
-<div class="hero-card">
+<div class="hero-card"><span class="float-emoji">🧪</span><span class="float-emoji">🔬</span><span class="float-emoji">🧬</span><span class="float-emoji">🌸</span><span class="float-emoji">⚗️</span>
 <span class="badge">🔥 الترم الأول - 2026 / 2027</span>
 <h1>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
 <p>شرح بالعربي والإنجليزي، تجارب حقيقية، فيديوهات، ملخصات PDF، واختبارات بعد كل درس. من Grade 4 لحد Grade 9 و Prep 1,2,3</p>
@@ -168,7 +244,48 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
   <div style="background:#fff;width:100%;max-width:600px;border-radius:24px;padding:24px;margin:auto">
     <div style="display:flex;justify-content:space-between">
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
-      <button onclick="openSheet()" style="flex:1;background:#0f9d58;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">📊 افتح Google Sheet</button>
+      <button onclick="openSheet()" style="flex:1;background:#0f9d58;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">
+<div id="contentEditor" style="background:#fff;border:2px solid #ffd6e7;border-radius:20px;padding:16px;margin:16px 0">
+  <h3 style="margin:0 0 8px">✏️ تعديل محتوى الموقع من هنا - من غير كود</h3>
+  <p style="font-size:12px;color:#64748b">عدلي العنوان الرئيسي، والحصص، والإحصائيات، ودوسي حفظ - هتتغير على طول لكل الطلاب</p>
+  <label style="font-size:12px;font-weight:800">العنوان الرئيسي</label>
+  <input id="editHeroTitle" value="الساينس بقى أسهل وأمتع من أي وقت!" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">
+  <label style="font-size:12px;font-weight:800">نبذة عن الدكتورة</label>
+  <textarea id="editAbout" rows="2" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</textarea>
+  <label style="font-size:12px;font-weight:800">حصص الأسبوع (اكتبي كل حصة في سطر: الاسم | المرحلة | اليوم)</label>
+  <textarea id="editLessons" rows="3" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">Grade 6 - Digestive System | Grade 6 | السبت - 5 مساءً - أونلاين على زووم
+Prep 2 - Electric Circuits | Prep 2 | الأحد - 6 مساءً - سنتر
+Grade 5 - Water Cycle | Grade 5 | الاثنين - 4 مساءً - فيديو مسجل</textarea>
+  <button onclick="saveSiteContent()" style="background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:12px 20px;border-radius:999px;font-weight:900;cursor:pointer">💾 حفظ التعديلات</button>
+  <button onclick="openSheet()" style="background:#0f9d58;color:#fff;border:none;padding:12px 20px;border-radius:999px;font-weight:900;cursor:pointer;margin-right:8px">📊 افتح Google Sheet</button>
+  <p id="saveMsg" style="font-size:12px;color:#16a34a;display:none">✅ اتحفظت! حدثي الصفحة هتلاقي التعديل ظهر</p>
+</div>
+<script>
+function saveSiteContent(){
+  let data = { hero: document.getElementById('editHeroTitle').value, about: document.getElementById('editAbout').value, lessons: document.getElementById('editLessons').value, savedAt: new Date().toISOString() };
+  localStorage.setItem('siteContent_nada', JSON.stringify(data));
+  // ابعت نسخة للشيت كمان لو Apps Script مربوط
+  try{ if(window.APPS_SCRIPT_URL) fetch(window.APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'content', ...data})}); }catch(e){}
+  document.getElementById('saveMsg').style.display='block';
+  setTimeout(()=>location.reload(), 800);
+}
+// لو فيه تعديل محفوظ، اعرضه
+try{
+  let saved = JSON.parse(localStorage.getItem('siteContent_nada')||'null');
+  if(saved){
+    setTimeout(()=>{
+      let h1 = document.querySelector('h1'); if(h1 && saved.hero) h1.textContent = saved.hero;
+      // عن الدكتورة
+      let aboutEls = Array.from(document.querySelectorAll('p')).filter(p=>p.textContent.includes('دكتور ندى الجارحي'));
+      if(aboutEls[0] && saved.about) aboutEls[0].textContent = saved.about;
+      let ea = document.getElementById('editAbout'); if(ea) ea.value = saved.about;
+      let eh = document.getElementById('editHeroTitle'); if(eh) eh.value = saved.hero;
+      let el = document.getElementById('editLessons'); if(el) el.value = saved.lessons;
+    }, 300);
+  }
+}catch(e){}
+</script>
+📊 افتح Google Sheet</button>
       <button onclick="exportStudentsToExcel()" style="flex:1;background:#217346;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">⬇️ تحميل Excel</button>
       <button onclick="setAppsScriptUrl()" style="flex:1;background:#7c3aed;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">🔗 ربط الشيت</button>
     </div>
@@ -334,7 +451,7 @@ window.doLoginFirebase = async function(){
   let u = document.getElementById('loginUser')?.value?.trim();
   let p = document.getElementById('loginPass')?.value?.trim();
   if(u==='admin' && p==='admin123'){
-    localStorage.setItem('sciencelab_local_admin','1');
+    sessionStorage.setItem('sciencelab_session','admin');
     alert('✅ دخلت كأدمن (وضع احتياطي - شغال من غير Firebase)');
     location.reload();
     return;
