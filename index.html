@@ -115,25 +115,25 @@ h1,h2,h3{ color:#4a1d3a; }
     document.body.style.overflow='hidden';
   }
   window.strictLogin = async function(){
-    let u = document.getElementById('strictUser').value.trim();
-    let p = document.getElementById('strictPass').value.trim();
-    // الأدمن
-    if(u==='admin' && p==='admin123'){
-      sessionStorage.setItem('sciencelab_session','admin');
-      // املا حقول Firebase كمان عشان الأدمن يشتغل
-      let lu = document.getElementById('loginUser'); if(lu) lu.value='admin';
-      let lp = document.getElementById('loginPass'); if(lp) lp.value='admin123';
-      overlay.style.display='none'; document.body.style.overflow='';
-      try{ if(window.doLoginFirebase) await window.doLoginFirebase(); }catch(e){}
+    let uEl=document.getElementById('strictUser'); let pEl=document.getElementById('strictPass'); let errEl=document.getElementById('strictErr');
+    let u = uEl.value.trim().toLowerCase(); let p = pEl.value.trim();
+    if(errEl) errEl.style.display='none';
+    if(!u||!p){ if(errEl){ errEl.style.display='block'; errEl.textContent='من فضلك اكتب اسم المستخدم وكلمة المرور'; } return; }
+    // ✅ تحقق حقيقي من Firebase قبل أي دخول - لو غلط مش هيدخل خالص
+    let ok = false;
+    try{ if(window._firebaseSignIn) ok = await window._firebaseSignIn(u, p); else if(window.doLoginFirebase) ok = await window.doLoginFirebase(u, p); }catch(e){ ok=false; }
+    if(!ok){
+      // امسح أي سيشن قديم عشان ميدخلش كطالب بالغلط
+      try{ sessionStorage.removeItem('sciencelab_session'); localStorage.removeItem('sciencelab_session'); }catch(e){}
+      if(errEl){ errEl.style.display='block'; errEl.textContent='اليوزر أو كلمة المرور غلط - لم يتم الدخول'; }
+      if(pEl) pEl.value='';
       return;
     }
-    // جرب Firebase للطلاب
-    try{
-      let lu = document.getElementById('loginUser'); if(lu) lu.value=u;
-      let lp = document.getElementById('loginPass'); if(lp) lp.value=p;
-      if(window.doLoginFirebase){ await window.doLoginFirebase(); sessionStorage.setItem('sciencelab_session','student'); overlay.style.display='none'; document.body.style.overflow=''; return; }
-    }catch(e){}
-    document.getElementById('strictErr').style.display='block';
+    // ✅ نجح - احفظ اليوزر الحقيقي مش كلمة student العامة
+    sessionStorage.setItem('sciencelab_session', u);
+    try{ localStorage.setItem('sciencelab_last_user', u); }catch(e){}
+    overlay.style.display='none'; document.body.style.overflow='';
+    setTimeout(()=>{ try{ if(window.updateWhoAmI) window.updateWhoAmI(); }catch(e){} }, 300);
   };
   window.strictLogout = function(){ sessionStorage.removeItem('sciencelab_session'); location.reload(); };
   // زرار الخروج القديم يمسح السيشن كمان
@@ -142,12 +142,8 @@ h1,h2,h3{ color:#4a1d3a; }
 })();
 </script>
 
-<header><div class="nav"><button onclick="goHome()" title="الرجوع للرئيسية" style="background:none;border:2px solid #0ea5e9;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:900;font-size:22px;color:#0f172a">Science<span style="color:#0ea5e9">Lab</span> 🧪 <span style="font-size:12px;color:#64748b;font-weight:700">الرئيسية</span></button><div id="userBar" style="display:flex;gap:8px;align-items:center"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav></div></header>
-<div id="whoAmIBar" style="max-width:1200px;margin:10px auto 0;padding:0 20px;display:none"><div style="background:#0f172a;color:#fff;border-radius:14px;padding:11px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap"><span id="whoAmILabel" style="font-weight:800">مسجل دخول كـ: -</span><span style="display:flex;gap:8px"><button onclick="goHome()" style="background:#fff;color:#0f172a;border:none;padding:8px 14px;border-radius:999px;font-weight:800;cursor:pointer">🏠 الرئيسية</button><button onclick="doLogout()" style="background:#ef4444;color:#fff;border:none;padding:8px 16px;border-radius:999px;font-weight:800;cursor:pointer">تسجيل الخروج</button></span></div></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;justify-content:center">
-  <button onclick="askQuestion()" style="background:#0ea5e9;color:#fff;border:none;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer">اسأل سؤال في المحاضرة</button>
-  <button onclick="openPrivateChat()" style="background:#a855f7;color:#fff;border:none;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer">محادثة خاصة مع الدكتورة</button>
-  <a href="https://wa.me/201065871712" target="_blank" style="background:#25D366;color:#fff;padding:11px 18px;border-radius:999px;font-weight:700;text-decoration:none">واتساب: 01065871712</a>
-</div><div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;margin:20px auto;max-width:900px"><h3 style="text-align:center">🧪 تجربة حقيقية في المختبر</h3><video autoplay muted loop playsinline controls style="width:100%;border-radius:16px;max-height:380px;object-fit:cover;background:#000"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="text-align:center;color:#64748b;font-size:13px">تفاعلات كيميائية حقيقية - زي اللي هتشوفها في حصص الدكتورة ندى</p></div>
+<header><div class="nav"><button onclick="goHome()" title="الرجوع للرئيسية" style="background:none;border:2px solid #0ea5e9;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:900;font-size:22px;color:#0f172a">Science<span style="color:#0ea5e9">Lab</span> 🧪 <span style="font-size:12px;color:#64748b;font-weight:700">الرئيسية</span></button><div id="userBar" style="display:flex;gap:8px;align-items:center"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a href="https://wa.me/201065871712" target="_blank" title="مساعدة - واتساب الدكتورة" style="width:36px;height:36px;border-radius:50%;background:#f1f5f9;display:inline-flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;border:1px solid #e2e8f0">❓</a></div></header>
+<div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;margin:20px auto;max-width:900px"><h3 style="text-align:center">🧪 تجربة حقيقية في المختبر</h3><video autoplay muted loop playsinline controls style="width:100%;border-radius:16px;max-height:380px;object-fit:cover;background:#000"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="text-align:center;color:#64748b;font-size:13px">تفاعلات كيميائية حقيقية - زي اللي هتشوفها في حصص الدكتورة ندى</p></div>
 
 <section class="hero">
 <div class="hero-card"><span class="float-emoji">🧪</span><span class="float-emoji">🔬</span><span class="float-emoji">🧬</span><span class="float-emoji"></span><span class="float-emoji">⚗️</span>
@@ -155,7 +151,7 @@ h1,h2,h3{ color:#4a1d3a; }
 <h1 id="heroTitle" data-hero-title>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
 <p>شرح بالعربي والإنجليزي، تجارب حقيقية، فيديوهات، ملخصات PDF، واختبارات بعد كل درس. من Grade 4 لحد Prep 3 و Prep 1,2,3</p>
 <div class="hero-btns"><a class="white-btn" href="#lessons">ابدأ التعلم مجاناً 🚀</a><a class="outline-btn" href="#quiz">جرب كويز سريع</a></div>
-<div class="stats"><div class="stat"><b>+120</b>درس مسجل</div><div class="stat"><b>+45</b>تجربة في المختبر</div><div class="stat"><b>+900</b>طالب معانا</div><div class="stat"><b></b>حصص تفاعلية</div></div>
+<div style="margin-top:18px;border-radius:18px;overflow:hidden;background:#000"><video autoplay muted loop playsinline controls style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover" poster="https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1200"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="color:#fff;background:#0f172a;padding:8px 12px;font-size:13px;margin:0">🧪 تجربة حقيقية في المختبر - زي اللي هتشوفها في حصص الدكتورة ندى</p></div></div>
 </div>
 <div class="side-card">
 <h3>📅 حصص الأسبوع ده</h3>
@@ -252,18 +248,20 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
       <h2 style="margin:0;font-size:20px">لوحة التحكم</h2>
       <button onclick="hideAdmin()" style="border:1px solid #e2e8f0;background:#fff;padding:6px 14px;border-radius:999px;cursor:pointer">إغلاق</button>
     </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin:14px 0">
+      <button class="adminTabBtn" data-tab="tab-students" onclick="switchAdminTab('tab-students')" style="background:#0f172a;color:#fff;border:none;padding:9px 14px;border-radius:999px;font-weight:700;cursor:pointer;font-size:13px">👥 الطلاب</button>
+      <button class="adminTabBtn" data-tab="tab-lectures" onclick="switchAdminTab('tab-lectures')" style="background:#f1f5f9;color:#334155;border:none;padding:9px 14px;border-radius:999px;font-weight:700;cursor:pointer;font-size:13px">🎥 المحاضرات</button>
+      <button class="adminTabBtn" data-tab="tab-exams" onclick="switchAdminTab('tab-exams')" style="background:#f1f5f9;color:#334155;border:none;padding:9px 14px;border-radius:999px;font-weight:700;cursor:pointer;font-size:13px">📝 الامتحانات</button>
+      <button class="adminTabBtn" data-tab="tab-questions" onclick="switchAdminTab('tab-questions')" style="background:#f1f5f9;color:#334155;border:none;padding:9px 14px;border-radius:999px;font-weight:700;cursor:pointer;font-size:13px">❓ أسئلة الطلاب</button>
+      <button class="adminTabBtn" data-tab="tab-chat" onclick="switchAdminTab('tab-chat')" style="background:#f1f5f9;color:#334155;border:none;padding:9px 14px;border-radius:999px;font-weight:700;cursor:pointer;font-size:13px">💬 الشات الخاص</button>
+      <button class="adminTabBtn" data-tab="tab-settings" onclick="switchAdminTab('tab-settings')" style="background:#f1f5f9;color:#334155;border:none;padding:9px 14px;border-radius:999px;font-weight:700;cursor:pointer;font-size:13px">⚙️ إعدادات الصفحة</button>
+    </div>
+    <div id="tab-students" class="adminTab" style="display:block">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0">
       <button onclick="openSheet()" style="background:#0f9d58;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">فتح Google Sheet</button>
       <button onclick="exportStudentsToExcel()" style="background:#217346;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">تصدير Excel</button>
     </div>
-    <h3 style="margin:18px 0 8px;font-size:16px">العنوان الرئيسي فقط</h3>
-    <label style="font-size:13px;font-weight:600">العنوان الرئيسي</label>
-    <p style="font-size:12px;color:#64748b;margin:0 0 8px">نبذة الدكتورة وحصص الأسبوع ثابتة من الكود - لا تظهر هنا بناء على طلبك.</p>
-    <input id="editHeroTitle" value="الساينس بقى أسهل وأمتع من أي وقت!" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">
-    
-    
-    <button onclick="saveSiteContent()" style="background:#a855f7;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:700;cursor:pointer">حفظ التعديلات</button>
-    <p id="saveMsg" style="font-size:13px;color:#16a34a;display:none;margin-top:8px">تم الحفظ بنجاح.</p>
+    <!-- hero moved to settings tab -->
     <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
     <h3 style="margin:0 0 10px;font-size:16px">إضافة طالب</h3>
     <input id="newName" placeholder="اسم الطالب" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
@@ -271,6 +269,8 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <input id="newPass" placeholder="كلمة المرور" type="password" autocomplete="new-password" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <select id="newGrade" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option></select>
     <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px">إضافة الطالب</button>
+    <div id="studentsList"></div>
+    </div><div id="tab-lectures" class="adminTab" style="display:none">
     
     <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
     <h3 style="margin:0 0 10px;font-size:16px">إضافة محاضرة فيديو</h3>
@@ -280,7 +280,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <button onclick="addLecture()" style="width:100%;background:#7c3aed;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:10px">إضافة المحاضرة</button>
     <div id="lecturesList" style="margin-top:10px"></div>
 
-    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    </div><div id="tab-exams" class="adminTab" style="display:none">
     <h3 style="margin:0 0 10px;font-size:16px">إضافة امتحان وتصحيحه</h3>
     <input id="newExamTitle" placeholder="عنوان الامتحان - مثال: Quiz 1 - Digestive System" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <input id="newExamLink" placeholder="رابط الامتحان - Google Forms أو رابط" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
@@ -289,17 +289,37 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <div id="examsList" style="margin-top:10px"></div>
     <p style="font-size:12px;color:#64748b;margin-top:8px">التصحيح: افتحي الامتحان من Google Forms > Responses > ثم سجلي الدرجة هنا في الشيت في عمود الدرجة، أو من قائمة الطلاب.</p>
 
-    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    </div><div id="tab-questions" class="adminTab" style="display:none">
     <h3 style="margin:0 0 10px;font-size:16px">أسئلة الطلاب في المحاضرات</h3>
     <div id="questionsList" style="background:#f8fafc;border-radius:12px;padding:12px;font-size:13px">لا توجد أسئلة حاليا. أسئلة الطلاب ستظهر هنا، ويمكنك الرد عليها من هنا.</div>
     <input id="replyText" placeholder="اكتبي ردك على السؤال المحدد..." style="width:100%;padding:11px;margin:10px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <button onclick="replyToQuestion()" style="background:#0ea5e9;color:#fff;border:none;padding:11px 20px;border-radius:12px;font-weight:700;cursor:pointer">إرسال الرد</button>
 
-    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    </div><div id="tab-chat" class="adminTab" style="display:none">
     <h3 style="margin:0 0 10px;font-size:16px">محادثات خاصة مع الطلاب</h3>
     <div id="chatList" style="background:#f8fafc;border-radius:12px;padding:12px;font-size:13px">اختر طالبا لعرض محادثته. الطالب يرى المحادثة عند تسجيل دخوله.</div>
-<h3 style="margin:20px 0 8px;font-size:16px">الطلاب</h3>
-    <div id="studentsList"></div>
+    </div><div id="tab-settings" class="adminTab" style="display:none">
+    <h3 style="margin:0 0 10px;font-size:16px">إعدادات الصفحة - مكان تاني لوحده</h3>
+    <p style="font-size:13px;color:#64748b">هنا فقط تقدر تغير العنوان الرئيسي، ونبذة الدكتورة، وحصص الأسبوع.</p>
+    <h4 style="margin:14px 0 6px">العنوان الرئيسي</h4>
+    <label style="font-size:13px;font-weight:600">العنوان الرئيسي</label>
+    <p style="font-size:12px;color:#64748b;margin:0 0 8px">نبذة الدكتورة وحصص الأسبوع ثابتة من الكود - لا تظهر هنا بناء على طلبك.</p>
+    <input id="editHeroTitle" value="الساينس بقى أسهل وأمتع من أي وقت!" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">
+    
+    
+    <button onclick="saveSiteContent()" style="background:#a855f7;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:700;cursor:pointer">حفظ التعديلات</button>
+    <p id="saveMsg" style="font-size:13px;color:#16a34a;display:none;margin-top:8px">تم الحفظ بنجاح.</p>
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:16px 0">
+    <label style="font-size:13px;font-weight:600">نبذة عن الدكتورة</label>
+    <textarea id="editAbout" rows="4" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0;box-sizing:border-box">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجانا لكل المشتركين.</textarea>
+    <label style="font-size:13px;font-weight:600">حصص الأسبوع</label>
+    <textarea id="editLessons" rows="4" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0;box-sizing:border-box">السبت - 5 مساء - Grade 6 - Digestive System
+الاحد - 6 مساء - Prep 2 - Electric Circuits
+الاثنين - 4 مساء - Grade 5 - Water Cycle</textarea>
+    <button onclick="saveSettingsTab()" style="background:#a855f7;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:700;cursor:pointer">حفظ إعدادات الصفحة</button>
+    <p id="settingsSaveMsg" style="font-size:13px;color:#16a34a;display:none;margin-top:8px">تم حفظ إعدادات الصفحة.</p>
+    </div>
+
   </div>
 </div>
 <!-- Firebase SDK -->
@@ -337,23 +357,28 @@ let currentProfile = null;
 window.showLogin = ()=>{ document.getElementById('loginModal').style.display='flex'; }
 window.hideLogin = ()=>{ document.getElementById('loginModal').style.display='none'; }
 
-window.doLoginFirebase = async ()=>{
-  let u = document.getElementById('inpUser').value.trim();
-  let p = document.getElementById('inpPass').value.trim();
-  if(!u||!p) return document.getElementById('strictErr').style.display='block';
-  if(!firebaseReady) return alert('لسه محطتش كونفيج Firebase - شوف الخطوات تحت');
-  // نحول اليوزر لإيميل وهمي:  -> @sciencelab.app
+window.doLoginFirebase = async (passedU, passedP)=>{
+  let u = (passedU!==undefined? passedU : (document.getElementById('strictUser')?.value||'')).trim();
+  let p = (passedP!==undefined? passedP : (document.getElementById('strictPass')?.value||'')).trim();
+  if(!u||!p){ let e=document.getElementById('strictErr'); if(e) e.style.display='block'; return false; }
+  if(!firebaseReady){ alert('مشكلة في الاتصال - تأكد من الإنترنت'); return false; }
   let email = u.includes('@') ? u : u.toLowerCase() + '@sciencelab.app';
   try{
     await signInWithEmailAndPassword(auth, email, p);
+    window._currentUserName = u.toLowerCase();
+    return true;
   }catch(e){
-    document.getElementById('loginError').innerText = '❌ اليوزر أو الباسورد غلط - ' + e.code;
+    let el=document.getElementById('strictErr'); if(el){ el.style.display='block'; el.textContent='اليوزر أو كلمة المرور غلط - حاول تاني'; }
+    let le=document.getElementById('loginError'); if(le) le.innerText = 'اليوزر أو الباسورد غلط';
+    return false;
   }
 };
+window._firebaseSignIn = window.doLoginFirebase;
+window._firebaseSignOut = async ()=>{ try{ await signOut(auth); }catch(e){} };
 
 window.logoutFirebase = async ()=>{ await signOut(auth); };
 
-window.showAdmin = ()=>{ if(currentProfile?.role!=='admin') return alert('للأدمن بس'); document.getElementById('adminPanel').style.display='block'; renderStudents(); }
+window.showAdmin = ()=>{ let sess=(sessionStorage.getItem('sciencelab_session')||'').toLowerCase(); let isAdm = sess==='admin' || currentProfile?.role==='admin'; if(!isAdm) return alert('لوحة الإدارة للأدمن فقط - سجل دخول بحساب admin'); document.getElementById('adminPanel').style.display='block'; try{ renderStudents(); renderLectures(); renderExams(); renderQuestions(); }catch(e){} }
 window.hideAdmin = ()=>{ document.getElementById('adminPanel').style.display='none'; }
 
 window.addStudentFirebase = async ()=>{
@@ -586,16 +611,11 @@ function doLogout(){
   location.reload();
 }
 function updateWhoAmI(){
-  let bar=document.getElementById('whoAmIBar'); let label=document.getElementById('whoAmILabel'); if(!bar||!label) return;
-  let user = sessionStorage.getItem('sciencelab_session') || sessionStorage.getItem('sciencelab_user') || localStorage.getItem('sciencelab_session') || '';
-  // Try to get from Firebase current user via global
+  let user = sessionStorage.getItem('sciencelab_session') || '';
   try{ let fu = window._currentUserName || ''; if(fu) user = fu; }catch(e){}
-  if(!user || user==='null'){ bar.style.display='none'; return; }
-  let isAdmin = (user==='admin' || user.toLowerCase().includes('admin') || user.includes('sciencelab'));
-  label.textContent = isAdmin ? 'مسجل دخول كـ: الأدمن (دكتور ندى الجارحي) - Username: admin' : 'مسجل دخول كـ: طالب - Username: ' + user;
-  bar.style.display='block';
-  // Also update userBar in header
-  let ub=document.getElementById('userBar'); if(ub){ ub.innerHTML='<span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800">'+(isAdmin?'👩‍🏫 الأدمن':'👤 '+user)+'</span>'; }
+  if(!user || user==='null') return;
+  let isAdmin = (user==='admin' || user.toLowerCase()==='admin');
+  let ub=document.getElementById('userBar'); if(ub){ ub.innerHTML='<span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:800">'+(isAdmin?'👩‍🏫 الأدمن - admin':'👤 '+user)+'</span> <button onclick="doLogout()" style="background:#ef4444;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">تسجيل الخروج</button>'+(isAdmin?' <button onclick="showAdmin()" style="background:#7c3aed;color:#fff;border:none;padding:7px 14px;border-radius:999px;font-weight:800;cursor:pointer;font-size:13px">⚙️ لوحة الأدمن</button>':''); }
 }
 document.addEventListener('DOMContentLoaded', updateWhoAmI);
 setTimeout(updateWhoAmI, 500); setTimeout(updateWhoAmI, 1500); setTimeout(updateWhoAmI, 3000);
@@ -607,6 +627,44 @@ setTimeout(()=>{
     window.strictLogin = async function(){ let r = await orig.apply(this, arguments); setTimeout(updateWhoAmI, 600); return r; };
   }
 }, 800);
+</script>
+
+<script>
+function switchAdminTab(id){
+  document.querySelectorAll('.adminTab').forEach(el=> el.style.display='none');
+  let t=document.getElementById(id); if(t) t.style.display='block';
+  document.querySelectorAll('.adminTabBtn').forEach(b=>{ let on=b.dataset.tab===id; b.style.background=on?'#0f172a':'#f1f5f9'; b.style.color=on?'#fff':'#334155'; });
+}
+function saveSettingsTab(){
+  try{ if(window.saveSiteContent) window.saveSiteContent(); }catch(e){}
+  try{
+    let about=document.getElementById('editAbout')?.value||'';
+    let lessons=document.getElementById('editLessons')?.value||'';
+    localStorage.setItem('siteSettings_nada', JSON.stringify({about, lessons}));
+    let m=document.getElementById('settingsSaveMsg'); if(m) m.style.display='block';
+  }catch(e){}
+}
+window.askQuestionForLecture = function(lectureTitle){
+  let q = prompt('سؤالك في محاضرة: ' + lectureTitle + ' - اكتب سؤالك:'); if(!q) return;
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('questions_nada')||'[]'); }catch(e){}
+  let user=sessionStorage.getItem('sciencelab_session')||'طالب';
+  arr.push({student:user, lecture:lectureTitle, text:q, date:new Date().toLocaleDateString('ar-EG'), reply:''});
+  localStorage.setItem('questions_nada', JSON.stringify(arr));
+  alert('تم ارسال سؤالك في محاضرة '+lectureTitle+' - رد الدكتورة هيظهر هنا تحت نفس المحاضرة.');
+  try{ renderLectures(); }catch(e){}
+};
+window.askQuestion = function(){ let lec = prompt('اكتب اسم المحاضرة اللي سؤالك فيها:'); if(!lec) return; window.askQuestionForLecture(lec); };
+window.renderLectures = function(){
+  let el=document.getElementById('lecturesList'); if(!el) return;
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('lectures_nada')||'[]'); }catch(e){}
+  let qs=[]; try{ qs=JSON.parse(localStorage.getItem('questions_nada')||'[]'); }catch(e){}
+  if(!arr.length){ el.innerHTML='<p style="color:#64748b">لا توجد محاضرات بعد.</p>'; return; }
+  el.innerHTML = arr.map((l)=>{
+    let myQs = qs.filter(q=> (q.lecture||'')===l.title);
+    let qsHtml = myQs.length ? myQs.map(q=>'<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:8px;margin:6px 0;font-size:13px"><b>'+(q.student||'طالب')+':</b> '+q.text+'<br><span style="color:#0ea5e9">'+(q.reply ? 'رد الدكتورة: '+q.reply : 'بانتظار رد الدكتورة')+'</span></div>').join('') : '<p style="font-size:12px;color:#94a3b8">لا توجد اسئلة في هذه المحاضرة بعد.</p>';
+    return '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:8px 0"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><span><b>'+l.title+'</b> - '+l.grade+'</span><a href="'+l.video+'" target="_blank" style="color:#7c3aed;font-weight:700">مشاهدة الفيديو</a></div><button onclick="askQuestionForLecture(\''+l.title.replace(/\'/g,"\\'")+'\')" style="background:#0ea5e9;color:#fff;border:none;padding:9px 16px;border-radius:999px;font-weight:700;cursor:pointer;margin-top:10px">اسال سؤال في هذه المحاضرة</button><div style="margin-top:10px">'+qsHtml+'</div></div>';
+  }).join('');
+};
 </script>
 </body>
 </html>
