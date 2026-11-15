@@ -62,12 +62,9 @@ th{background:#0f172a;color:#fff}
 footer{background:#0f172a;color:#fff;margin-top:30px;padding:30px 20px;text-align:center}
 footer a{color:#38bdf8;text-decoration:none;font-weight:800}
 @media(max-width:900px){.hero{grid-template-columns:1fr}.grid,.price-grid,.two{grid-template-columns:1fr}.hero-card h1{font-size:32px}}
-
-body.locked main, body.locked header, body.locked section, body.locked footer { filter: blur(8px); pointer-events:none; user-select:none; }
-#forceLoginOverlay{position:fixed;inset:0;background:rgba(15,23,42,.85);z-index:200;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px}
 </style>
 </head>
-<body class="locked"><div id="forceLoginOverlay"><div><div style="font-size:60px">🔒</div><h2 style="font-size:28px;margin:10px 0">المنصة مقفولة للطلاب فقط</h2><p style="opacity:.8">سجل دخول باليوزر والباسورد اللي المستر ادهوملك</p><button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:13px 24px;border-radius:999px;font-weight:900;cursor:pointer;margin-top:16px;font-size:16px">دخول الطالب 🔐</button></div></div>
+<body>
 <header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع المستر 📲</a></div></header>
 
 <section class="hero">
@@ -92,7 +89,7 @@ body.locked main, body.locked header, body.locked section, body.locked footer { 
 <h2>📚 الدروس - اختار مرحلتك</h2>
 <p class="sub">كل درس فيه فيديو + ملخص PDF + أسئلة + واجب</p>
 <div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade9',this)">Grade 9</button></div>
-<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
+<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على PASTE_YOUR_API_KEY_HERE وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
 <div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة عملية بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#fef3c7">🌊</div><div class="card-body"><span class="badge">Grade 5</span><h3>Water Cycle - دورة المياه</h3><p>Evaporation, Condensation, Precipitation بطريقة لعبة.</p><div class="meta"><span>⏱ 22 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#dcfce7">🧬</div><div class="card-body"><span class="badge">Grade 6</span><h3>Digestive System</h3><p>رحلة الأكل جوه جسمك من أول الفم لحد... هتعرف في الدرس!</p><div class="meta"><span>⏱ 25 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
@@ -134,23 +131,6 @@ body.locked main, body.locked header, body.locked section, body.locked footer { 
 </table>
 </section>
 
-
-<section class="section" id="dynamicLectures">
-<h2>🎥 المحاضرات الجديدة - من لوحة الأدمن</h2>
-<p class="sub">المستر بيضيفها من الموقع نفسه، بتظهر هنا فوراً من غير كود</p>
-<div id="lecturesList" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
-  <p style="color:#64748b">جاري تحميل المحاضرات...</p>
-</div>
-<div style="margin-top:16px;background:#e0f2fe;padding:14px;border-radius:16px;font-size:14px">💡 <b>للمستر:</b> دوس على لوحة الأدمن فوق > تبويب <b>محاضرات وامتحانات</b> > ضيف محاضرة جديدة</div>
-</section>
-
-<section class="section" id="dynamicExams">
-<h2>📝 الامتحانات والواجبات</h2>
-<p class="sub">امتحانات بتوقيت، والطالب بيحلها من الموقع</p>
-<div id="examsList" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
-  <p style="color:#64748b">جاري تحميل الامتحانات...</p>
-</div>
-</section>
 <section class="section" id="prices">
 <h2>💰 الاشتراكات</h2>
 <div class="price-grid">
@@ -171,7 +151,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
 </script>
 
 
-<div id="loginModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center;padding:20px">
+<div id="loginModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;width:100%;max-width:420px;border-radius:24px;padding:28px;text-align:center">
     <div style="font-size:50px">🧪</div>
     <h2 style="margin:8px 0">دخول الطالب - Firebase</h2>
@@ -181,10 +161,10 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
     <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
     <p style="font-size:12px;color:#64748b;margin-top:10px">أول مرة؟ اعمل حساب الأدمن: Username = <b>admin</b> من لوحة الأدمن أو من Firebase Console</p>
-    <p style="font-size:12px;color:#ef4444;font-weight:800;margin-top:10px">🔒 مفيش دخول من غير يوزر وباسورد - اطلبهم من المستر</p><button onclick="hideLogin()" style="background:none;border:none;color:#64748b;cursor:pointer;margin-top:8px">← رجوع</button>
+    <button onclick="hideLogin()" style="background:none;border:none;color:#64748b;cursor:pointer;margin-top:10px">تصفح كزائر 👀</button>
   </div>
 </div>
-<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:310;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
+<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:101;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
   <div style="background:#fff;width:100%;max-width:600px;border-radius:24px;padding:24px;margin:auto">
     <div style="display:flex;justify-content:space-between"><h2>⚙️ لوحة الأدمن - Firebase</h2><button onclick="hideAdmin()" style="border:none;background:#fee2e2;padding:6px 12px;border-radius:999px;cursor:pointer">X</button></div>
     <p style="color:#64748b;font-size:13px;margin:8px 0">كل طالب هيتعمل بحساب حقيقي في Firebase - متشفر ومحفوظ</p>
@@ -194,22 +174,12 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <select id="newGrade" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option><option>Grade 9</option></select>
     <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">+ إضافة الطالب في Firebase</button>
     
-    <hr style="margin:16px 0">
-    <h3>🎥 إضافة محاضرة من الموقع</h3>
-    <input id="lecTitle" placeholder="عنوان المحاضرة - مثال: Digestive System - Grade 6" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <input id="lecVideo" placeholder="لينك الفيديو - يوتيوب أو زووم أو درايف" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <input id="lecPdf" placeholder="لينك الملخص PDF (اختياري)" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <select id="lecGrade" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option><option>Grade 9</option><option>الكل</option></select>
-    <textarea id="lecDesc" placeholder="وصف المحاضرة..." style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px"></textarea>
-    <button onclick="addLectureFirebase()" style="width:100%;background:#7c3aed;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer">+ نشر المحاضرة 🚀</button>
-
-    <h3 style="margin:16px 0 8px">📝 إضافة امتحان</h3>
-    <input id="examTitle" placeholder="عنوان الامتحان - مثال: Quiz - Water Cycle" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <input id="examLink" placeholder="لينك الامتحان - Google Forms أو لينك مباشر" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <input id="examTime" placeholder="مدة الامتحان - مثال: 30 دقيقة" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
-    <select id="examGrade" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option><option>Grade 9</option><option>الكل</option></select>
-    <button onclick="addExamFirebase()" style="width:100%;background:#f59e0b;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:8px">+ نشر الامتحان 📝</button>
-    <p style="font-size:12px;color:#64748b;margin-top:10px">الامتحان ممكن يكون Google Forms - اعمله من forms.google.com وخد اللينك وحطه هنا. الطالب هيدوس ويحل.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
+      <button onclick="openSheet()" style="flex:1;background:#0f9d58;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">📊 افتح Google Sheet</button>
+      <button onclick="exportStudentsToExcel()" style="flex:1;background:#217346;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">⬇️ تحميل Excel</button>
+      <button onclick="setAppsScriptUrl()" style="flex:1;background:#7c3aed;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">🔗 ربط الشيت (Apps Script)</button>
+    </div>
+    <p style="font-size:12px;color:#64748b;line-height:1.6">Sheet ID: 1r8OQ78Xs2DKSw07a8g_fDNH2vu2dGD9ZkBa4haf9B-U<br>لو لسه مربطتش Apps Script، دوس على زرار ربط الشيت وحط اللينك. الكود بتاع Apps Script موجود في الشات.</p>
 <h3 style="margin:16px 0 8px">كل الطلاب:</h3><div id="studentsList"></div>
   </div>
 </div>
@@ -224,12 +194,12 @@ import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } fro
 // هتجيبه من Firebase Console > Project Settings > Your apps > Web app
 // انسخ اللي بين القوسين وحطه مكان اللي تحت
 const firebaseConfig = {
-  apiKey: "AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg",
-  authDomain: "tech-lab-186a0.firebaseapp.com",
-  projectId: "tech-lab-186a0",
-  storageBucket: "tech-lab-186a0.firebasestorage.app",
-  messagingSenderId: "475392080982",
-  appId: "1:475392080982:web:0ae2048d97db49ffb58ff7"
+  apiKey: "PASTE_YOUR_API_KEY_HERE",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
 };
 // ==============================================================
 
@@ -239,15 +209,15 @@ try{
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
-  firebaseReady = firebaseConfig.apiKey && firebaseConfig.apiKey.length > 10 && firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY_HERE";
+  firebaseReady = firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY_HERE";
   if(!firebaseReady) document.getElementById('firebaseWarning').style.display='block';
 }catch(e){ console.log(e); document.getElementById('firebaseWarning').style.display='block'; }
 
 let currentUser = null;
 let currentProfile = null;
 
-window.showLogin = ()=>{ let ov=document.getElementById('forceLoginOverlay'); if(ov) ov.style.display='none'; document.getElementById('loginModal').style.display='flex'; }
-window.hideLogin = ()=>{ if(!currentProfile){ document.getElementById('loginModal').style.display='none'; let ov=document.getElementById('forceLoginOverlay'); if(ov) ov.style.display='flex'; return; } document.getElementById('loginModal').style.display='none'; }
+window.showLogin = ()=>{ document.getElementById('loginModal').style.display='flex'; }
+window.hideLogin = ()=>{ document.getElementById('loginModal').style.display='none'; }
 
 window.doLoginFirebase = async ()=>{
   let u = document.getElementById('inpUser').value.trim();
@@ -312,61 +282,6 @@ async function renderStudents(){
 }
 window.renderStudents=renderStudents;
 
-window.addLectureFirebase = async ()=>{
-  let title=document.getElementById('lecTitle').value.trim();
-  let video=document.getElementById('lecVideo').value.trim();
-  let pdf=document.getElementById('lecPdf').value.trim();
-  let grade=document.getElementById('lecGrade').value;
-  let desc=document.getElementById('lecDesc').value.trim();
-  if(!title||!video) return alert('اكتب عنوان ولينك الفيديو');
-  await setDoc(doc(db,"lectures", Date.now().toString()), {title, video, pdf, grade, desc, createdAt: new Date().toISOString()});
-  alert('✅ اتنشرت المحاضرة!');
-  document.getElementById('lecTitle').value='';document.getElementById('lecVideo').value='';document.getElementById('lecPdf').value='';document.getElementById('lecDesc').value='';
-  loadLectures();
-};
-window.addExamFirebase = async ()=>{
-  let title=document.getElementById('examTitle').value.trim();
-  let link=document.getElementById('examLink').value.trim();
-  let time=document.getElementById('examTime').value.trim();
-  let grade=document.getElementById('examGrade').value;
-  if(!title||!link) return alert('اكتب عنوان ولينك الامتحان');
-  await setDoc(doc(db,"exams", Date.now().toString()), {title, link, time, grade, createdAt: new Date().toISOString()});
-  alert('✅ اتنشر الامتحان!');
-  document.getElementById('examTitle').value='';document.getElementById('examLink').value='';document.getElementById('examTime').value='';
-  loadExams();
-};
-window.deleteLecture = async (id)=>{ if(confirm('تحذف المحاضرة؟')){ await deleteDoc(doc(db,"lectures",id)); loadLectures(); } };
-window.deleteExam = async (id)=>{ if(confirm('تحذف الامتحان؟')){ await deleteDoc(doc(db,"exams",id)); loadExams(); } };
-async function loadLectures(){
-  let el=document.getElementById('lecturesList'); if(!el) return;
-  if(!firebaseReady){ el.innerHTML='<p style="color:#64748b">حط كونفيج Firebase الأول عشان المحاضرات تظهر</p>'; return; }
-  try{
-    let snap=await getDocs(collection(db,"lectures"));
-    if(snap.empty){ el.innerHTML='<div style="background:#fff;padding:20px;border-radius:18px;grid-column:1/-1;text-align:center;color:#64748b">لسه مفيش محاضرات - المستر هيضيف من لوحة الأدمن 🎥</div>'; return; }
-    el.innerHTML='';
-    snap.forEach(d=>{
-      let l=d.data();
-      el.innerHTML+=`<div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.05)"><div style="background:#ede9fe;height:120px;display:flex;align-items:center;justify-content:center;font-size:50px">🎥</div><div style="padding:16px"><span style="background:#dcfce7;color:#166534;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800">${l.grade}</span><h3 style="margin:8px 0">${l.title}</h3><p style="color:#64748b;font-size:14px;line-height:1.6">${l.desc||''}</p><div style="display:flex;gap:8px;margin-top:12px"><a href="${l.video}" target="_blank" style="flex:1;text-align:center;background:#0ea5e9;color:#fff;padding:10px;border-radius:12px;text-decoration:none;font-weight:800">شاهد ▶</a>${l.pdf?`<a href="${l.pdf}" target="_blank" style="flex:1;text-align:center;background:#f1f5f9;padding:10px;border-radius:12px;text-decoration:none;color:#0f172a;font-weight:800">PDF 📄</a>`:''}</div>${currentProfile?.role==='admin'?`<button onclick="deleteLecture('${d.id}')" style="width:100%;margin-top:8px;background:#fee2e2;border:none;padding:8px;border-radius:10px;cursor:pointer">حذف</button>`:''}</div></div>`;
-    });
-  }catch(e){ el.innerHTML='خطأ: '+e.message; }
-}
-async function loadExams(){
-  let el=document.getElementById('examsList'); if(!el) return;
-  if(!firebaseReady){ el.innerHTML='<p style="color:#64748b">حط كونفيج Firebase الأول</p>'; return; }
-  try{
-    let snap=await getDocs(collection(db,"exams"));
-    if(snap.empty){ el.innerHTML='<div style="background:#fff;padding:20px;border-radius:18px;grid-column:1/-1;text-align:center;color:#64748b">لسه مفيش امتحانات</div>'; return; }
-    el.innerHTML='';
-    snap.forEach(d=>{
-      let e=d.data();
-      el.innerHTML+=`<div style="background:#fff;border-radius:18px;padding:18px"><span style="background:#fef3c7;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800">${e.grade} - ${e.time||''}</span><h3 style="margin:10px 0">${e.title}</h3><a href="${e.link}" target="_blank" style="display:block;text-align:center;background:#f59e0b;color:#fff;padding:11px;border-radius:12px;text-decoration:none;font-weight:900;margin-top:10px">ابدأ الامتحان 📝</a>${currentProfile?.role==='admin'?`<button onclick="deleteExam('${d.id}')" style="width:100%;margin-top:8px;background:#fee2e2;border:none;padding:8px;border-radius:10px;cursor:pointer">حذف</button>`:''}</div>`;
-    });
-  }catch(e){ el.innerHTML='خطأ: '+e.message; }
-}
-window.loadLectures=loadLectures; window.loadExams=loadExams;
-setTimeout(()=>{loadLectures(); loadExams();}, 1000);
-
-
 if(firebaseReady){
   onAuthStateChanged(auth, async (user)=>{
     if(user){
@@ -386,17 +301,49 @@ if(firebaseReady){
       currentProfile=profile;
       document.getElementById('userBar').innerHTML=`مرحباً <b>${profile.name}</b> | ${profile.grade} ${profile.role==='admin'?'(أدمن)':''} | <button onclick="logoutFirebase()" style="background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-weight:800">خروج</button> ${profile.role==='admin'?'<button onclick="showAdmin()" style="background:#0f172a;color:#fff;border:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-weight:800">لوحة الأدمن ⚙️</button>':''}`;
       document.getElementById('lessonsLocked').style.display='none';
-      hideLogin(); document.body.classList.remove('locked'); let ov=document.getElementById('forceLoginOverlay'); if(ov) ov.style.display='none';
+      hideLogin();
     } else {
       currentUser=null; currentProfile=null;
       document.getElementById('userBar').innerHTML=`<button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800">دخول الطالب 🔐</button>`;
       document.getElementById('lessonsLocked').style.display='block';
-      document.body.classList.add('locked'); let ov2=document.getElementById('forceLoginOverlay'); if(ov2) ov2.style.display='flex'; setTimeout(showLogin, 600);
+      setTimeout(showLogin, 600);
     }
   });
 } else {
   document.getElementById('userBar').innerHTML=`<span style="background:#fef3c7;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:800">⚠️ حط كونفيج Firebase الأول - شوف الخطوات تحت</span>`;
 }
+</script>
+
+<script>
+// ===== Google Sheets Sync - دكتور ندى =====
+const SHEET_ID = "1r8OQ78Xs2DKSw07a8g_fDNH2vu2dGD9ZkBa4haf9B-U";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/edit";
+let APPS_SCRIPT_URL = localStorage.getItem('sheets_apps_script_url') || "";
+
+function setAppsScriptUrl(){
+  let u = prompt("حط لينك Apps Script Web App هنا (هتجيبه من الخطوات اللي في الشات):", APPS_SCRIPT_URL);
+  if(u){ APPS_SCRIPT_URL=u; localStorage.setItem('sheets_apps_script_url', u); alert('✅ اتحفظ لينك الشيت'); }
+}
+async function syncStudentToSheet(student){
+  if(!APPS_SCRIPT_URL) return;
+  try{
+    await fetch(APPS_SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', ...student})});
+  }catch(e){ console.log('sheet sync', e); }
+}
+async function syncLectureToSheet(lec){
+  if(!APPS_SCRIPT_URL) return;
+  try{ await fetch(APPS_SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'lecture', ...lec})}); }catch(e){}
+}
+async function syncExamToSheet(ex){
+  if(!APPS_SCRIPT_URL) return;
+  try{ await fetch(APPS_SCRIPT_URL, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'exam', ...ex})}); }catch(e){}
+}
+function exportStudentsToExcel(){
+  // بيحمل كل الطلاب اللي في Firestore كملف Excel (CSV)
+  alert('عشان تحمل Excel: افتح Google Sheet نفسه > File > Download > Microsoft Excel (.xlsx) - أو دوس على زرار فتح الشيت تحت');
+  window.open(SHEET_URL, '_blank');
+}
+function openSheet(){ window.open(SHEET_URL, '_blank'); }
 </script>
 </body>
 </html>
