@@ -141,12 +141,16 @@ h1,h2,h3{ color:#4a1d3a; }
 })();
 </script>
 
-<header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع الدكتور 📲</a></div></header><div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;margin:20px auto;max-width:900px"><h3 style="text-align:center">🧪 تجربة حقيقية في المختبر</h3><video autoplay muted loop playsinline controls style="width:100%;border-radius:16px;max-height:380px;object-fit:cover;background:#000"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="text-align:center;color:#64748b;font-size:13px">تفاعلات كيميائية حقيقية - زي اللي هتشوفها في حصص الدكتورة ندى</p></div>
+<header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201065871712">احجز مع الدكتور 📲</a></div></header><div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;justify-content:center">
+  <button onclick="askQuestion()" style="background:#0ea5e9;color:#fff;border:none;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer">اسأل سؤال في المحاضرة</button>
+  <button onclick="openPrivateChat()" style="background:#a855f7;color:#fff;border:none;padding:11px 18px;border-radius:999px;font-weight:700;cursor:pointer">محادثة خاصة مع الدكتورة</button>
+  <a href="https://wa.me/201065871712" target="_blank" style="background:#25D366;color:#fff;padding:11px 18px;border-radius:999px;font-weight:700;text-decoration:none">واتساب: 01065871712</a>
+</div><div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;margin:20px auto;max-width:900px"><h3 style="text-align:center">🧪 تجربة حقيقية في المختبر</h3><video autoplay muted loop playsinline controls style="width:100%;border-radius:16px;max-height:380px;object-fit:cover;background:#000"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="text-align:center;color:#64748b;font-size:13px">تفاعلات كيميائية حقيقية - زي اللي هتشوفها في حصص الدكتورة ندى</p></div>
 
 <section class="hero">
 <div class="hero-card"><span class="float-emoji">🧪</span><span class="float-emoji">🔬</span><span class="float-emoji">🧬</span><span class="float-emoji"></span><span class="float-emoji">⚗️</span>
 <span class="badge">🔥 الترم الأول - 2026 / 2027</span>
-<h1>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
+<h1 id="heroTitle" data-hero-title>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
 <p>شرح بالعربي والإنجليزي، تجارب حقيقية، فيديوهات، ملخصات PDF، واختبارات بعد كل درس. من Grade 4 لحد Prep 3 و Prep 1,2,3</p>
 <div class="hero-btns"><a class="white-btn" href="#lessons">ابدأ التعلم مجاناً 🚀</a><a class="outline-btn" href="#quiz">جرب كويز سريع</a></div>
 <div class="stats"><div class="stat"><b>+120</b>درس مسجل</div><div class="stat"><b>+45</b>تجربة في المختبر</div><div class="stat"><b>+900</b>طالب معانا</div><div class="stat"><b></b>حصص تفاعلية</div></div>
@@ -210,15 +214,15 @@ h1,h2,h3{ color:#4a1d3a; }
 <section class="section" id="prices">
 <h2>💰 الاشتراكات</h2>
 <div class="price-grid">
-<div class="price"><h3>🆓 تجريبي</h3><div class="p">0 <small>جنيه / شهر</small></div><ul><li>✅ 3 دروس مجانية</li><li>✅ ملخص PDF واحد</li><li>✅ كويز واحد</li></ul><br><a class="card-btn" href="https://wa.me/201000000000">ابدأ مجاناً</a></div>
-<div class="price pop"><h3>⭐ الأشهر - شهري</h3><div class="p">250 <small>جنيه / شهر</small></div><ul><li>✅ كل الدروس + الفيديوهات</li><li>✅ كل الملخصات PDF</li><li>✅ جروب واتساب للمتابعة</li><li>✅ مراجعة ليلة الامتحان</li></ul><br><a class="card-btn" href="https://wa.me/201000000000">اشترك الآن</a></div>
-<div class="price"><h3>🏆 الترم كامل</h3><div class="p">900 <small>جنيه / ترم</small></div><ul><li>✅ كل مميزات الشهري</li><li>✅ خصم 20%</li><li>✅ حصص برايفت 1-1</li></ul><br><a class="card-btn" href="https://wa.me/201000000000">اشترك في الترم</a></div>
+<div class="price"><h3>🆓 تجريبي</h3><div class="p">0 <small>جنيه / شهر</small></div><ul><li>✅ 3 دروس مجانية</li><li>✅ ملخص PDF واحد</li><li>✅ كويز واحد</li></ul><br><a class="card-btn" href="https://wa.me/201065871712">ابدأ مجاناً</a></div>
+<div class="price pop"><h3>⭐ الأشهر - شهري</h3><div class="p">250 <small>جنيه / شهر</small></div><ul><li>✅ كل الدروس + الفيديوهات</li><li>✅ كل الملخصات PDF</li><li>✅ جروب واتساب للمتابعة</li><li>✅ مراجعة ليلة الامتحان</li></ul><br><a class="card-btn" href="https://wa.me/201065871712">اشترك الآن</a></div>
+<div class="price"><h3>🏆 الترم كامل</h3><div class="p">900 <small>جنيه / ترم</small></div><ul><li>✅ كل مميزات الشهري</li><li>✅ خصم 20%</li><li>✅ حصص برايفت 1-1</li></ul><br><a class="card-btn" href="https://wa.me/201065871712">اشترك في الترم</a></div>
 </div>
 </section>
 
 <footer>
 <h2 style="margin-bottom:10px">ScienceLab 🧪 - التعلم متعة</h2>
-<p>للحجز والاستفسار: <a href="https://wa.me/201000000000">واتساب الدكتورة</a> | تابعنا على فيسبوك ويوتيوب</p>
+<p>للحجز والاستفسار: <a href="https://wa.me/201065871712">واتساب الدكتورة</a> | تابعنا على فيسبوك ويوتيوب</p>
 <p style="margin-top:12px;opacity:.6;font-size:13px">© 2026 ScienceLab - جميع الحقوق محفوظة</p>
 </footer>
 <script>
@@ -250,15 +254,12 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
       <button onclick="openSheet()" style="background:#0f9d58;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">فتح Google Sheet</button>
       <button onclick="exportStudentsToExcel()" style="background:#217346;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">تصدير Excel</button>
     </div>
-    <h3 style="margin:18px 0 8px;font-size:16px">إدارة المحتوى</h3>
+    <h3 style="margin:18px 0 8px;font-size:16px">العنوان الرئيسي فقط</h3>
     <label style="font-size:13px;font-weight:600">العنوان الرئيسي</label>
+    <p style="font-size:12px;color:#64748b;margin:0 0 8px">نبذة الدكتورة وحصص الأسبوع ثابتة من الكود - لا تظهر هنا بناء على طلبك.</p>
     <input id="editHeroTitle" value="الساينس بقى أسهل وأمتع من أي وقت!" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">
-    <label style="font-size:13px;font-weight:600">نبذة عن الدكتورة</label>
-    <textarea id="editAbout" rows="2" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</textarea>
-    <label style="font-size:13px;font-weight:600">حصص الأسبوع</label>
-    <textarea id="editLessons" rows="3" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;margin:6px 0 12px;box-sizing:border-box">Grade 6 - Digestive System | Grade 6 | السبت - 5 مساءً - أونلاين على زووم
-Prep 2 - Electric Circuits | Prep 2 | الأحد - 6 مساءً - سنتر
-Grade 5 - Water Cycle | Grade 5 | الاثنين - 4 مساءً - فيديو مسجل</textarea>
+    
+    
     <button onclick="saveSiteContent()" style="background:#a855f7;color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:700;cursor:pointer">حفظ التعديلات</button>
     <p id="saveMsg" style="font-size:13px;color:#16a34a;display:none;margin-top:8px">تم الحفظ بنجاح.</p>
     <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
@@ -268,7 +269,34 @@ Grade 5 - Water Cycle | Grade 5 | الاثنين - 4 مساءً - فيديو م�
     <input id="newPass" placeholder="كلمة المرور" type="password" autocomplete="new-password" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <select id="newGrade" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option></select>
     <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px">إضافة الطالب</button>
-    <h3 style="margin:20px 0 8px;font-size:16px">الطلاب</h3>
+    
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    <h3 style="margin:0 0 10px;font-size:16px">إضافة محاضرة فيديو</h3>
+    <input id="newLecTitle" placeholder="عنوان المحاضرة - مثال: Digestive System" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <input id="newLecVideo" placeholder="رابط الفيديو - YouTube أو Google Drive" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <select id="newLecGrade" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option></select>
+    <button onclick="addLecture()" style="width:100%;background:#7c3aed;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:10px">إضافة المحاضرة</button>
+    <div id="lecturesList" style="margin-top:10px"></div>
+
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    <h3 style="margin:0 0 10px;font-size:16px">إضافة امتحان وتصحيحه</h3>
+    <input id="newExamTitle" placeholder="عنوان الامتحان - مثال: Quiz 1 - Digestive System" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <input id="newExamLink" placeholder="رابط الامتحان - Google Forms أو رابط" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <input id="newExamGrade" placeholder="الدرجة الكلية - مثال: 20" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <button onclick="addExam()" style="width:100%;background:#f59e0b;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:10px">إضافة الامتحان</button>
+    <div id="examsList" style="margin-top:10px"></div>
+    <p style="font-size:12px;color:#64748b;margin-top:8px">التصحيح: افتحي الامتحان من Google Forms > Responses > ثم سجلي الدرجة هنا في الشيت في عمود الدرجة، أو من قائمة الطلاب.</p>
+
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    <h3 style="margin:0 0 10px;font-size:16px">أسئلة الطلاب في المحاضرات</h3>
+    <div id="questionsList" style="background:#f8fafc;border-radius:12px;padding:12px;font-size:13px">لا توجد أسئلة حاليا. أسئلة الطلاب ستظهر هنا، ويمكنك الرد عليها من هنا.</div>
+    <input id="replyText" placeholder="اكتبي ردك على السؤال المحدد..." style="width:100%;padding:11px;margin:10px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <button onclick="replyToQuestion()" style="background:#0ea5e9;color:#fff;border:none;padding:11px 20px;border-radius:12px;font-weight:700;cursor:pointer">إرسال الرد</button>
+
+    <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
+    <h3 style="margin:0 0 10px;font-size:16px">محادثات خاصة مع الطلاب</h3>
+    <div id="chatList" style="background:#f8fafc;border-radius:12px;padding:12px;font-size:13px">اختر طالبا لعرض محادثته. الطالب يرى المحادثة عند تسجيل دخوله.</div>
+<h3 style="margin:20px 0 8px;font-size:16px">الطلاب</h3>
     <div id="studentsList"></div>
   </div>
 </div>
@@ -443,5 +471,79 @@ async function testSheetsConnection(){
   }catch(e){ alert('حصل مشكلة: '+e); }
 }
 </script>
-<script>window.addEventListener("load",()=>{let m=document.getElementById("loginModal"); if(m) m.style.display="none";});</script><script>const _oldLogout=window.logoutFirebase; window.logoutFirebase=async function(){ try{sessionStorage.removeItem("sciencelab_session")}catch(e){} let a=document.getElementById("strictPass"); if(a) a.value=""; let b=document.getElementById("loginPass"); if(b) b.value=""; let c=document.getElementById("strictUser"); if(c) c.value=""; let ov=document.getElementById("loginOverlay"); if(ov){ov.style.display="flex"; ov.style.background="linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1)";} document.body.style.overflow="hidden"; if(_oldLogout && _oldLogout!==window.logoutFirebase){ try{await _oldLogout()}catch(e){} } };</script><script>function saveSiteContent(){let d={hero:document.getElementById('editHeroTitle').value,about:document.getElementById('editAbout').value,lessons:document.getElementById('editLessons').value};localStorage.setItem('siteContent_nada',JSON.stringify(d));try{let u=localStorage.getItem('sheets_apps_script_url'); if(u) fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'content',...d})});}catch(e){} document.getElementById('saveMsg').style.display='block'; setTimeout(()=>location.reload(),800);}</script></body>
+<script>window.addEventListener("load",()=>{let m=document.getElementById("loginModal"); if(m) m.style.display="none";});</script><script>const _oldLogout=window.logoutFirebase; window.logoutFirebase=async function(){ try{sessionStorage.removeItem("sciencelab_session")}catch(e){} let a=document.getElementById("strictPass"); if(a) a.value=""; let b=document.getElementById("loginPass"); if(b) b.value=""; let c=document.getElementById("strictUser"); if(c) c.value=""; let ov=document.getElementById("loginOverlay"); if(ov){ov.style.display="flex"; ov.style.background="linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1)";} document.body.style.overflow="hidden"; if(_oldLogout && _oldLogout!==window.logoutFirebase){ try{await _oldLogout()}catch(e){} } };</script><script>
+function saveSiteContent(){
+  let hero = document.getElementById('editHeroTitle') ? document.getElementById('editHeroTitle').value.trim() : '';
+  if(!hero){ alert('من فضلك اكتب العنوان الرئيسي'); return; }
+  localStorage.setItem('siteContent_nada', JSON.stringify({hero: hero, savedAt: new Date().toISOString()}));
+  applySiteContent();
+  try{ let u = localStorage.getItem('sheets_apps_script_url'); if(u) fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'content', hero: hero})}); }catch(e){}
+  let m = document.getElementById('saveMsg'); if(m){ m.style.display='block'; m.textContent='تم الحفظ بنجاح - العنوان اتغير.'; }
+}
+function applySiteContent(){
+  try{
+    let saved = JSON.parse(localStorage.getItem('siteContent_nada')||'null');
+    if(!saved || !saved.hero) return;
+    let h = document.getElementById('heroTitle'); if(h) h.textContent = saved.hero;
+    let inp = document.getElementById('editHeroTitle'); if(inp) inp.value = saved.hero;
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded', applySiteContent);
+setTimeout(applySiteContent, 400);
+setTimeout(applySiteContent, 1200);
+</script>
+<script>
+// ===== Lectures / Exams / Questions / Private Chat =====
+function getArr(k){ try{ return JSON.parse(localStorage.getItem(k)||'[]'); }catch(e){ return []; } }
+function setArr(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+function addLecture(){
+  let t=document.getElementById('newLecTitle').value.trim(), v=document.getElementById('newLecVideo').value.trim(), g=document.getElementById('newLecGrade').value;
+  if(!t||!v){ alert('من فضلك اكملي عنوان المحاضرة ورابط الفيديو'); return; }
+  let arr=getArr('lectures_nada'); arr.push({title:t, video:v, grade:g, date:new Date().toLocaleDateString('ar-EG')}); setArr('lectures_nada', arr);
+  try{ let u=localStorage.getItem('sheets_apps_script_url'); if(u) fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'lecture', title:t, video:v, grade:g})}); }catch(e){}
+  renderLectures(); alert('تمت إضافة المحاضرة.');
+}
+function renderLectures(){
+  let el=document.getElementById('lecturesList'); if(!el) return;
+  let arr=getArr('lectures_nada');
+  el.innerHTML = arr.length ? arr.map((l,i)=>'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin:6px 0;display:flex;justify-content:space-between"><span><b>'+l.title+'</b> - '+l.grade+'</span><a href="'+l.video+'" target="_blank" style="color:#7c3aed">مشاهدة</a></div>').join('') : '<p style="color:#64748b">لا توجد محاضرات بعد.</p>';
+}
+function addExam(){
+  let t=document.getElementById('newExamTitle').value.trim(), l=document.getElementById('newExamLink').value.trim(), g=document.getElementById('newExamGrade').value.trim();
+  if(!t||!l){ alert('من فضلك اكملي عنوان الامتحان ورابطه'); return; }
+  let arr=getArr('exams_nada'); arr.push({title:t, link:l, total:g, date:new Date().toLocaleDateString('ar-EG')}); setArr('exams_nada', arr);
+  try{ let u=localStorage.getItem('sheets_apps_script_url'); if(u) fetch(u,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'exam', title:t, link:l, time:g})}); }catch(e){}
+  renderExams(); alert('تمت إضافة الامتحان.');
+}
+function renderExams(){
+  let el=document.getElementById('examsList'); if(!el) return;
+  let arr=getArr('exams_nada');
+  el.innerHTML = arr.length ? arr.map(e=>'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin:6px 0;display:flex;justify-content:space-between"><span><b>'+e.title+'</b> - الدرجة: '+e.total+'</span><a href="'+e.link+'" target="_blank" style="color:#f59e0b">فتح الامتحان</a></div>').join('') : '<p style="color:#64748b">لا توجد امتحانات بعد.</p>';
+}
+function replyToQuestion(){
+  let t=document.getElementById('replyText').value.trim(); if(!t) return;
+  let qs=getArr('questions_nada'); if(qs.length){ qs[qs.length-1].reply=t; setArr('questions_nada', qs); }
+  document.getElementById('replyText').value=''; renderQuestions(); alert('تم إرسال الرد - سيظهر للطالب عند دخوله.');
+}
+function renderQuestions(){
+  let el=document.getElementById('questionsList'); if(!el) return;
+  let qs=getArr('questions_nada');
+  el.innerHTML = qs.length ? qs.map(q=>'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin:6px 0"><b>'+(q.student||'طالب')+':</b> '+q.text+'<br><span style="color:#0ea5e9">'+(q.reply ? 'الرد: '+q.reply : 'بانتظار الرد')+'</span></div>').join('') : 'لا توجد أسئلة حاليا.';
+}
+document.addEventListener('DOMContentLoaded', ()=>{ renderLectures(); renderExams(); renderQuestions(); });
+setTimeout(()=>{ renderLectures(); renderExams(); renderQuestions(); }, 600);
+// Student side: ask question + private chat (shown on main page)
+window.askQuestion = function(){
+  let q = prompt('اكتب سؤالك في المحاضرة:'); if(!q) return;
+  let arr=getArr('questions_nada'); let user=sessionStorage.getItem('sciencelab_session')||'طالب'; arr.push({student:user, text:q, date:new Date().toLocaleDateString('ar-EG'), reply:''}); setArr('questions_nada', arr);
+  alert('تم إرسال سؤالك - سترد عليك الدكتورة هنا وفي الشات الخاص.');
+};
+window.openPrivateChat = function(){
+  let msg = prompt('اكتب رسالتك الخاصة للدكتورة (مشكلة أو سؤال):'); if(!msg) return;
+  let user=sessionStorage.getItem('sciencelab_session')||'طالب';
+  let chats=getArr('chats_nada'); chats.push({from:user, text:msg, date:new Date().toLocaleString('ar-EG')}); setArr('chats_nada', chats);
+  alert('تم إرسال رسالتك الخاصة - سترد عليك الدكتورة.');
+};
+</script>
+</body>
 </html>
