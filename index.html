@@ -171,7 +171,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
 </script>
 
 
-<div id="loginModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px">
+<div id="loginModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;width:100%;max-width:420px;border-radius:24px;padding:28px;text-align:center">
     <div style="font-size:50px">🧪</div>
     <h2 style="margin:8px 0">دخول الطالب - Firebase</h2>
@@ -181,10 +181,10 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
     <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
     <p style="font-size:12px;color:#64748b;margin-top:10px">أول مرة؟ اعمل حساب الأدمن: Username = <b>admin</b> من لوحة الأدمن أو من Firebase Console</p>
-    <p style="font-size:12px;color:#ef4444;font-weight:800;margin-top:10px">🔒 مفيش دخول من غير يوزر وباسورد - اطلبهم من المستر</p>
+    <p style="font-size:12px;color:#ef4444;font-weight:800;margin-top:10px">🔒 مفيش دخول من غير يوزر وباسورد - اطلبهم من المستر</p><button onclick="hideLogin()" style="background:none;border:none;color:#64748b;cursor:pointer;margin-top:8px">← رجوع</button>
   </div>
 </div>
-<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:101;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
+<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:310;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
   <div style="background:#fff;width:100%;max-width:600px;border-radius:24px;padding:24px;margin:auto">
     <div style="display:flex;justify-content:space-between"><h2>⚙️ لوحة الأدمن - Firebase</h2><button onclick="hideAdmin()" style="border:none;background:#fee2e2;padding:6px 12px;border-radius:999px;cursor:pointer">X</button></div>
     <p style="color:#64748b;font-size:13px;margin:8px 0">كل طالب هيتعمل بحساب حقيقي في Firebase - متشفر ومحفوظ</p>
@@ -246,8 +246,8 @@ try{
 let currentUser = null;
 let currentProfile = null;
 
-window.showLogin = ()=>{ document.getElementById('loginModal').style.display='flex'; }
-window.hideLogin = ()=>{ if(!currentProfile){ alert('لازم تسجل دخول الأول'); return; } document.getElementById('loginModal').style.display='none'; }
+window.showLogin = ()=>{ let ov=document.getElementById('forceLoginOverlay'); if(ov) ov.style.display='none'; document.getElementById('loginModal').style.display='flex'; }
+window.hideLogin = ()=>{ if(!currentProfile){ document.getElementById('loginModal').style.display='none'; let ov=document.getElementById('forceLoginOverlay'); if(ov) ov.style.display='flex'; return; } document.getElementById('loginModal').style.display='none'; }
 
 window.doLoginFirebase = async ()=>{
   let u = document.getElementById('inpUser').value.trim();
