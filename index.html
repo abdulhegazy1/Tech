@@ -62,9 +62,12 @@ th{background:#0f172a;color:#fff}
 footer{background:#0f172a;color:#fff;margin-top:30px;padding:30px 20px;text-align:center}
 footer a{color:#38bdf8;text-decoration:none;font-weight:800}
 @media(max-width:900px){.hero{grid-template-columns:1fr}.grid,.price-grid,.two{grid-template-columns:1fr}.hero-card h1{font-size:32px}}
+
+body.locked main, body.locked header, body.locked section, body.locked footer { filter: blur(8px); pointer-events:none; user-select:none; }
+#forceLoginOverlay{position:fixed;inset:0;background:rgba(15,23,42,.85);z-index:200;display:flex;align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px}
 </style>
 </head>
-<body>
+<body class="locked"><div id="forceLoginOverlay"><div><div style="font-size:60px">🔒</div><h2 style="font-size:28px;margin:10px 0">المنصة مقفولة للطلاب فقط</h2><p style="opacity:.8">سجل دخول باليوزر والباسورد اللي المستر ادهوملك</p><button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:13px 24px;border-radius:999px;font-weight:900;cursor:pointer;margin-top:16px;font-size:16px">دخول الطالب 🔐</button></div></div>
 <header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع المستر 📲</a></div></header>
 
 <section class="hero">
@@ -89,7 +92,7 @@ footer a{color:#38bdf8;text-decoration:none;font-weight:800}
 <h2>📚 الدروس - اختار مرحلتك</h2>
 <p class="sub">كل درس فيه فيديو + ملخص PDF + أسئلة + واجب</p>
 <div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade9',this)">Grade 9</button></div>
-<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على PASTE_YOUR_API_KEY_HERE وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
+<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
 <div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة عملية بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#fef3c7">🌊</div><div class="card-body"><span class="badge">Grade 5</span><h3>Water Cycle - دورة المياه</h3><p>Evaporation, Condensation, Precipitation بطريقة لعبة.</p><div class="meta"><span>⏱ 22 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#dcfce7">🧬</div><div class="card-body"><span class="badge">Grade 6</span><h3>Digestive System</h3><p>رحلة الأكل جوه جسمك من أول الفم لحد... هتعرف في الدرس!</p><div class="meta"><span>⏱ 25 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
@@ -178,7 +181,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
     <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
     <p style="font-size:12px;color:#64748b;margin-top:10px">أول مرة؟ اعمل حساب الأدمن: Username = <b>admin</b> من لوحة الأدمن أو من Firebase Console</p>
-    <button onclick="hideLogin()" style="background:none;border:none;color:#64748b;cursor:pointer;margin-top:10px">تصفح كزائر 👀</button>
+    <p style="font-size:12px;color:#ef4444;font-weight:800;margin-top:10px">🔒 مفيش دخول من غير يوزر وباسورد - اطلبهم من المستر</p>
   </div>
 </div>
 <div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:101;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
@@ -221,12 +224,12 @@ import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } fro
 // هتجيبه من Firebase Console > Project Settings > Your apps > Web app
 // انسخ اللي بين القوسين وحطه مكان اللي تحت
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY_HERE",
-  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg",
+  authDomain: "tech-lab-186a0.firebaseapp.com",
+  projectId: "tech-lab-186a0",
+  storageBucket: "tech-lab-186a0.firebasestorage.app",
+  messagingSenderId: "475392080982",
+  appId: "1:475392080982:web:0ae2048d97db49ffb58ff7"
 };
 // ==============================================================
 
@@ -236,7 +239,7 @@ try{
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
-  firebaseReady = firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY_HERE";
+  firebaseReady = firebaseConfig.apiKey !== "AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg";
   if(!firebaseReady) document.getElementById('firebaseWarning').style.display='block';
 }catch(e){ console.log(e); document.getElementById('firebaseWarning').style.display='block'; }
 
@@ -244,7 +247,7 @@ let currentUser = null;
 let currentProfile = null;
 
 window.showLogin = ()=>{ document.getElementById('loginModal').style.display='flex'; }
-window.hideLogin = ()=>{ document.getElementById('loginModal').style.display='none'; }
+window.hideLogin = ()=>{ if(!currentProfile){ alert('لازم تسجل دخول الأول'); return; } document.getElementById('loginModal').style.display='none'; }
 
 window.doLoginFirebase = async ()=>{
   let u = document.getElementById('inpUser').value.trim();
@@ -383,12 +386,12 @@ if(firebaseReady){
       currentProfile=profile;
       document.getElementById('userBar').innerHTML=`مرحباً <b>${profile.name}</b> | ${profile.grade} ${profile.role==='admin'?'(أدمن)':''} | <button onclick="logoutFirebase()" style="background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-weight:800">خروج</button> ${profile.role==='admin'?'<button onclick="showAdmin()" style="background:#0f172a;color:#fff;border:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-weight:800">لوحة الأدمن ⚙️</button>':''}`;
       document.getElementById('lessonsLocked').style.display='none';
-      hideLogin();
+      hideLogin(); document.body.classList.remove('locked'); let ov=document.getElementById('forceLoginOverlay'); if(ov) ov.style.display='none';
     } else {
       currentUser=null; currentProfile=null;
       document.getElementById('userBar').innerHTML=`<button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800">دخول الطالب 🔐</button>`;
       document.getElementById('lessonsLocked').style.display='block';
-      setTimeout(showLogin, 600);
+      document.body.classList.add('locked'); let ov2=document.getElementById('forceLoginOverlay'); if(ov2) ov2.style.display='flex'; setTimeout(showLogin, 600);
     }
   });
 } else {
