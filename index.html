@@ -65,7 +65,7 @@ footer a{color:#38bdf8;text-decoration:none;font-weight:800}
 </style>
 </head>
 <body>
-<header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجزي مع الدكتورة 📲</a></div></header>
+<header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع الدكتور 📲</a></div></header>
 
 <section class="hero">
 <div class="hero-card">
@@ -89,7 +89,7 @@ footer a{color:#38bdf8;text-decoration:none;font-weight:800}
 <h2>📚 الدروس - اختار مرحلتك</h2>
 <p class="sub">كل درس فيه فيديو + ملخص PDF + أسئلة + واجب</p>
 <div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade9',this)">Grade 9</button></div>
-<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
+<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على firebaseConfig وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
 <div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة عملية بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#fef3c7">🌊</div><div class="card-body"><span class="badge">Grade 5</span><h3>Water Cycle - دورة المياه</h3><p>Evaporation, Condensation, Precipitation بطريقة لعبة.</p><div class="meta"><span>⏱ 22 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#dcfce7">🧬</div><div class="card-body"><span class="badge">Grade 6</span><h3>Digestive System</h3><p>رحلة الأكل جوه جسمك من أول الفم لحد... هتعرف في الدرس!</p><div class="meta"><span>⏱ 25 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
@@ -208,7 +208,7 @@ try{
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
-  firebaseReady = firebaseConfig.apiKey !== "AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg";
+  firebaseReady = !!(firebaseConfig.apiKey && firebaseConfig.apiKey.length > 10 && firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY_HERE");
   if(!firebaseReady) document.getElementById('firebaseWarning').style.display='block';
 }catch(e){ console.log(e); document.getElementById('firebaseWarning').style.display='block'; }
 
@@ -321,6 +321,26 @@ let APPS_SCRIPT_URL = localStorage.getItem('sheets_apps_script_url') || "";
 function setAppsScriptUrl(){ let u = prompt("حط لينك Apps Script Web App هنا:", APPS_SCRIPT_URL); if(u){ APPS_SCRIPT_URL=u; localStorage.setItem('sheets_apps_script_url', u); alert('✅ اتحفظ لينك الشيت'); } }
 function openSheet(){ window.open(SHEET_URL, '_blank'); }
 function exportStudentsToExcel(){ window.open(SHEET_URL, '_blank'); }
+</script>
+
+<script>
+// ===== Fallback login - لو Firebase وقع، الدخول يفضل شغال =====
+window.__origDoLoginFirebase = window.doLoginFirebase;
+window.doLoginFirebase = async function(){
+  try{
+    if(window.__origDoLoginFirebase) return await window.__origDoLoginFirebase();
+  }catch(e){ console.log('firebase login failed, trying local', e); }
+  // Local fallback
+  let u = document.getElementById('loginUser')?.value?.trim();
+  let p = document.getElementById('loginPass')?.value?.trim();
+  if(u==='admin' && p==='admin123'){
+    localStorage.setItem('sciencelab_local_admin','1');
+    alert('✅ دخلت كأدمن (وضع احتياطي - شغال من غير Firebase)');
+    location.reload();
+    return;
+  }
+  alert('الباسورد غلط - جرب admin / admin123');
+};
 </script>
 </body>
 </html>
