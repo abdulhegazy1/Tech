@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة Science | مستر ساينس</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo','Tajawal',sans-serif}
+:root{--blue:#0ea5e9;--dark:#0f172a;--violet:#7c3aed;--green:#10b981;--orange:#f59e0b;--pink:#ec4899;--bg:#f8fafc}
+body{background:var(--bg);color:var(--dark)}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid #e2e8f0}
+.nav{max-width:1200px;margin:auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;font-size:24px} .logo span{color:var(--blue)}
+.nav a{margin:0 10px;text-decoration:none;color:#334155;font-weight:700;font-size:14px}
+.btn{background:var(--blue);color:#fff!important;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:800}
+.hero{max-width:1200px;margin:20px auto;padding:28px 20px;display:grid;grid-template-columns:1.1fr .9fr;gap:24px;align-items:center}
+.hero-card{background:linear-gradient(135deg,#0ea5e9,#7c3aed,#ec4899);color:#fff;border-radius:28px;padding:32px;position:relative;overflow:hidden}
+.hero-card h1{font-size:42px;line-height:1.15;font-weight:900}
+.hero-card p{margin:16px 0;opacity:.95;line-height:1.7}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.white-btn{background:#fff;color:#0f172a;padding:12px 20px;border-radius:999px;font-weight:900;text-decoration:none}
+.outline-btn{border:2px solid #fff;color:#fff;padding:10px 20px;border-radius:999px;font-weight:900;text-decoration:none}
+.stats{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.stat{background:rgba(255,255,255,.18);padding:10px 14px;border-radius:14px;text-align:center}
+.stat b{display:block;font-size:20px}
+.side-card{background:#fff;border-radius:24px;padding:20px;box-shadow:0 10px 30px rgba(0,0,0,.06)}
+.side-card h3{margin-bottom:12px}
+.live{display:flex;gap:12px;align-items:center;background:#fff7ed;border:1px solid #fed7aa;padding:12px;border-radius:16px;margin-bottom:12px}
+.live span{font-size:28px}
+.badge{background:#dcfce7;color:#166534;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.section{max-width:1200px;margin:auto;padding:20px}
+.section h2{font-size:28px;font-weight:900;margin-bottom:6px}
+.section p.sub{color:#64748b;margin-bottom:18px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.filter{padding:8px 16px;border-radius:999px;background:#fff;border:1px solid #e2e8f0;cursor:pointer;font-weight:800}
+.filter.active{background:var(--dark);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.05)}
+.card-top{height:150px;display:flex;align-items:center;justify-content:center;font-size:64px}
+.card-body{padding:16px}
+.card-body h3{font-size:18px;margin-bottom:6px}
+.card-body p{color:#64748b;font-size:14px;line-height:1.6}
+.meta{display:flex;justify-content:space-between;margin:12px 0;color:#64748b;font-size:13px;font-weight:700}
+.card-btn{display:block;text-align:center;background:#f1f5f9;padding:10px;border-radius:12px;text-decoration:none;color:#0f172a;font-weight:900}
+.card-btn:hover{background:var(--blue);color:#fff}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:#fff;border-radius:22px;padding:20px}
+.quiz-q{font-weight:900;margin:14px 0 8px}
+.opt{display:block;width:100%;text-align:right;padding:11px 14px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;cursor:pointer;font-weight:700}
+.opt:hover{border-color:var(--blue);background:#e0f2fe}
+.exp{padding:14px;border-radius:16px;background:#f8fafc;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start}
+.exp b{font-size:22px}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:18px;overflow:hidden}
+th,td{padding:13px;text-align:right;border-bottom:1px solid #f1f5f9}
+th{background:#0f172a;color:#fff}
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.price{background:#fff;border-radius:22px;padding:22px;text-align:center;border:2px solid #e2e8f0}
+.price.pop{border-color:var(--blue);transform:scale(1.02)}
+.price h3{font-size:20px} .price .p{font-size:36px;font-weight:900;margin:12px 0} .price .p small{font-size:14px;color:#64748b}
+.price ul{list-style:none;text-align:right;line-height:2;color:#334155;font-size:14px}
+footer{background:#0f172a;color:#fff;margin-top:30px;padding:30px 20px;text-align:center}
+footer a{color:#38bdf8;text-decoration:none;font-weight:800}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.grid,.price-grid,.two{grid-template-columns:1fr}.hero-card h1{font-size:32px}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع المستر 📲</a></div></header>
+
+<section class="hero">
+<div class="hero-card">
+<span class="badge">🔥 الترم الأول - 2026 / 2027</span>
+<h1>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
+<p>شرح بالعربي والإنجليزي، تجارب حقيقية، فيديوهات، ملخصات PDF، واختبارات بعد كل درس. من Grade 4 لحد Grade 9 و Prep 1,2,3</p>
+<div class="hero-btns"><a class="white-btn" href="#lessons">ابدأ التعلم مجاناً 🚀</a><a class="outline-btn" href="#quiz">جرب كويز سريع</a></div>
+<div class="stats"><div class="stat"><b>+120</b>درس فيديو</div><div class="stat"><b>+45</b>تجربة عملية</div><div class="stat"><b>+900</b>طالب متفوق</div><div class="stat"><b>98%</b>نسبة النجاح</div></div>
+</div>
+<div class="side-card">
+<h3>📅 حصص الأسبوع ده</h3>
+<div class="live"><span>🧬</span><div><b>Grade 6 - Digestive System</b><br><small>السبت - 5 مساءً - أونلاين على زووم</small></div><span class="badge">LIVE</span></div>
+<div class="live"><span>⚡</span><div><b>Prep 2 - Electric Circuits</b><br><small>الأحد - 6 مساءً - سنتر + أونلاين</small></div></div>
+<div class="live"><span>🌍</span><div><b>Grade 5 - Water Cycle</b><br><small>الاثنين - 4 مساءً - فيديو مسجل</small></div></div>
+<h3 style="margin-top:16px">👨‍🏫 عن المستر</h3>
+<p style="color:#475569;line-height:1.7;font-size:14px">مستر أحمد - مدرس Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</p>
+</div>
+</section>
+
+<section class="section" id="lessons">
+<h2>📚 الدروس - اختار مرحلتك</h2>
+<p class="sub">كل درس فيه فيديو + ملخص PDF + أسئلة + واجب</p>
+<div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade9',this)">Grade 9</button></div>
+<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على PASTE_YOUR_API_KEY_HERE وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
+<div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة عملية بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+<div class="card" data-cat="primary"><div class="card-top" style="background:#fef3c7">🌊</div><div class="card-body"><span class="badge">Grade 5</span><h3>Water Cycle - دورة المياه</h3><p>Evaporation, Condensation, Precipitation بطريقة لعبة.</p><div class="meta"><span>⏱ 22 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+<div class="card" data-cat="primary"><div class="card-top" style="background:#dcfce7">🧬</div><div class="card-body"><span class="badge">Grade 6</span><h3>Digestive System</h3><p>رحلة الأكل جوه جسمك من أول الفم لحد... هتعرف في الدرس!</p><div class="meta"><span>⏱ 25 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+<div class="card" data-cat="prep"><div class="card-top" style="background:#ede9fe">⚡</div><div class="card-body"><span class="badge">Prep 2</span><h3>Electric Circuits</h3><p>Series vs Parallel - هنوصل لمبة حقيقي ونشوف الفرق.</p><div class="meta"><span>⏱ 30 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+<div class="card" data-cat="prep"><div class="card-top" style="background:#fce7f3">🧪</div><div class="card-body"><span class="badge">Prep 1</span><h3>States of Matter</h3><p>Solid, Liquid, Gas - وتجارب الثلج والماء والبخار.</p><div class="meta"><span>⏱ 20 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+<div class="card" data-cat="grade9"><div class="card-top" style="background:#ffedd5">🔬</div><div class="card-body"><span class="badge">Grade 9 - مهم</span><h3>Atoms & Periodic Table</h3><p>الجدول الدوري من غير حفظ - طريقة المستر في 3 خطوات.</p><div class="meta"><span>⏱ 35 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+</div>
+</section>
+
+<section class="section" id="exp">
+<h2>🧪 معمل التجارب</h2><p class="sub">تجارب تعملها في البيت بأدوات بسيطة</p>
+<div class="two">
+<div class="box">
+<div class="exp"><b>🌋</b><div><strong>بركان الخل والبيكربونات</strong><br><small>خل + بيكربونات صوديوم + لون أحمر = انفجار بركاني آمن</small></div></div>
+<div class="exp"><b>🎈</b><div><strong>بالونة لا تنفجر</strong><br><small>بالونة + شمعة - ليه المياه بتحمي البالونة؟</small></div></div>
+<div class="exp"><b>🌈</b><div><strong>قوس قزح في كوباية</strong><br><small>كثافة السوائل - عسل + مياه ملونة + زيت</small></div></div>
+</div>
+<div class="box" id="quiz">
+<h3>🎯 اختبر نفسك - كويز سريع</h3>
+<p class="quiz-q">1. أي عضو مسؤول عن هضم الطعام بشكل أساسي؟</p>
+<button class="opt" onclick="check(this,true)">A) Stomach - المعدة ✅</button>
+<button class="opt" onclick="check(this,false)">B) Heart - القلب</button>
+<button class="opt" onclick="check(this,false)">C) Lung - الرئة</button>
+<p class="quiz-q">2. الماء يتحول لبخار بعملية اسمها؟</p>
+<button class="opt" onclick="check(this,false)">A) Condensation</button>
+<button class="opt" onclick="check(this,true)">B) Evaporation ✅</button>
+<button class="opt" onclick="check(this,false)">C) Freezing</button>
+<p id="quizResult" style="font-weight:900;margin-top:10px;color:#059669"></p>
+</div>
+</div>
+</section>
+
+<section class="section">
+<h2>🗓️ مواعيد الحصص</h2>
+<table><tr><th>المرحلة</th><th>اليوم</th><th>المعاد</th><th>المكان</th></tr>
+<tr><td>Grade 4 - 6</td><td>السبت والثلاثاء</td><td>4 - 6 مساءً</td><td>سنتر + أونلاين</td></tr>
+<tr><td>Prep 1 - 2</td><td>الأحد والأربعاء</td><td>5 - 7 مساءً</td><td>سنتر + أونلاين</td></tr>
+<tr><td>Prep 3 / Grade 9</td><td>الجمعة</td><td>6 - 8 مساءً</td><td>أونلاين فقط</td></tr>
+</table>
+</section>
+
+
+<section class="section" id="dynamicLectures">
+<h2>🎥 المحاضرات الجديدة - من لوحة الأدمن</h2>
+<p class="sub">المستر بيضيفها من الموقع نفسه، بتظهر هنا فوراً من غير كود</p>
+<div id="lecturesList" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+  <p style="color:#64748b">جاري تحميل المحاضرات...</p>
+</div>
+<div style="margin-top:16px;background:#e0f2fe;padding:14px;border-radius:16px;font-size:14px">💡 <b>للمستر:</b> دوس على لوحة الأدمن فوق > تبويب <b>محاضرات وامتحانات</b> > ضيف محاضرة جديدة</div>
+</section>
+
+<section class="section" id="dynamicExams">
+<h2>📝 الامتحانات والواجبات</h2>
+<p class="sub">امتحانات بتوقيت، والطالب بيحلها من الموقع</p>
+<div id="examsList" style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+  <p style="color:#64748b">جاري تحميل الامتحانات...</p>
+</div>
+</section>
+<section class="section" id="prices">
+<h2>💰 الاشتراكات</h2>
+<div class="price-grid">
+<div class="price"><h3>🆓 تجريبي</h3><div class="p">0 <small>جنيه / شهر</small></div><ul><li>✅ 3 دروس مجانية</li><li>✅ ملخص PDF واحد</li><li>✅ كويز واحد</li></ul><br><a class="card-btn" href="https://wa.me/201000000000">ابدأ مجاناً</a></div>
+<div class="price pop"><h3>⭐ الأشهر - شهري</h3><div class="p">250 <small>جنيه / شهر</small></div><ul><li>✅ كل الدروس + الفيديوهات</li><li>✅ كل الملخصات PDF</li><li>✅ جروب واتساب للمتابعة</li><li>✅ مراجعة ليلة الامتحان</li></ul><br><a class="card-btn" href="https://wa.me/201000000000">اشترك الآن</a></div>
+<div class="price"><h3>🏆 الترم كامل</h3><div class="p">900 <small>جنيه / ترم</small></div><ul><li>✅ كل مميزات الشهري</li><li>✅ خصم 20%</li><li>✅ حصص برايفت 1-1</li></ul><br><a class="card-btn" href="https://wa.me/201000000000">اشترك في الترم</a></div>
+</div>
+</section>
+
+<footer>
+<h2 style="margin-bottom:10px">ScienceLab 🧪 - التعلم متعة</h2>
+<p>للحجز والاستفسار: <a href="https://wa.me/201000000000">واتساب المستر</a> | تابعنا على فيسبوك ويوتيوب</p>
+<p style="margin-top:12px;opacity:.6;font-size:13px">© 2026 ScienceLab - جميع الحقوق محفوظة</p>
+</footer>
+<script>
+function filterLessons(cat,btn){document.querySelectorAll('.filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('#lessonsGrid .card').forEach(c=>{c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none'})}
+function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.borderColor='#22c55e';document.getElementById('quizResult').innerText='برافو! إجابة صح 👏🎉'}else{el.style.background='#fee2e2';el.style.borderColor='#ef4444';document.getElementById('quizResult').innerText='حاول تاني، انت قدها 💪'}}
+</script>
+
+
+<div id="loginModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;width:100%;max-width:420px;border-radius:24px;padding:28px;text-align:center">
+    <div style="font-size:50px">🧪</div>
+    <h2 style="margin:8px 0">دخول الطالب - Firebase</h2>
+    <p style="color:#64748b;font-size:14px">دخل اليوزر والباسورد اللي المستر ادهوملك</p>
+    <input id="inpUser" placeholder="Username - مثال: omar123" style="width:100%;padding:13px;margin:12px 0 8px;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="inpPass" type="password" placeholder="Password" style="width:100%;padding:13px;border:1px solid #e2e8f0;border-radius:12px">
+    <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
+    <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
+    <p style="font-size:12px;color:#64748b;margin-top:10px">أول مرة؟ اعمل حساب الأدمن: Username = <b>admin</b> من لوحة الأدمن أو من Firebase Console</p>
+    <button onclick="hideLogin()" style="background:none;border:none;color:#64748b;cursor:pointer;margin-top:10px">تصفح كزائر 👀</button>
+  </div>
+</div>
+<div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:101;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
+  <div style="background:#fff;width:100%;max-width:600px;border-radius:24px;padding:24px;margin:auto">
+    <div style="display:flex;justify-content:space-between"><h2>⚙️ لوحة الأدمن - Firebase</h2><button onclick="hideAdmin()" style="border:none;background:#fee2e2;padding:6px 12px;border-radius:999px;cursor:pointer">X</button></div>
+    <p style="color:#64748b;font-size:13px;margin:8px 0">كل طالب هيتعمل بحساب حقيقي في Firebase - متشفر ومحفوظ</p>
+    <input id="newName" placeholder="اسم الطالب" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="newUser" placeholder="Username - مثال: omar123 (من غير مسافات)" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="newPass" placeholder="Password - 6 حروف على الأقل" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <select id="newGrade" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option><option>Grade 9</option></select>
+    <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">+ إضافة الطالب في Firebase</button>
+    
+    <hr style="margin:16px 0">
+    <h3>🎥 إضافة محاضرة من الموقع</h3>
+    <input id="lecTitle" placeholder="عنوان المحاضرة - مثال: Digestive System - Grade 6" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="lecVideo" placeholder="لينك الفيديو - يوتيوب أو زووم أو درايف" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="lecPdf" placeholder="لينك الملخص PDF (اختياري)" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <select id="lecGrade" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option><option>Grade 9</option><option>الكل</option></select>
+    <textarea id="lecDesc" placeholder="وصف المحاضرة..." style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px"></textarea>
+    <button onclick="addLectureFirebase()" style="width:100%;background:#7c3aed;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer">+ نشر المحاضرة 🚀</button>
+
+    <h3 style="margin:16px 0 8px">📝 إضافة امتحان</h3>
+    <input id="examTitle" placeholder="عنوان الامتحان - مثال: Quiz - Water Cycle" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="examLink" placeholder="لينك الامتحان - Google Forms أو لينك مباشر" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="examTime" placeholder="مدة الامتحان - مثال: 30 دقيقة" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
+    <select id="examGrade" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:12px"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option><option>Grade 9</option><option>الكل</option></select>
+    <button onclick="addExamFirebase()" style="width:100%;background:#f59e0b;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:8px">+ نشر الامتحان 📝</button>
+    <p style="font-size:12px;color:#64748b;margin-top:10px">الامتحان ممكن يكون Google Forms - اعمله من forms.google.com وخد اللينك وحطه هنا. الطالب هيدوس ويحل.</p>
+<h3 style="margin:16px 0 8px">كل الطلاب:</h3><div id="studentsList"></div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ============ 🔴 الخطوة الأخيرة: حط الكونفيج بتاعك هنا ============
+// هتجيبه من Firebase Console > Project Settings > Your apps > Web app
+// انسخ اللي بين القوسين وحطه مكان اللي تحت
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY_HERE",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+// ==============================================================
+
+let app, auth, db;
+let firebaseReady = false;
+try{
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+  firebaseReady = firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY_HERE";
+  if(!firebaseReady) document.getElementById('firebaseWarning').style.display='block';
+}catch(e){ console.log(e); document.getElementById('firebaseWarning').style.display='block'; }
+
+let currentUser = null;
+let currentProfile = null;
+
+window.showLogin = ()=>{ document.getElementById('loginModal').style.display='flex'; }
+window.hideLogin = ()=>{ document.getElementById('loginModal').style.display='none'; }
+
+window.doLoginFirebase = async ()=>{
+  let u = document.getElementById('inpUser').value.trim();
+  let p = document.getElementById('inpPass').value.trim();
+  if(!u||!p) return alert('اكتب اليوزر والباسورد');
+  if(!firebaseReady) return alert('لسه محطتش كونفيج Firebase - شوف الخطوات تحت');
+  // نحول اليوزر لإيميل وهمي: omar123 -> omar123@sciencelab.app
+  let email = u.includes('@') ? u : u.toLowerCase() + '@sciencelab.app';
+  try{
+    await signInWithEmailAndPassword(auth, email, p);
+  }catch(e){
+    document.getElementById('loginError').innerText = '❌ اليوزر أو الباسورد غلط - ' + e.code;
+  }
+};
+
+window.logoutFirebase = async ()=>{ await signOut(auth); };
+
+window.showAdmin = ()=>{ if(currentProfile?.role!=='admin') return alert('للأدمن بس'); document.getElementById('adminPanel').style.display='block'; renderStudents(); }
+window.hideAdmin = ()=>{ document.getElementById('adminPanel').style.display='none'; }
+
+window.addStudentFirebase = async ()=>{
+  let name=document.getElementById('newName').value.trim();
+  let u=document.getElementById('newUser').value.trim().toLowerCase();
+  let p=document.getElementById('newPass').value.trim();
+  let g=document.getElementById('newGrade').value;
+  if(!name||!u||!p) return alert('املأ كل البيانات');
+  if(!firebaseReady) return alert('لسه محطتش الكونفيج');
+  let email = u + '@sciencelab.app';
+  // حفظ الأدمن الحالي عشان منخرجش منه
+  try{
+    // انشاء الحساب - Firebase هيعمل sign-in تلقائي بالحساب الجديد، فهنرجع نسجل دخول الأدمن تاني بعدها
+    // حل أبسط: بنستخدم secondary auth لو متاح، هنا بنعمل create وبعدين نرجع
+    // عشان كده هنطلب من الأدمن يدخل باسورده تاني بعد الإضافة
+    await createUserWithEmailAndPassword(auth, email, p);
+    // احفظ بيانات الطالب في Firestore
+    await setDoc(doc(db, "students", u), {username:u, name:name, grade:g, role:"student", createdAt: new Date().toISOString()});
+    alert('✅ تم إضافة '+name+'\nUsername: '+u+'\nPassword: '+p+'\n\nملحوظة: انت دلوقتي دخلت بحساب الطالب، اعمل خروج وادخل بحساب الأدمن تاني');
+    renderStudents();
+  }catch(e){ alert('خطأ: '+e.message); }
+};
+
+window.deleteStudentFirebase = async (u)=>{
+  if(!confirm('تحذف '+u+'؟')) return;
+  await deleteDoc(doc(db, "students", u));
+  alert('تم الحذف من القايمة - عشان تحذفه من Auth امسحه من Firebase Console > Authentication');
+  renderStudents();
+};
+
+async function renderStudents(){
+  let list=document.getElementById('studentsList');
+  if(!list) return;
+  list.innerHTML='جاري التحميل...';
+  try{
+    let snap=await getDocs(collection(db,"students"));
+    list.innerHTML='';
+    snap.forEach(d=>{
+      let s=d.data();
+      list.innerHTML+=`<div style="display:flex;justify-content:space-between;background:#f8fafc;padding:10px;border-radius:12px;margin-bottom:6px"><span><b>${s.username}</b> - ${s.name} - ${s.grade}</span><button onclick="deleteStudentFirebase('${s.username}')" style="background:#fee2e2;border:none;padding:4px 10px;border-radius:999px;cursor:pointer">حذف</button></div>`;
+    });
+    if(list.innerHTML==='') list.innerHTML='لسه مفيش طلاب - ضيف أول طالب';
+  }catch(e){ list.innerHTML='خطأ: '+e.message; }
+}
+window.renderStudents=renderStudents;
+
+window.addLectureFirebase = async ()=>{
+  let title=document.getElementById('lecTitle').value.trim();
+  let video=document.getElementById('lecVideo').value.trim();
+  let pdf=document.getElementById('lecPdf').value.trim();
+  let grade=document.getElementById('lecGrade').value;
+  let desc=document.getElementById('lecDesc').value.trim();
+  if(!title||!video) return alert('اكتب عنوان ولينك الفيديو');
+  await setDoc(doc(db,"lectures", Date.now().toString()), {title, video, pdf, grade, desc, createdAt: new Date().toISOString()});
+  alert('✅ اتنشرت المحاضرة!');
+  document.getElementById('lecTitle').value='';document.getElementById('lecVideo').value='';document.getElementById('lecPdf').value='';document.getElementById('lecDesc').value='';
+  loadLectures();
+};
+window.addExamFirebase = async ()=>{
+  let title=document.getElementById('examTitle').value.trim();
+  let link=document.getElementById('examLink').value.trim();
+  let time=document.getElementById('examTime').value.trim();
+  let grade=document.getElementById('examGrade').value;
+  if(!title||!link) return alert('اكتب عنوان ولينك الامتحان');
+  await setDoc(doc(db,"exams", Date.now().toString()), {title, link, time, grade, createdAt: new Date().toISOString()});
+  alert('✅ اتنشر الامتحان!');
+  document.getElementById('examTitle').value='';document.getElementById('examLink').value='';document.getElementById('examTime').value='';
+  loadExams();
+};
+window.deleteLecture = async (id)=>{ if(confirm('تحذف المحاضرة؟')){ await deleteDoc(doc(db,"lectures",id)); loadLectures(); } };
+window.deleteExam = async (id)=>{ if(confirm('تحذف الامتحان؟')){ await deleteDoc(doc(db,"exams",id)); loadExams(); } };
+async function loadLectures(){
+  let el=document.getElementById('lecturesList'); if(!el) return;
+  if(!firebaseReady){ el.innerHTML='<p style="color:#64748b">حط كونفيج Firebase الأول عشان المحاضرات تظهر</p>'; return; }
+  try{
+    let snap=await getDocs(collection(db,"lectures"));
+    if(snap.empty){ el.innerHTML='<div style="background:#fff;padding:20px;border-radius:18px;grid-column:1/-1;text-align:center;color:#64748b">لسه مفيش محاضرات - المستر هيضيف من لوحة الأدمن 🎥</div>'; return; }
+    el.innerHTML='';
+    snap.forEach(d=>{
+      let l=d.data();
+      el.innerHTML+=`<div style="background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.05)"><div style="background:#ede9fe;height:120px;display:flex;align-items:center;justify-content:center;font-size:50px">🎥</div><div style="padding:16px"><span style="background:#dcfce7;color:#166534;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800">${l.grade}</span><h3 style="margin:8px 0">${l.title}</h3><p style="color:#64748b;font-size:14px;line-height:1.6">${l.desc||''}</p><div style="display:flex;gap:8px;margin-top:12px"><a href="${l.video}" target="_blank" style="flex:1;text-align:center;background:#0ea5e9;color:#fff;padding:10px;border-radius:12px;text-decoration:none;font-weight:800">شاهد ▶</a>${l.pdf?`<a href="${l.pdf}" target="_blank" style="flex:1;text-align:center;background:#f1f5f9;padding:10px;border-radius:12px;text-decoration:none;color:#0f172a;font-weight:800">PDF 📄</a>`:''}</div>${currentProfile?.role==='admin'?`<button onclick="deleteLecture('${d.id}')" style="width:100%;margin-top:8px;background:#fee2e2;border:none;padding:8px;border-radius:10px;cursor:pointer">حذف</button>`:''}</div></div>`;
+    });
+  }catch(e){ el.innerHTML='خطأ: '+e.message; }
+}
+async function loadExams(){
+  let el=document.getElementById('examsList'); if(!el) return;
+  if(!firebaseReady){ el.innerHTML='<p style="color:#64748b">حط كونفيج Firebase الأول</p>'; return; }
+  try{
+    let snap=await getDocs(collection(db,"exams"));
+    if(snap.empty){ el.innerHTML='<div style="background:#fff;padding:20px;border-radius:18px;grid-column:1/-1;text-align:center;color:#64748b">لسه مفيش امتحانات</div>'; return; }
+    el.innerHTML='';
+    snap.forEach(d=>{
+      let e=d.data();
+      el.innerHTML+=`<div style="background:#fff;border-radius:18px;padding:18px"><span style="background:#fef3c7;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800">${e.grade} - ${e.time||''}</span><h3 style="margin:10px 0">${e.title}</h3><a href="${e.link}" target="_blank" style="display:block;text-align:center;background:#f59e0b;color:#fff;padding:11px;border-radius:12px;text-decoration:none;font-weight:900;margin-top:10px">ابدأ الامتحان 📝</a>${currentProfile?.role==='admin'?`<button onclick="deleteExam('${d.id}')" style="width:100%;margin-top:8px;background:#fee2e2;border:none;padding:8px;border-radius:10px;cursor:pointer">حذف</button>`:''}</div>`;
+    });
+  }catch(e){ el.innerHTML='خطأ: '+e.message; }
+}
+window.loadLectures=loadLectures; window.loadExams=loadExams;
+setTimeout(()=>{loadLectures(); loadExams();}, 1000);
+
+
+if(firebaseReady){
+  onAuthStateChanged(auth, async (user)=>{
+    if(user){
+      currentUser=user;
+      let username=user.email.split('@')[0];
+      // الأدمن: أول واحد يعمل حساب بـ admin هو الأدمن، أو لو اليوزر admin
+      let isAdmin = username==='admin';
+      let profile = {username, name: username==='admin'?'مستر أحمد - الأدمن':username, grade:'', role: isAdmin?'admin':'student'};
+      try{
+        let snap=await getDoc(doc(db,"students", username));
+        if(snap.exists()) profile={...profile, ...snap.data()};
+        // لو مفيش بروفايل و مش أدمن، اعمله
+        if(!snap.exists() && !isAdmin){
+          await setDoc(doc(db,"students", username), profile);
+        }
+      }catch(e){}
+      currentProfile=profile;
+      document.getElementById('userBar').innerHTML=`مرحباً <b>${profile.name}</b> | ${profile.grade} ${profile.role==='admin'?'(أدمن)':''} | <button onclick="logoutFirebase()" style="background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-weight:800">خروج</button> ${profile.role==='admin'?'<button onclick="showAdmin()" style="background:#0f172a;color:#fff;border:none;padding:6px 12px;border-radius:999px;cursor:pointer;font-weight:800">لوحة الأدمن ⚙️</button>':''}`;
+      document.getElementById('lessonsLocked').style.display='none';
+      hideLogin();
+    } else {
+      currentUser=null; currentProfile=null;
+      document.getElementById('userBar').innerHTML=`<button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800">دخول الطالب 🔐</button>`;
+      document.getElementById('lessonsLocked').style.display='block';
+      setTimeout(showLogin, 600);
+    }
+  });
+} else {
+  document.getElementById('userBar').innerHTML=`<span style="background:#fef3c7;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:800">⚠️ حط كونفيج Firebase الأول - شوف الخطوات تحت</span>`;
+}
+</script>
+</body>
+</html>
