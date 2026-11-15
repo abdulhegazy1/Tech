@@ -89,7 +89,7 @@ footer a{color:#38bdf8;text-decoration:none;font-weight:800}
 <h2>📚 الدروس - اختار مرحلتك</h2>
 <p class="sub">كل درس فيه فيديو + ملخص PDF + أسئلة + واجب</p>
 <div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade9',this)">Grade 9</button></div>
-<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على PASTE_YOUR_API_KEY_HERE وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
+<div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
 <div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة عملية بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#fef3c7">🌊</div><div class="card-body"><span class="badge">Grade 5</span><h3>Water Cycle - دورة المياه</h3><p>Evaporation, Condensation, Precipitation بطريقة لعبة.</p><div class="meta"><span>⏱ 22 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#dcfce7">🧬</div><div class="card-body"><span class="badge">Grade 6</span><h3>Digestive System</h3><p>رحلة الأكل جوه جسمك من أول الفم لحد... هتعرف في الدرس!</p><div class="meta"><span>⏱ 25 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
@@ -193,12 +193,12 @@ import { getFirestore, doc, setDoc, getDoc, collection, getDocs, deleteDoc } fro
 // هتجيبه من Firebase Console > Project Settings > Your apps > Web app
 // انسخ اللي بين القوسين وحطه مكان اللي تحت
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY_HERE",
-  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg",
+  authDomain: "tech-lab-186a0.firebaseapp.com",
+  projectId: "tech-lab-186a0",
+  storageBucket: "tech-lab-186a0.firebasestorage.app",
+  messagingSenderId: "475392080982",
+  appId: "1:475392080982:web:0ae2048d97db49ffb58ff7"
 };
 // ==============================================================
 
@@ -208,7 +208,7 @@ try{
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
-  firebaseReady = firebaseConfig.apiKey !== "PASTE_YOUR_API_KEY_HERE";
+  firebaseReady = firebaseConfig.apiKey !== "AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg";
   if(!firebaseReady) document.getElementById('firebaseWarning').style.display='block';
 }catch(e){ console.log(e); document.getElementById('firebaseWarning').style.display='block'; }
 
