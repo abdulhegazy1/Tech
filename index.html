@@ -154,7 +154,7 @@ h1,h2,h3{ color:#4a1d3a; }
 </script>
 
 <header><div class="nav"><button onclick="goHome()" title="الرجوع للرئيسية" style="background:none;border:2px solid #0ea5e9;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:900;font-size:22px;color:#0f172a">Science<span style="color:#0ea5e9">Lab</span> 🧪 <span style="font-size:12px;color:#64748b;font-weight:700">الرئيسية</span></button><div id="userBar" style="display:flex;gap:8px;align-items:center"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a href="https://wa.me/201065871712" target="_blank" title="مساعدة - واتساب الدكتورة" style="width:36px;height:36px;border-radius:50%;background:#f1f5f9;display:inline-flex;align-items:center;justify-content:center;font-size:18px;text-decoration:none;border:1px solid #e2e8f0">❓</a></div></header>
-<div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;margin:20px auto;max-width:900px"><h3 style="text-align:center">🧪 تجربة حقيقية في المختبر</h3><video autoplay muted loop playsinline controls style="width:100%;border-radius:16px;max-height:380px;object-fit:cover;background:#000"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="text-align:center;color:#64748b;font-size:13px">تفاعلات كيميائية حقيقية - زي اللي هتشوفها في حصص الدكتورة ندى</p></div>
+
 
 <section class="hero">
 <div class="hero-card"><span class="float-emoji">🧪</span><span class="float-emoji">🔬</span><span class="float-emoji">🧬</span><span class="float-emoji"></span><span class="float-emoji">⚗️</span>
@@ -162,7 +162,7 @@ h1,h2,h3{ color:#4a1d3a; }
 <h1 id="heroTitle" data-hero-title>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
 <p>شرح بالعربي والإنجليزي، تجارب حقيقية، فيديوهات، ملخصات PDF، واختبارات بعد كل درس. من Grade 4 لحد Prep 3 و Prep 1,2,3</p>
 <div class="hero-btns"><a class="white-btn" href="#lessons">ابدأ التعلم مجاناً 🚀</a><a class="outline-btn" href="#quiz">جرب كويز سريع</a></div>
-<div style="margin-top:18px;border-radius:18px;overflow:hidden;background:#000"><video autoplay muted loop playsinline controls style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover" poster="https://images.pexels.com/photos/2280571/pexels-photo-2280571.jpeg?auto=compress&cs=tinysrgb&w=1200"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="color:#fff;background:#0f172a;padding:8px 12px;font-size:13px;margin:0">🧪 تجربة حقيقية في المختبر - زي اللي هتشوفها في حصص الدكتورة ندى</p></div></div>
+
 </div>
 <div class="side-card">
 <h3>📅 حصص الأسبوع ده</h3>
@@ -676,6 +676,35 @@ window.renderLectures = function(){
     return '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:8px 0"><div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap"><span><b>'+l.title+'</b> - '+l.grade+'</span><a href="'+l.video+'" target="_blank" style="color:#7c3aed;font-weight:700">مشاهدة الفيديو</a></div><button onclick="askQuestionForLecture(\''+l.title.replace(/\'/g,"\\'")+'\')" style="background:#0ea5e9;color:#fff;border:none;padding:9px 16px;border-radius:999px;font-weight:700;cursor:pointer;margin-top:10px">اسال سؤال في هذه المحاضرة</button><div style="margin-top:10px">'+qsHtml+'</div></div>';
   }).join('');
 };
+</script>
+
+<script>
+// ===== Fallback مضمون لفتح لوحة الأدمن - مش معتمد على Firebase خالص =====
+window.showAdmin = function(){
+  let sess = (sessionStorage.getItem('sciencelab_session')||'').toLowerCase();
+  let isAdm = (sess==='nada' || sess==='admin' || window._isAdminLocal===true);
+  if(!isAdm){ alert('لوحة الإدارة للأدمن فقط - سجل دخول بحساب nada'); return; }
+  let p = document.getElementById('adminPanel');
+  if(!p){ alert('لوحة الأدمن مش موجودة في الصفحة'); return; }
+  p.style.display='block';
+  p.style.zIndex='9999';
+  // حاول تملى القوايم، لو Firebase فشل مش مهم - اللوحة هتفتح برضه
+  try{ if(window.renderStudents) window.renderStudents(); }catch(e){}
+  try{ if(window.renderLectures) window.renderLectures(); }catch(e){}
+  try{ if(window.renderExams) window.renderExams(); }catch(e){}
+  try{ if(window.renderQuestions) window.renderQuestions(); }catch(e){}
+};
+window.hideAdmin = function(){ let p=document.getElementById('adminPanel'); if(p) p.style.display='none'; };
+window.switchAdminTab = function(id){
+  document.querySelectorAll('.adminTab').forEach(el=> el.style.display='none');
+  let t=document.getElementById(id); if(t) t.style.display='block';
+  document.querySelectorAll('.adminTabBtn').forEach(b=>{ let on=b.dataset.tab===id; b.style.background=on?'#0f172a':'#f1f5f9'; b.style.color=on?'#fff':'#334155'; });
+};
+// لو زرار لوحة الأدمن اتعمل بعد تحميل الصفحة، اربطه تاني
+document.addEventListener('click', function(e){
+  let btn = e.target.closest && e.target.closest('button[onclick*="showAdmin"]');
+  if(btn){ e.preventDefault(); window.showAdmin(); }
+});
 </script>
 </body>
 </html>
