@@ -421,7 +421,7 @@ window.addStudentFirebase = async ()=>{
     // احفظ بيانات الطالب في Firestore - من حساب الأدمن نفسه
     await setDoc(doc(db, "students", u), {username:u, name:name, grade:g, role:"student", createdAt: new Date().toISOString()});
     // ✅ ابعت للشيت بالأسماء اللي Apps Script مستنيها بالظبط
-    let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+    let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec';
     try{
       await fetch(sheetUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})});
     }catch(e){ console.log('sheet sync failed', e); }
@@ -440,7 +440,7 @@ Password: '+p+'
     if(e.code==='auth/email-already-in-use'){
       try{
         await setDoc(doc(db, "students", u), {username:u, name:name, grade:g, role:"student", createdAt: new Date().toISOString()}, {merge:true});
-        let sheetUrl2 = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+        let sheetUrl2 = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec';
         try{ await fetch(sheetUrl2, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})}); }catch(_){}
         renderStudents();
         alert('الطالب موجود بالفعل - تم تحديث بياناته وإرساله إلى الشيت.');
@@ -510,8 +510,8 @@ if(firebaseReady){
 // ===== Google Sheets Sync - دكتور ندى =====
 const SHEET_ID = "1r8OQ78Xs2DKSw07a8g_fDNH2vu2dGD9ZkBa4haf9B-U";
 const SHEET_URL = "https://docs.google.com/spreadsheets/d/"+SHEET_ID+"/edit";
-let APPS_SCRIPT_URL = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec' || "https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec";
-if(!localStorage.getItem('sheets_apps_script_url')) localStorage.setItem('sheets_apps_script_url', "https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec");
+let APPS_SCRIPT_URL = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec' || "https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec";
+if(!localStorage.getItem('sheets_apps_script_url')) localStorage.setItem('sheets_apps_script_url', "https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec");
 function setAppsScriptUrl(){ let u = prompt("حط لينك Apps Script Web App هنا:", APPS_SCRIPT_URL); if(u){ APPS_SCRIPT_URL=u; localStorage.setItem('sheets_apps_script_url', u); alert('✅ اتحفظ لينك الشيت'); } }
 function openSheet(){ window.open(SHEET_URL, '_blank'); }
 function exportStudentsToExcel(){ window.open(SHEET_URL, '_blank'); }
@@ -540,7 +540,7 @@ window.doLoginFirebase = async function(){
 <script>
 // Test Sheets connection
 async function testSheetsConnection(){
-  let url = localStorage.getItem('sheets_apps_script_url') || "https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec";
+  let url = localStorage.getItem('sheets_apps_script_url') || "https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec";
   try{
     await fetch(url, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', username:'TEST', name:'Test - تجربة ربط', grade:'Grade 6', pass:'test', phone:''})});
     alert('✅ اتبعتت تجربة للشيت! افتحي الشيت > تاب Students، لو لقيتي صف TEST يبقى الربط شغال 100% - امسحي الصف ده بعدها');
@@ -739,7 +739,7 @@ window.addStudentFirebase = async function(){
   else arr.push({username:u, name:name, grade:g, pass:p});
   saveLocalStudents(arr);
   // 2) حاول تبعت لـ Google Sheet - لو فشل مش مهم، الطالب محفوظ خلاص
-  let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+  let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec';
   let sheetStatus='Sheet: جاري الإرسال...';
   try{ await fetch(sheetUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})}); sheetStatus='Sheet: تم الإرسال ✅'; }catch(e){ sheetStatus='Sheet: تعذر الإرسال - الطالب محفوظ في الموقع، جرب تاني بعد شوية'; }
   // 3) حاول Firebase في الخلفية - لو فشل برضه الطالب هيدخل من الحفظ المحلي
@@ -865,7 +865,7 @@ window.addStudentFirebase = async function(){
   if(idx>=0) arr[idx]={username:u, name:name, grade:g, pass:p}; else arr.push({username:u, name:name, grade:g, pass:p});
   try{ localStorage.setItem('students_nada', JSON.stringify(arr)); }catch(e){}
   // 2) Google Sheet - إرسال حقيقي بـ text/plain عشان ميتعملش preflight، ونقرأ الرد الحقيقي
-  let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+  let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec';
   let sheetStatus='';
   try{
     let res = await fetch(sheetUrl, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})});
@@ -914,7 +914,7 @@ window.addStudentFirebase = async function(){
 // 3) الامتحان كان بيتحفظ في localStorage بس، ومفيش قسم للطالب يعرضه، فالطالب مكنش بيشوفه
 // 4) تعديل النص كان بيحفظ heroTitle اللي اتشال من الصفحة، فمفيش حاجة بتتغير قدامك
 // الحل: كل حفظ دلوقتي بيعمل: localStorage (يظهر فورا) + Sheets (يقرأ الرد الحقيقي) + Firebase Firestore REST (بـ توكن الأدمن) + يحدث قسم الطالب
-const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbxAKg3pQxNWJvy70zwgp6P9rwDwapf_76cSNPcsOPkmSCKe7zwVkQfohUBaa003xKcf5A/exec';
 const FB_API_KEY = 'AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg';
 const FB_PROJECT = 'tech-lab-186a0';
 function getSheetUrl(){ return (localStorage.getItem('sheets_apps_script_url')||'').trim() || SHEET_URL_DEFAULT; }
