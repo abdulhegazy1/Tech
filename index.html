@@ -94,12 +94,12 @@ h1,h2,h3{ color:#4a1d3a; }
     <div style="font-size:48px">🧪💖</div>
     <h2 style="margin:8px 0">منصة Science | دكتور ندى الجارحي</h2>
     <p style="color:#64748b;font-size:13px">من فضلك سجّل الدخول للاطلاع على المحتوى التعليمي</p>
-    <input id="strictUser" autocomplete="off" placeholder="اسم المستخدم - الأدمن: nada" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:12px;outline:none">
+    <input id="strictUser" autocomplete="off" placeholder="Username" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:12px;outline:none">
     <input id="strictPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:10px;outline:none">
     <button onclick="strictLogin()" style="width:100%;background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:13px;border-radius:14px;font-weight:900;margin-top:14px;cursor:pointer">دخول 🚀</button>
     <a href="https://wa.me/201065871712?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83%D9%85%20%D8%B9%D8%A7%D9%8A%D8%B2%20%D8%A3%D8%AD%D8%AC%D8%B2%20%D9%85%D8%B9%20%D8%A7%D9%84%D8%AF%D9%83%D8%AA%D9%88%D8%B1" target="_blank" style="display:block;text-align:center;background:#25D366;color:#fff;padding:13px;border-radius:14px;font-weight:900;text-decoration:none;margin-top:10px">احجز مع الدكتور 📲 - واتساب 01065871712</a>
     <p style="font-size:12px;color:#94a3b8;margin-top:10px"><br>الطالب: اليوزر اللي الدكتورة عملته ليه</p>
-    <p id="strictErr" style="color:#ef4444;font-size:13px;display:none">اليوزر أو الباسورد غلط</p>
+    <p id="strictErr" style="color:#ef4444;font-size:13px;display:none">Username or Password was wrong</p>
   </div>
 </div>
 <script>
@@ -118,7 +118,7 @@ h1,h2,h3{ color:#4a1d3a; }
     let uEl=document.getElementById('strictUser'); let pEl=document.getElementById('strictPass'); let errEl=document.getElementById('strictErr');
     let u = uEl.value.trim().toLowerCase(); let p = pEl.value.trim();
     if(errEl) errEl.style.display='none';
-    if(!u||!p){ if(errEl){ errEl.style.display='block'; errEl.textContent='من فضلك اكتب اسم المستخدم وكلمة المرور'; } return; }
+    if(!u||!p){ if(errEl){ errEl.style.display='block'; errEl.textContent='Please enter Username and Password'; } return; }
     // ✅ الأدمن الجديد: nada / dody1415 - يدخل على طول من غير ما يستنى Firebase
     // وكمان القديم admin / admin123 شغال كبديل عشان متتقفلش
     if( (u==='nada' && p==='dody1415') || (u==='admin' && p==='admin123') ){
@@ -137,7 +137,7 @@ h1,h2,h3{ color:#4a1d3a; }
     try{ if(window._firebaseSignIn) ok = await window._firebaseSignIn(u, p); else if(window.doLoginFirebase) ok = await window.doLoginFirebase(u, p); }catch(e){ ok=false; }
     if(!ok){
       try{ sessionStorage.removeItem('sciencelab_session'); window._isAdminLocal=false; localStorage.removeItem('sciencelab_session'); }catch(e){}
-      if(errEl){ errEl.style.display='block'; errEl.textContent='اليوزر أو كلمة المرور غلط - لم يتم الدخول'; }
+      if(errEl){ errEl.style.display='block'; errEl.textContent='Username or Password was wrong'; }
       if(pEl) pEl.value='';
       return;
     }
@@ -245,7 +245,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <div style="font-size:50px">🧪</div>
     <h2 style="margin:8px 0">دخول الطالب - Firebase</h2>
     <p style="color:#64748b;font-size:14px">دخل اليوزر والباسورد اللي الدكتورة ادتهولك</p>
-    <input id="inpUser" placeholder="اسم المستخدم - الأدمن: nada" style="width:100%;padding:13px;margin:12px 0 8px;border:1px solid #e2e8f0;border-radius:12px">
+    <input id="inpUser" placeholder="Username" style="width:100%;padding:13px;margin:12px 0 8px;border:1px solid #e2e8f0;border-radius:12px">
     <input id="inpPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:13px;border:1px solid #e2e8f0;border-radius:12px">
     <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
     <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
@@ -276,7 +276,7 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
     <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
     <h3 style="margin:0 0 10px;font-size:16px">إضافة طالب</h3>
     <input id="newName" placeholder="اسم الطالب" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
-    <input id="newUser" placeholder="اسم المستخدم - الأدمن: nada" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
+    <input id="newUser" placeholder="Username" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <input id="newPass" placeholder="كلمة المرور" type="password" autocomplete="new-password" style="width:100%;padding:11px;margin:6px 0;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box">
     <select id="newGrade" style="width:100%;padding:11px;border:1px solid #e2e8f0;border-radius:10px;box-sizing:border-box"><option>Grade 4</option><option>Grade 5</option><option selected>Grade 6</option><option>Prep 1</option><option>Prep 2</option><option>Prep 3</option></select>
     <button onclick="addStudentFirebase()" style="width:100%;background:#10b981;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:700;cursor:pointer;margin-top:12px">إضافة الطالب</button>
@@ -379,8 +379,8 @@ window.doLoginFirebase = async (passedU, passedP)=>{
     window._currentUserName = u.toLowerCase();
     return true;
   }catch(e){
-    let el=document.getElementById('strictErr'); if(el){ el.style.display='block'; el.textContent='اليوزر أو كلمة المرور غلط - حاول تاني'; }
-    let le=document.getElementById('loginError'); if(le) le.innerText = 'اليوزر أو الباسورد غلط';
+    let el=document.getElementById('strictErr'); if(el){ el.style.display='block'; el.textContent='Username or Password was wrong'; }
+    let le=document.getElementById('loginError'); if(le) le.innerText = 'Username or Password was wrong';
     return false;
   }
 };
@@ -705,6 +705,117 @@ document.addEventListener('click', function(e){
   let btn = e.target.closest && e.target.closest('button[onclick*="showAdmin"]');
   if(btn){ e.preventDefault(); window.showAdmin(); }
 });
+</script>
+
+<script>
+// ===== Fix 1: Add Student - يحفظ فورا ويقول تم، حتى لو Firebase / Sheet وقعوا =====
+function getLocalStudents(){ try{ return JSON.parse(localStorage.getItem('students_nada')||'[]'); }catch(e){ return []; } }
+function saveLocalStudents(arr){ try{ localStorage.setItem('students_nada', JSON.stringify(arr)); }catch(e){} }
+function renderLocalStudents(){
+  let list=document.getElementById('studentsList'); if(!list) return;
+  let arr=getLocalStudents();
+  if(!arr.length){ list.innerHTML='<p style="color:#64748b;font-size:13px">لسه مفيش طلاب - ضيف أول طالب من فوق.</p>'; return; }
+  list.innerHTML = arr.map(s=>'<div style="display:flex;justify-content:space-between;background:#f8fafc;padding:10px;border-radius:12px;margin-bottom:6px"><span><b>'+s.username+'</b> - '+s.name+' - '+s.grade+'</span><span style="font-size:12px;color:#16a34a">✅ محفوظ</span></div>').join('');
+}
+window.addStudentFirebase = async function(){
+  let nameEl=document.getElementById('newName'); let uEl=document.getElementById('newUser'); let pEl=document.getElementById('newPass'); let gEl=document.getElementById('newGrade');
+  let name=nameEl?.value.trim()||''; let u=(uEl?.value.trim()||'').toLowerCase(); let p=pEl?.value.trim()||''; let g=gEl?.value||'Grade 4';
+  if(!name||!u||!p){ alert('Please enter student name, Username and Password'); return; }
+  // 1) احفظ فورا في المتصفح - ده اللي يخلي الطالب يدخل حتى لو Firebase مش شغال
+  let arr=getLocalStudents();
+  let idx=arr.findIndex(s=>s.username===u);
+  if(idx>=0) arr[idx]={username:u, name:name, grade:g, pass:p};
+  else arr.push({username:u, name:name, grade:g, pass:p});
+  saveLocalStudents(arr);
+  // 2) حاول تبعت لـ Google Sheet - لو فشل مش مهم، الطالب محفوظ خلاص
+  let sheetUrl = localStorage.getItem('sheets_apps_script_url') || 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+  let sheetStatus='Sheet: جاري الإرسال...';
+  try{ await fetch(sheetUrl, {method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify({type:'student', username:u, name:name, grade:g, pass:p, phone:''})}); sheetStatus='Sheet: تم الإرسال ✅'; }catch(e){ sheetStatus='Sheet: تعذر الإرسال - الطالب محفوظ في الموقع، جرب تاني بعد شوية'; }
+  // 3) حاول Firebase في الخلفية - لو فشل برضه الطالب هيدخل من الحفظ المحلي
+  let fbStatus='Firebase: سيتم إنشاؤه عند أول دخول / أو من Firebase Console';
+  try{ if(window._firebaseAddStudent) { await window._firebaseAddStudent(u, p, name, g); fbStatus='Firebase: تم ✅'; } }catch(e){ fbStatus='Firebase: '+ (e.message||'تعذر - الطالب هيدخل من الحفظ المحلي'); }
+  // 4) نظف الحقول وحدث القايمة وقول تم بوضوح
+  if(nameEl) nameEl.value=''; if(uEl) uEl.value=''; if(pEl) pEl.value='';
+  renderLocalStudents();
+  let statusEl=document.getElementById('addStudentStatus'); if(!statusEl){ statusEl=document.createElement('p'); statusEl.id='addStudentStatus'; statusEl.style.cssText='font-size:13px;color:#16a34a;margin-top:8px'; let btn=document.querySelector('button[onclick*="addStudentFirebase"]'); if(btn) btn.after(statusEl); }
+  if(statusEl) statusEl.textContent='✅ تم حفظ الطالب '+name+' ('+u+' - '+g+') | '+sheetStatus+' | '+fbStatus;
+  alert('✅ تم حفظ الطالب '+name+'\nUsername: '+u+'\nGrade: '+g+'\n\n'+sheetStatus+'\n'+fbStatus+'\n\nستظل مسجل دخول كأدمن.');
+};
+// لما تفتح لوحة الأدمن، اعرض الطلاب المحليين كمان
+document.addEventListener('click', function(e){ if(e.target.closest && e.target.closest('button[onclick*="showAdmin"]')){ setTimeout(renderLocalStudents, 300); } });
+
+// ===== Fix 1b: Student login يقبل الحفظ المحلي كمان، مش Firebase بس =====
+// نلف strictLogin الأصلي: لو Firebase رفض، جرب الحفظ المحلي قبل ما تقول غلط
+setTimeout(()=>{
+  let origStrict = window.strictLogin;
+  if(origStrict && !window._strictLoginLocalWrapped){
+    window._strictLoginLocalWrapped=true;
+    window.strictLogin = async function(){
+      let uEl=document.getElementById('strictUser'); let pEl=document.getElementById('strictPass'); let errEl=document.getElementById('strictErr');
+      let u=(uEl?.value.trim()||'').toLowerCase(); let p=(pEl?.value.trim()||'');
+      // الأدمن زي ما هو
+      if((u==='nada' && p==='dody1415') || (u==='admin' && p==='admin123')){ return await origStrict.apply(this, arguments); }
+      // الطالب: جرب الحفظ المحلي الأول - أسرع وأضمن
+      let arr=getLocalStudents(); let found=arr.find(s=>s.username===u);
+      if(found && found.pass===p){
+        sessionStorage.setItem('sciencelab_session', u);
+        sessionStorage.setItem('sciencelab_grade', found.grade);
+        sessionStorage.setItem('sciencelab_name', found.name);
+        try{ localStorage.setItem('sciencelab_last_user', u); }catch(e){}
+        window._currentUserName=u;
+        let ov=document.getElementById('loginOverlay'); if(ov) ov.style.display='none'; document.body.style.overflow='';
+        if(errEl) errEl.style.display='none';
+        setTimeout(()=>{ try{ if(window.updateWhoAmI) window.updateWhoAmI(); }catch(e){} try{ applyGradeFilter(); }catch(e){} }, 300);
+        return;
+      }
+      // لو مش في المحلي، جرب Firebase الأصلي
+      let r = await origStrict.apply(this, arguments);
+      // لو Firebase نجح ودخل، احفظ درجته لو موجودة في المحلي عشان الفلترة
+      try{ let f2=getLocalStudents().find(s=>s.username===u); if(f2) sessionStorage.setItem('sciencelab_grade', f2.grade); }catch(e){}
+      setTimeout(()=>{ try{ applyGradeFilter(); }catch(e){} }, 500);
+      return r;
+    };
+  }
+}, 800);
+
+// ===== Fix 3: الأدمن يشوف الكل، الطالب يشوف الجريد بتاعه بس =====
+window.applyGradeFilter = function(){
+  let sess=(sessionStorage.getItem('sciencelab_session')||'').toLowerCase();
+  let isAdmin=(sess==='nada' || sess==='admin' || window._isAdminLocal===true);
+  let grade=sessionStorage.getItem('sciencelab_grade')||'';
+  // لو طالب ومش عارفين درجته من الحفظ المحلي، حاول من قايمة الطلاب
+  if(!isAdmin && !grade){
+    try{ let f=getLocalStudents().find(s=>s.username===sess); if(f){ grade=f.grade; sessionStorage.setItem('sciencelab_grade', grade); } }catch(e){}
+  }
+  let filters=document.querySelector('.filters'); 
+  let cards=document.querySelectorAll('#lessonsGrid .card');
+  let banner=document.getElementById('gradeFilterBanner');
+  if(isAdmin){
+    if(filters) filters.style.display='flex';
+    cards.forEach(c=> c.style.display='');
+    if(banner) banner.style.display='none';
+    return;
+  }
+  // طالب: اخفي أزرار الفلترة، واظهر دروس درجته بس
+  if(filters) filters.style.display='none';
+  if(!banner){
+    banner=document.createElement('div'); banner.id='gradeFilterBanner';
+    banner.style.cssText='background:#e0f2fe;border:1px solid #bae6fd;padding:12px;border-radius:12px;text-align:center;font-weight:800;margin-bottom:12px';
+    let grid=document.getElementById('lessonsGrid'); if(grid) grid.before(banner);
+  }
+  if(banner){ banner.style.display='block'; banner.textContent='📚 دروس '+ (grade||'مرحلتك') +' فقط - دي الدروس المتاحة ليك'; }
+  cards.forEach(c=>{
+    let badge=c.querySelector('.badge')?.textContent||'';
+    let match=false;
+    if(grade && badge.includes(grade)) match=true;
+    // Prep 1 card badge is "Prep 1" etc - exact match via includes is fine
+    c.style.display = match ? '' : 'none';
+  });
+  // لو الطالب ملوش درجة متسجلة، اظهر الكل مؤقتا عشان متتقفلش عليه
+  if(!grade){ cards.forEach(c=> c.style.display=''); if(banner) banner.textContent='📚 دروسك - لو مش شايف دروسك، اطلب من الدكتورة تسجيل درجتك'; }
+};
+document.addEventListener('DOMContentLoaded', ()=>{ setTimeout(applyGradeFilter, 800); });
+setTimeout(()=>{ try{ applyGradeFilter(); }catch(e){} }, 1200);
 </script>
 </body>
 </html>
