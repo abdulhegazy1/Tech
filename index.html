@@ -87,23 +87,17 @@ h1,h2,h3{ color:#4a1d3a; }
 #loginOverlay{ position:fixed; inset:0; z-index:9999; background: linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1); display:flex; align-items:center; justify-content:center; padding:16px; }
 #loginOverlay .login-box{ background:#fff; border-radius:28px; padding:28px; width:100%; max-width:400px; box-shadow:0 20px 60px rgba(0,0,0,.25); text-align:center; }
 </style>
-<style>#firebaseLoginModal, .firebase-modal, #loginModal{ display:none !important; } .modal-overlay{ display:none !important; }</style>
-<style>
-/* FIX admin layout - احجام طبيعية */
-#contentEditor{ max-width:640px !important; margin:16px auto !important; padding:18px !important; }
-#contentEditor input, #contentEditor textarea{ height:auto !important; min-height:44px !important; font-size:14px !important; }
-.admin-actions{ display:flex !important; gap:10px !important; flex-wrap:wrap !important; flex-direction:row !important; align-items:center !important; }
-.admin-actions button{ flex:0 0 auto !important; height:44px !important; padding:0 18px !important; font-size:14px !important; white-space:nowrap !important; }
-.admin-actions button{ width:auto !important; }
-#adminPanel button{ height:auto !important; }
-</style>
-<style>a[href*="wa.me"], .btn-book{ background: linear-gradient(90deg,#ff6eb4,#a855f7) !important; color:#fff !important; border:none !important; box-shadow:0 6px 20px rgba(255,110,180,.35) !important; }</style></head>
+<style>.admin-actions{display:flex!important;gap:10px!important;flex-wrap:wrap!important;flex-direction:row!important} .admin-actions button{flex:0 0 auto!important;height:44px!important;padding:0 18px!important;width:auto!important} #contentEditor{max-width:640px!important;margin:16px auto!important}</style><style>a.book-btn{background:linear-gradient(90deg,#ff6eb4,#a855f7)!important;color:#fff!important;box-shadow:0 6px 20px rgba(255,110,180,.35)!important}</style></head>
 <body>
-<div style="display:none"><div id="loginOverlay" style="display:none">
+<div id="loginOverlay" style="display:none">
   <div class="login-box">
     <div style="font-size:48px">🧪💖</div>
     <h2 style="margin:8px 0">منصة Science | دكتور ندى الجارحي</h2>
-    
+    <p style="color:#64748b;font-size:13px">من فضلك سجّل الدخول للاطلاع على المحتوى التعليمي</p>
+    <input id="strictUser" autocomplete="off" placeholder="اسم المستخدم" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:12px;outline:none">
+    <input id="strictPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:12px;border:2px solid #ffd6e7;border-radius:14px;margin-top:10px;outline:none">
+    <button onclick="strictLogin()" style="width:100%;background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:13px;border-radius:14px;font-weight:900;margin-top:14px;cursor:pointer">دخول 🚀</button>
+    <p style="font-size:12px;color:#94a3b8;margin-top:10px"><br>الطالب: اليوزر اللي الدكتورة عملته ليه</p>
     <p id="strictErr" style="color:#ef4444;font-size:13px;display:none">اليوزر أو الباسورد غلط</p>
   </div>
 </div>
@@ -147,25 +141,15 @@ h1,h2,h3{ color:#4a1d3a; }
 })();
 </script>
 
-<header><div class="nav"><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" style="text-decoration:none"><div class="logo" style="cursor:pointer" title="الرئيسية - Home">Science<span>Lab</span> 🧪</div></a><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع الدكتور 📲</a></div></header>
-<div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;margin:20px 0">
-  <h3 style="margin:0 0 10px;text-align:center">🧪 شوف بنفسك - تجربة حقيقية في المختبر</h3>
-  <video autoplay muted loop playsinline controls style="width:100%;border-radius:16px;max-height:380px;object-fit:cover;background:#000">
-    <source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4">
-    <source src="https://videos.pexels.com/video-files/3196344/3196344-hd_1920_1080_25fps.mp4" type="video/mp4">
-    متصفحك لا يدعم تشغيل الفيديو
-  </video>
-  <p style="font-size:13px;color:#64748b;text-align:center;margin:8px 0 0">تفاعلات كيميائية حقيقية - زي اللي هتشوفها في حصص الدكتورة ندى</p>
-</div>
-
+<header><div class="nav"><div class="logo">Science<span>Lab</span> 🧪</div><div id="userBar"></div><nav><a href="#lessons">الدروس</a><a href="#exp">التجارب</a><a href="#quiz">اختبر نفسك</a><a href="#prices">الاشتراكات</a></nav><a class="btn" href="https://wa.me/201000000000">احجز مع الدكتور 📲</a></div></header><div style="background:#fff;border:2px solid #ffd6e7;border-radius:22px;padding:16px;margin:20px auto;max-width:900px"><h3 style="text-align:center">🧪 تجربة حقيقية في المختبر</h3><video autoplay muted loop playsinline controls style="width:100%;border-radius:16px;max-height:380px;object-fit:cover;background:#000"><source src="https://videos.pexels.com/video-files/3195394/3195394-hd_1920_1080_25fps.mp4" type="video/mp4"></video><p style="text-align:center;color:#64748b;font-size:13px">تفاعلات كيميائية حقيقية - زي اللي هتشوفها في حصص الدكتورة ندى</p></div>
 
 <section class="hero">
-<div class="hero-card"><span class="float-emoji">🧪</span><span class="float-emoji">🔬</span><span class="float-emoji">🧬</span><span class="float-emoji">⚗️</span>
+<div class="hero-card"><span class="float-emoji">🧪</span><span class="float-emoji">🔬</span><span class="float-emoji">🧬</span><span class="float-emoji"></span><span class="float-emoji">⚗️</span>
 <span class="badge">🔥 الترم الأول - 2026 / 2027</span>
 <h1>الساينس بقى أسهل<br>وأمتع من أي وقت!</h1>
 <p>شرح بالعربي والإنجليزي، تجارب حقيقية، فيديوهات، ملخصات PDF، واختبارات بعد كل درس. من Grade 4 لحد Prep 3 و Prep 1,2,3</p>
 <div class="hero-btns"><a class="white-btn" href="#lessons">ابدأ التعلم مجاناً 🚀</a><a class="outline-btn" href="#quiz">جرب كويز سريع</a></div>
-
+<div class="stats"><div class="stat"><b>+120</b>درس مسجل</div><div class="stat"><b>+45</b>تجربة في المختبر</div><div class="stat"><b>+900</b>طالب معانا</div><div class="stat"><b></b>حصص تفاعلية</div></div>
 </div>
 <div class="side-card">
 <h3>📅 حصص الأسبوع ده</h3>
@@ -180,14 +164,14 @@ h1,h2,h3{ color:#4a1d3a; }
 <section class="section" id="lessons">
 <h2>📚 الدروس - اختار مرحلتك</h2>
 <p class="sub">كل درس فيه فيديو + ملخص PDF + أسئلة + واجب</p>
-<div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade6',this)"></button></div>
+<div class="filters"><button class="filter active" onclick="filterLessons('all',this)">الكل</button><button class="filter" onclick="filterLessons('primary',this)">Primary</button><button class="filter" onclick="filterLessons('prep',this)">Prep</button><button class="filter" onclick="filterLessons('grade9',this)"></button></div>
 <div id="firebaseWarning" style="display:none;background:#fee2e2;border:1px solid #ef4444;padding:14px;border-radius:16px;margin-bottom:14px;text-align:center;font-weight:800">⚠️ الملف لسه مش مربوط بـ Firebase - افتح الملف في أي محرر ودور على firebaseConfig وحط الكونفيج بتاعك - الخطوات في الشات</div><div id="lessonsLocked" style="display:none;background:#fef3c7;border:1px solid #fbbf24;padding:16px;border-radius:16px;margin-bottom:16px;text-align:center;font-weight:800">🔒 الدروس مقفولة - سجل دخول باليوزر والباسورد <button onclick="showLogin()" style="background:#0ea5e9;color:#fff;border:none;padding:8px 16px;border-radius:999px;cursor:pointer;font-weight:800;margin-right:8px">دخول</button></div><div class="grid" id="lessonsGrid">
-<div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة عملية بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+<div class="card" data-cat="primary"><div class="card-top" style="background:#e0f2fe">🌱</div><div class="card-body"><span class="badge">Grade 4 - مجاني</span><h3>Plant Life & Photosynthesis</h3><p>ازاي النبات بيصنع أكله؟ تجربة في المختبر بالورق والضوء.</p><div class="meta"><span>⏱ 18 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#fef3c7">🌊</div><div class="card-body"><span class="badge">Grade 5</span><h3>Water Cycle - دورة المياه</h3><p>Evaporation, Condensation, Precipitation بطريقة لعبة.</p><div class="meta"><span>⏱ 22 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="primary"><div class="card-top" style="background:#dcfce7">🧬</div><div class="card-body"><span class="badge">Grade 6</span><h3>Digestive System</h3><p>رحلة الأكل جوه جسمك من أول الفم لحد... هتعرف في الدرس!</p><div class="meta"><span>⏱ 25 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="prep"><div class="card-top" style="background:#ede9fe">⚡</div><div class="card-body"><span class="badge">Prep 2</span><h3>Electric Circuits</h3><p>Series vs Parallel - هنوصل لمبة حقيقي ونشوف الفرق.</p><div class="meta"><span>⏱ 30 دقيقة</span><span>⭐ 4.9</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 <div class="card" data-cat="prep"><div class="card-top" style="background:#fce7f3">🧪</div><div class="card-body"><span class="badge">Prep 1</span><h3>States of Matter</h3><p>Solid, Liquid, Gas - وتجارب الثلج والماء والبخار.</p><div class="meta"><span>⏱ 20 دقيقة</span><span>⭐ 4.8</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
-<div class="card" data-cat="grade6"><div class="card-top" style="background:#ffedd5">🔬</div><div class="card-body"><span class="badge"> - مهم</span><h3>Atoms & Periodic Table</h3><p>الجدول الدوري من غير حفظ - طريقة الدكتورة في 3 خطوات.</p><div class="meta"><span>⏱ 35 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
+<div class="card" data-cat="grade9"><div class="card-top" style="background:#ffedd5">🔬</div><div class="card-body"><span class="badge"> - مهم</span><h3>Atoms & Periodic Table</h3><p>الجدول الدوري من غير حفظ - طريقة الدكتورة في 3 خطوات.</p><div class="meta"><span>⏱ 35 دقيقة</span><span>⭐ 5.0</span></div><a class="card-btn" href="#" onclick="alert('ده مثال - حط لينك الفيديو هنا')">شاهد الدرس ▶</a></div></div>
 </div>
 </section>
 
@@ -247,23 +231,66 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
   <div style="background:#fff;width:100%;max-width:420px;border-radius:24px;padding:28px;text-align:center">
     <div style="font-size:50px">🧪</div>
     <h2 style="margin:8px 0">دخول الطالب - Firebase</h2>
-    <p style="color:#64748b;font-size:14px">من فضلك أدخل اسم المستخدم وكلمة المرور الخاصة بك</p>
+    <p style="color:#64748b;font-size:14px">دخل اليوزر والباسورد اللي الدكتورة ادتهولك</p>
     <input id="inpUser" placeholder="اسم المستخدم" style="width:100%;padding:13px;margin:12px 0 8px;border:1px solid #e2e8f0;border-radius:12px">
     <input id="inpPass" type="password" autocomplete="new-password" placeholder="Password" style="width:100%;padding:13px;border:1px solid #e2e8f0;border-radius:12px">
     <p id="loginError" style="color:#ef4444;font-weight:800;margin-top:8px"></p>
     <button onclick="doLoginFirebase()" style="width:100%;background:#0ea5e9;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:900;cursor:pointer;margin-top:10px">دخول 🚀</button>
-    
+    <p style="font-size:12px;color:#64748b;margin-top:10px">أول مرة؟ اعمل حساب الأدمن: Username = <b>admin</b> من لوحة الأدمن أو من Firebase Console</p>
     <button onclick="hideLogin()" style="background:none;border:none;color:#64748b;cursor:pointer;margin-top:10px">تصفح كزائر 👀</button>
   </div>
 </div>
 <div id="adminPanel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:101;align-items:flex-start;justify-content:center;padding:20px;overflow:auto">
   <div style="background:#fff;width:100%;max-width:600px;border-radius:24px;padding:24px;margin:auto">
     <div style="display:flex;justify-content:space-between">
-    <div class="admin-actions" style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin:12px 0">
       <button onclick="openSheet()" style="flex:1;background:#0f9d58;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">
 <div id="contentEditor" style="background:#fff;border:2px solid #ffd6e7;border-radius:20px;padding:16px;margin:16px 0">
   <h3 style="margin:0 0 8px">✏️ تعديل محتوى الموقع من هنا - من غير كود</h3>
-  
+  <p style="font-size:12px;color:#64748b">عدلي العنوان الرئيسي، والحصص، والإحصائيات، ودوسي حفظ - هتتغير على طول لكل الطلاب</p>
+  <label style="font-size:12px;font-weight:800">العنوان الرئيسي</label>
+  <input id="editHeroTitle" value="الساينس بقى أسهل وأمتع من أي وقت!" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">
+  <label style="font-size:12px;font-weight:800">نبذة عن الدكتورة</label>
+  <textarea id="editAbout" rows="2" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">دكتور ندى الجارحي - مدرسة Science بخبرة +10 سنين، شرح مبسط، متابعة مع أولياء الأمور، ومراجعة ليلة الامتحان مجاناً لكل المشتركين.</textarea>
+  <label style="font-size:12px;font-weight:800">حصص الأسبوع (اكتبي كل حصة في سطر: الاسم | المرحلة | اليوم)</label>
+  <textarea id="editLessons" rows="3" style="width:100%;padding:10px;border:2px solid #ffe4ef;border-radius:12px;margin:6px 0">Grade 6 - Digestive System | Grade 6 | السبت - 5 مساءً - أونلاين على زووم
+Prep 2 - Electric Circuits | Prep 2 | الأحد - 6 مساءً - سنتر
+Grade 5 - Water Cycle | Grade 5 | الاثنين - 4 مساءً - فيديو مسجل</textarea>
+  <button onclick="saveSiteContent()" style="background:linear-gradient(90deg,#ff6eb4,#a855f7);color:#fff;border:none;padding:12px 20px;border-radius:999px;font-weight:900;cursor:pointer">💾 حفظ التعديلات</button>
+  <button onclick="openSheet()" style="background:#0f9d58;color:#fff;border:none;padding:12px 20px;border-radius:999px;font-weight:900;cursor:pointer;margin-right:8px">🧪 جرب الربط (Test) <button onclick="testSheetsConnection()" style="background:#f59e0b;color:#fff;border:none;padding:8px 14px;border-radius:999px;font-weight:900;cursor:pointer;margin:0 4px">🧪 جرب الربط</button> 📊 افتح Google Sheet</button>
+  <p id="saveMsg" style="font-size:12px;color:#16a34a;display:none">✅ اتحفظت! حدثي الصفحة هتلاقي التعديل ظهر</p>
+</div>
+<script>
+function saveSiteContent(){
+  let data = { hero: document.getElementById('editHeroTitle').value, about: document.getElementById('editAbout').value, lessons: document.getElementById('editLessons').value, savedAt: new Date().toISOString() };
+  localStorage.setItem('siteContent_nada', JSON.stringify(data));
+  // ابعت نسخة للشيت كمان لو Apps Script مربوط
+  try{ if(localStorage.getItem('sheets_apps_script_url')) fetch(localStorage.getItem('sheets_apps_script_url'),{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'content', ...data})}); }catch(e){}
+  document.getElementById('saveMsg').style.display='block';
+  setTimeout(()=>location.reload(), 800);
+}
+// لو فيه تعديل محفوظ، اعرضه
+try{
+  let saved = JSON.parse(localStorage.getItem('siteContent_nada')||'null');
+  if(saved){
+    setTimeout(()=>{
+      let h1 = document.querySelector('h1'); if(h1 && saved.hero) h1.textContent = saved.hero;
+      // عن الدكتورة
+      let aboutEls = Array.from(document.querySelectorAll('p')).filter(p=>p.textContent.includes('دكتور ندى الجارحي'));
+      if(aboutEls[0] && saved.about) aboutEls[0].textContent = saved.about;
+      let ea = document.getElementById('editAbout'); if(ea) ea.value = saved.about;
+      let eh = document.getElementById('editHeroTitle'); if(eh) eh.value = saved.hero;
+      let el = document.getElementById('editLessons'); if(el) el.value = saved.lessons;
+    }, 300);
+  }
+}catch(e){}
+</script>
+🧪 جرب الربط (Test) <button onclick="testSheetsConnection()" style="background:#f59e0b;color:#fff;border:none;padding:8px 14px;border-radius:999px;font-weight:900;cursor:pointer;margin:0 4px">🧪 جرب الربط</button> 📊 افتح Google Sheet</button>
+      <button onclick="exportStudentsToExcel()" style="flex:1;background:#217346;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">⬇️ تحميل Excel</button>
+      <button onclick="setAppsScriptUrl()" style="flex:1;background:#7c3aed;color:#fff;border:none;padding:11px;border-radius:12px;font-weight:900;cursor:pointer">🔗 ربط الشيت</button>
+    </div>
+<h2>⚙️ لوحة الأدمن - Firebase</h2><button onclick="hideAdmin()" style="border:none;background:#fee2e2;padding:6px 12px;border-radius:999px;cursor:pointer">X</button></div>
+    <p style="color:#64748b;font-size:13px;margin:8px 0">كل طالب هيتعمل بحساب حقيقي في Firebase - متشفر ومحفوظ</p>
     <input id="newName" placeholder="اسم الطالب" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
     <input id="newUser" placeholder="اسم المستخدم (من غير مسافات)" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
     <input id="newPass" placeholder="Password - 6 حروف على الأقل" style="width:100%;padding:12px;margin:6px 0;border:1px solid #e2e8f0;border-radius:12px">
@@ -430,7 +457,7 @@ window.doLoginFirebase = async function(){
     location.reload();
     return;
   }
-  /* removed alert */ document.getElementById('strictErr').style.display='block'; // - جرب ');
+  alert('الباسورد غلط - جرب ');
 };
 </script>
 
@@ -444,29 +471,5 @@ async function testSheetsConnection(){
   }catch(e){ alert('حصل مشكلة: '+e); }
 }
 </script>
-
-<script>
-window.addEventListener('load', function(){
-  // امسح أي باسورد محفوظ في الحقول
-  let p1 = document.getElementById('strictPass'); if(p1) p1.value='';
-  let p2 = document.getElementById('loginPass'); if(p2) p2.value='';
-  let u1 = document.getElementById('strictUser'); if(u1) u1.value='';
-});
-const _origLogout2 = window.logoutFirebase;
-window.logoutFirebase = async function(){
-  try{ sessionStorage.removeItem('sciencelab_session'); }catch(e){}
-  try{ localStorage.removeItem('sciencelab_local_admin'); }catch(e){}
-  let p1 = document.getElementById('strictPass'); if(p1) p1.value='';
-  let p2 = document.getElementById('loginPass'); if(p2) p2.value='';
-  let u1 = document.getElementById('strictUser'); if(u1) u1.value='';
-  let u2 = document.getElementById('loginUser'); if(u2) u2.value='';
-  let ov = document.getElementById('loginOverlay'); if(ov){ ov.style.display='flex'; ov.style.background='linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1)'; }
-  document.body.style.overflow='hidden';
-  document.body.style.background='';
-  // اقفل أي مودال قديم غامق
-  document.querySelectorAll('.modal-overlay, #loginModal').forEach(e=>e.style.display='none');
-  if(_origLogout2 && _origLogout2.name!=='logoutFirebase'){ try{ await _origLogout2(); }catch(e){} }
-};
-</script>
-</body>
+<script>window.addEventListener("load",()=>{let m=document.getElementById("loginModal"); if(m) m.style.display="none";});</script><script>const _oldLogout=window.logoutFirebase; window.logoutFirebase=async function(){ try{sessionStorage.removeItem("sciencelab_session")}catch(e){} let a=document.getElementById("strictPass"); if(a) a.value=""; let b=document.getElementById("loginPass"); if(b) b.value=""; let c=document.getElementById("strictUser"); if(c) c.value=""; let ov=document.getElementById("loginOverlay"); if(ov){ov.style.display="flex"; ov.style.background="linear-gradient(135deg,#ff6eb4,#a855f7,#6366f1)";} document.body.style.overflow="hidden"; if(_oldLogout && _oldLogout!==window.logoutFirebase){ try{await _oldLogout()}catch(e){} } };</script></body>
 </html>
