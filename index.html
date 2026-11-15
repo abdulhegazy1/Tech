@@ -272,6 +272,13 @@ function check(el,correct){if(correct){el.style.background='#dcfce7';el.style.bo
       <button onclick="openSheet()" style="background:#0f9d58;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">فتح Google Sheet</button>
       <button onclick="exportStudentsToExcel()" style="background:#217346;color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer">تصدير Excel</button>
     </div>
+<div id="syncStatusBox" style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:12px;margin:10px 0;font-size:13px">
+<b>🔄 حالة المزامنة (Sheets + Firebase):</b>
+<div id="syncStatusText" style="margin-top:6px;color:#475569">لسه مفيش إرسال - ضيفي حاجة وهنا هتشوفي النتيجة الحقيقية.</div>
+<button onclick="resendAllToCloud()" style="background:#0ea5e9;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:700;cursor:pointer;margin-top:8px">إعادة إرسال كل حاجة للشيت و Firebase</button>
+<p style="font-size:12px;color:#64748b;margin:6px 0 0">لو الشيت فشل، السبب هيتكتب هنا بالظبط - غالبا الـ Apps Script قديم أو مش معموله Deploy > Anyone. ملف كود الشيت الجديد اسمه AppsScript.gs مع الملف ده.</p>
+</div>
+
     <!-- hero moved to settings tab -->
     <hr style="border:none;border-top:1px solid #f1f5f9;margin:22px 0">
     <h3 style="margin:0 0 10px;font-size:16px">إضافة طالب</h3>
@@ -898,6 +905,188 @@ window.addStudentFirebase = async function(){
   if(statusEl) statusEl.textContent='✅ تم حفظ الطالب '+name+' ('+u+' - '+g+')\n'+sheetStatus+'\n'+fbStatus;
   alert('نتيجة إضافة الطالب '+name+' ('+u+'):\n\n'+sheetStatus+'\n\n'+fbStatus);
 };
+</script>
+
+<script>
+// ===== Unified Sync - السبب الحقيقي + الحل =====
+// المشكلة كانت: 1) addLecture/addExam كانوا بيبعتوا بـ mode:'no-cors' فمبيقروش رد الشيت أصلا، وبيقولوا "تم" حتى لو الشيت رفض
+// 2) مكنوش بيبعتوا لـ Firebase خالص
+// 3) الامتحان كان بيتحفظ في localStorage بس، ومفيش قسم للطالب يعرضه، فالطالب مكنش بيشوفه
+// 4) تعديل النص كان بيحفظ heroTitle اللي اتشال من الصفحة، فمفيش حاجة بتتغير قدامك
+// الحل: كل حفظ دلوقتي بيعمل: localStorage (يظهر فورا) + Sheets (يقرأ الرد الحقيقي) + Firebase Firestore REST (بـ توكن الأدمن) + يحدث قسم الطالب
+const SHEET_URL_DEFAULT = 'https://script.google.com/macros/s/AKfycbzPrzldXgbZcvIOXzO0VFlcepHeOCnOkSbVYPCeSR36UyuwquST6cy6usQCEfr8ofpO_g/exec';
+const FB_API_KEY = 'AIzaSyB0NvRHr6B_-Q_aHsjqVC-SkMLrFVxf0vg';
+const FB_PROJECT = 'tech-lab-186a0';
+function getSheetUrl(){ return (localStorage.getItem('sheets_apps_script_url')||'').trim() || SHEET_URL_DEFAULT; }
+function setSyncStatus(msg){ let el=document.getElementById('syncStatusText'); if(el) el.innerHTML=msg; }
+async function getAdminToken(){
+  // سجل دخول الأدمن لـ Firebase بـ REST عشان ناخد توكن نكتب بيه في Firestore
+  try{
+    let r = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key='+FB_API_KEY, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:'nada@sciencelab.app', password:'dody1415', returnSecureToken:true})});
+    let d = await r.json();
+    if(d.idToken) return d.idToken;
+    // لو حساب الأدمن مش موجود في Firebase، أنشئيه
+    let r2 = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key='+FB_API_KEY, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email:'nada@sciencelab.app', password:'dody1415', returnSecureToken:true})});
+    let d2 = await r2.json();
+    if(d2.idToken) return d2.idToken;
+    throw new Error(d.error?.message || d2.error?.message || 'Admin auth failed');
+  }catch(e){ throw e; }
+}
+async function syncOne(type, payload, collection, docId){
+  let sheetRes='لم يتم الإرسال', fbRes='لم يتم الإرسال';
+  // Sheets - إرسال حقيقي وقراءة الرد
+  try{
+    let res = await fetch(getSheetUrl(), {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(Object.assign({type:type}, payload))});
+    let t = await res.text();
+    if(res.ok) sheetRes='Sheet ✅ '+t.slice(0,100);
+    else sheetRes='Sheet ❌ HTTP '+res.status+' - '+t.slice(0,150);
+  }catch(e){ sheetRes='Sheet ❌ '+e.message+' - تأكدي إن الـ Apps Script الجديد متلصق ومتعمله Deploy > Anyone'; }
+  // Firebase Firestore REST
+  try{
+    let token = await getAdminToken();
+    let fields={};
+    for(let k in payload){ let v=payload[k]; if(typeof v==='string') fields[k]={stringValue:v}; else if(typeof v==='number') fields[k]={doubleValue:v}; }
+    fields.updatedAt={stringValue:new Date().toISOString()};
+    let url='https://firestore.googleapis.com/v1/projects/'+FB_PROJECT+'/databases/(default)/documents/'+collection+'/'+encodeURIComponent(docId);
+    let fres = await fetch(url+'?updateMask.fieldPaths='+Object.keys(fields).join('&updateMask.fieldPaths='), {method:'PATCH', headers:{'Content-Type':'application/json','Authorization':'Bearer '+token}, body: JSON.stringify({fields:fields})});
+    let ft = await fres.text();
+    if(fres.ok) fbRes='Firebase ✅';
+    else fbRes='Firebase ❌ '+ft.slice(0,200)+' | افتحي Firestore > Rules وخليها allow read, write: if request.auth != null';
+  }catch(e){ fbRes='Firebase ❌ '+e.message; }
+  return {sheetRes, fbRes};
+}
+// --- Lectures: حفظ + ظهور للطالب ---
+window.addLecture = async function(){
+  let t=document.getElementById('newLecTitle')?.value.trim()||'', v=document.getElementById('newLecVideo')?.value.trim()||'', g=document.getElementById('newLecGrade')?.value||'Grade 4';
+  if(!t||!v){ alert('من فضلك اكملي عنوان المحاضرة ورابط الفيديو'); return; }
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('lectures_nada')||'[]'); }catch(e){}
+  let item={title:t, video:v, grade:g, date:new Date().toLocaleDateString('ar-EG')}; arr.push(item);
+  localStorage.setItem('lectures_nada', JSON.stringify(arr));
+  if(document.getElementById('newLecTitle')) document.getElementById('newLecTitle').value='';
+  if(document.getElementById('newLecVideo')) document.getElementById('newLecVideo').value='';
+  renderLectures(); renderStudentLectures();
+  setSyncStatus('جاري إرسال المحاضرة "'+t+'" ...');
+  let r = await syncOne('lecture', {title:t, video:v, grade:g}, 'lectures', 'lec_'+Date.now());
+  setSyncStatus('<b>'+t+'</b><br>'+r.sheetRes+'<br>'+r.fbRes);
+  alert('المحاضرة اتحفظت وظهرت للطالب.\n\n'+r.sheetRes+'\n'+r.fbRes);
+};
+window.renderLectures = function(){
+  let el=document.getElementById('lecturesList'); if(!el) return;
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('lectures_nada')||'[]'); }catch(e){}
+  el.innerHTML = arr.length ? arr.map(l=>'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin:6px 0;display:flex;justify-content:space-between"><span><b>'+l.title+'</b> - '+l.grade+'</span><a href="'+l.video+'" target="_blank" style="color:#7c3aed">مشاهدة</a></div>').join('') : '<p style="color:#64748b">لا توجد محاضرات بعد.</p>';
+};
+window.renderStudentLectures = function(){
+  // ضيف المحاضرات اللي الأدمن ضافها فوق الدروس الثابتة، في نفس الجريد، وطبق فلتر الجريد
+  let grid=document.getElementById('lessonsGrid'); if(!grid) return;
+  // امسح القديم اللي احنا ضفناه قبل كده
+  grid.querySelectorAll('[data-admin-lecture="1"]').forEach(e=>e.remove());
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('lectures_nada')||'[]'); }catch(e){}
+  arr.forEach(l=>{
+    let card=document.createElement('div'); card.className='card'; card.setAttribute('data-admin-lecture','1'); card.setAttribute('data-cat', l.grade.toLowerCase().includes('prep')?'prep':'primary');
+    card.innerHTML='<div class="card-top" style="background:#ede9fe">🎬</div><div class="card-body"><span class="badge">'+l.grade+'</span><h3>'+l.title+'</h3><p>محاضرة جديدة من الدكتورة.</p><div class="meta"><span>⏱ فيديو</span></div><a class="card-btn" href="'+l.video+'" target="_blank">شاهد الدرس ▶</a></div>';
+    grid.appendChild(card);
+  });
+  try{ if(window.applyGradeFilter) window.applyGradeFilter(); }catch(e){}
+};
+// --- Exams: حفظ + ظهور للطالب في قسم الامتحانات ---
+window.addExam = async function(){
+  let t=document.getElementById('newExamTitle')?.value.trim()||'', l=document.getElementById('newExamLink')?.value.trim()||'', g=document.getElementById('newExamGrade')?.value.trim()||'', gr=document.getElementById('newExamGradeSelect')?.value||'';
+  if(!t||!l){ alert('من فضلك اكملي عنوان الامتحان ورابطه'); return; }
+  let gradeForExam = gr || g;
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('exams_nada')||'[]'); }catch(e){}
+  let item={title:t, link:l, total:g, grade:gradeForExam, date:new Date().toLocaleDateString('ar-EG')}; arr.push(item);
+  localStorage.setItem('exams_nada', JSON.stringify(arr));
+  if(document.getElementById('newExamTitle')) document.getElementById('newExamTitle').value='';
+  if(document.getElementById('newExamLink')) document.getElementById('newExamLink').value='';
+  renderExams(); renderStudentExams();
+  setSyncStatus('جاري إرسال الامتحان "'+t+'" ...');
+  let r = await syncOne('exam', {title:t, link:l, total:g, grade:gradeForExam}, 'exams', 'exam_'+Date.now());
+  setSyncStatus('<b>'+t+'</b><br>'+r.sheetRes+'<br>'+r.fbRes);
+  alert('الامتحان اتحفظ وظهر للطالب في قسم الامتحانات.\n\n'+r.sheetRes+'\n'+r.fbRes);
+};
+window.renderExams = function(){
+  let el=document.getElementById('examsList'); if(!el) return;
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('exams_nada')||'[]'); }catch(e){}
+  el.innerHTML = arr.length ? arr.map(e=>'<div style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin:6px 0;display:flex;justify-content:space-between"><span><b>'+e.title+'</b> - الدرجة: '+e.total+' - '+(e.grade||'')+'</span><a href="'+e.link+'" target="_blank" style="color:#f59e0b">فتح الامتحان</a></div>').join('') : '<p style="color:#64748b">لا توجد امتحانات بعد.</p>';
+};
+window.renderStudentExams = function(){
+  let grid=document.getElementById('studentExamsGrid'); let empty=document.getElementById('studentExamsEmpty'); if(!grid) return;
+  let arr=[]; try{ arr=JSON.parse(localStorage.getItem('exams_nada')||'[]'); }catch(e){}
+  let sess=(sessionStorage.getItem('sciencelab_session')||'').toLowerCase();
+  let isAdmin=(sess==='nada'||sess==='admin');
+  let myGrade=sessionStorage.getItem('sciencelab_grade')||'';
+  let shown = isAdmin ? arr : arr.filter(e=> !e.grade || !myGrade || e.grade===myGrade || e.grade===myGrade.replace('Grade ','') || String(e.total)===myGrade);
+  // لو الامتحان القديم ملوش grade، اظهريه للكل عشان ميتختفيش
+  if(!isAdmin && !myGrade) shown=arr;
+  grid.innerHTML = shown.map(e=>'<div class="card"><div class="card-top" style="background:#fef3c7">📝</div><div class="card-body"><span class="badge">'+(e.grade||'امتحان')+' - الدرجة: '+(e.total||'')+'</span><h3>'+e.title+'</h3><p>اضغطي لفتح الامتحان.</p><a class="card-btn" href="'+e.link+'" target="_blank">فتح الامتحان ▶</a></div></div>').join('');
+  if(empty) empty.style.display = shown.length ? 'none':'block';
+};
+// --- Text / Settings: تعديل النص يظهر فعلا ---
+window.saveSiteContent = async function(){
+  let hero=document.getElementById('editHeroTitle')?.value.trim()||'';
+  let about=document.getElementById('editAboutDoctor')?.value.trim()||'';
+  let tasks=document.getElementById('editWeeklyTasks')?.value.trim()||'';
+  // اقرأ نبذة الدكتورة من أي حقل موجود (القديم كان مخفي)
+  if(!about){ let a=document.querySelector('[id*="About"]'); if(a) about=a.value.trim(); }
+  let saved={hero:hero, about:about, tasks:tasks, savedAt:new Date().toISOString()};
+  localStorage.setItem('siteContent_nada', JSON.stringify(saved));
+  if(about) localStorage.setItem('aboutDoctor_nada', about);
+  if(tasks) localStorage.setItem('weeklyTasks_nada', tasks);
+  applySiteContent();
+  let m=document.getElementById('saveMsg'); if(m){ m.style.display='block'; m.textContent='تم الحفظ - التعديلات ظهرت في الصفحة.'; }
+  setSyncStatus('جاري إرسال تعديلات النص ...');
+  let r = await syncOne('content', {hero:hero, about:about, tasks:tasks}, 'settings', 'siteContent');
+  setSyncStatus('تعديل النص<br>'+r.sheetRes+'<br>'+r.fbRes);
+  alert('تم حفظ تعديلات النص وظهرت في الصفحة.\n\n'+r.sheetRes+'\n'+r.fbRes);
+};
+window.applySiteContent = function(){
+  try{
+    let saved=JSON.parse(localStorage.getItem('siteContent_nada')||'null'); if(!saved) return;
+    if(saved.hero){ let h=document.getElementById('heroTitle'); if(h) h.textContent=saved.hero; let inp=document.getElementById('editHeroTitle'); if(inp) inp.value=saved.hero; }
+    if(saved.about){ let a=document.getElementById('aboutDoctorText'); if(a) a.textContent=saved.about; let inp2=document.getElementById('editAboutDoctor'); if(inp2) inp2.value=saved.about; }
+    if(saved.tasks){ let ta=document.getElementById('editWeeklyTasks'); if(ta) ta.value=saved.tasks; if(window.renderWeeklyTasksFromText) window.renderWeeklyTasksFromText(saved.tasks); }
+  }catch(e){}
+};
+window.resendAllToCloud = async function(){
+  setSyncStatus('جاري إعادة إرسال كل حاجة ... دي هتاخد ثواني');
+  let students=[]; try{ students=JSON.parse(localStorage.getItem('students_nada')||'[]'); }catch(e){}
+  let lectures=[]; try{ lectures=JSON.parse(localStorage.getItem('lectures_nada')||'[]'); }catch(e){}
+  let exams=[]; try{ exams=JSON.parse(localStorage.getItem('exams_nada')||'[]'); }catch(e){}
+  let results=[];
+  for(let s of students){ let r=await syncOne('student', {username:s.username, name:s.name, grade:s.grade, pass:s.pass||''}, 'students', s.username); results.push('طالب '+s.name+': '+r.sheetRes+' | '+r.fbRes); }
+  for(let l of lectures){ let r=await syncOne('lecture', {title:l.title, video:l.video, grade:l.grade}, 'lectures', 'lec_'+l.title); results.push('محاضرة '+l.title+': '+r.sheetRes+' | '+r.fbRes); }
+  for(let e of exams){ let r=await syncOne('exam', {title:e.title, link:e.link, total:e.total||'', grade:e.grade||''}, 'exams', 'exam_'+e.title); results.push('امتحان '+e.title+': '+r.sheetRes+' | '+r.fbRes); }
+  setSyncStatus(results.join('<br><br>') || 'مفيش حاجة محفوظة محليا عشان نعيد إرسالها');
+  alert('تمت إعادة الإرسال. النتيجة الكاملة في صندوق حالة المزامنة في لوحة الأدمن.');
+};
+document.addEventListener('DOMContentLoaded', ()=>{ try{ applySiteContent(); renderStudentLectures(); renderStudentExams(); }catch(e){} });
+setTimeout(()=>{ try{ applySiteContent(); renderStudentLectures(); renderStudentExams(); }catch(e){} }, 800);
+</script>
+
+<script>
+// saveSettingsTab كان بيحفظ محلي بس - خليه يزامن كمان
+(function(){
+  let orig = window.saveSettingsTab;
+  window.saveSettingsTab = async function(){
+    try{ if(orig) orig(); }catch(e){}
+    try{
+      let about=document.getElementById('editAboutDoctor')?.value||'';
+      let tasks=document.getElementById('editWeeklyTasks')?.value||'';
+      let hero=document.getElementById('editHeroTitle')?.value||'';
+      if(about) localStorage.setItem('aboutDoctor_nada', about);
+      if(window.applySiteContent) window.applySiteContent();
+      // حدث نبذة الدكتورة في الصفحة فورا
+      let a=document.getElementById('aboutDoctorText'); if(a && about) a.textContent=about;
+      if(window.renderWeeklyTasksFromText && tasks) window.renderWeeklyTasksFromText(tasks);
+      if(window.syncOne){
+        setSyncStatus('جاري إرسال إعدادات الصفحة ...');
+        let r = await window.syncOne('content', {hero:hero, about:about, tasks:tasks}, 'settings', 'siteContent');
+        setSyncStatus('إعدادات الصفحة<br>'+r.sheetRes+'<br>'+r.fbRes);
+        alert('تم حفظ إعدادات الصفحة وظهرت في الموقع.\n\n'+r.sheetRes+'\n'+r.fbRes);
+      }
+    }catch(e){ alert('تم الحفظ محليا، لكن المزامنة فشلت: '+e.message); }
+  };
+})();
 </script>
 </body>
 </html>
